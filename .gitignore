@@ -9,4 +9,7 @@ libs/
 _presentation/mpe_pres.css
 _presentation/index_files
 _presentation/index_cache
-
+_presentation/regression_files/
+_presentation/anova2_files/
+_presentation/*.html
+_presentation/*.css

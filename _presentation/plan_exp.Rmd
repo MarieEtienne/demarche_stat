@@ -1,0 +1,51 @@
+---
+title: Plan d'expérience 
+subtitle: pour tirer un maximum de profits d'une expérimentation
+author: Marie-Pierre Etienne
+date: '2020/09/11 (updated: `r Sys.Date()`)'
+institute: https://github.com/marieetienne
+csl: ../courses_tools/resources/apa-no-doi-no-issue.csl
+output:
+   xaringan::moon_reader:
+    css: ['metropolis',  'mpe_pres_HDR.css']
+    lib_dir: libs
+    nature:
+      ratio: 16:10
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      beforeInit: '../courses_tools/resources/collapseoutput.js'
+---
+name: intro
+
+<!-- F1D763 -->
+<!-- F7A913 -->
+<!-- C94326 -->
+<!-- 1F908E -->
+<!-- 33658A -->
+
+
+```{r setup, include = FALSE,  eval = TRUE}
+library('RefManageR')
+main_dir <-  '..'
+common_img_dir <- file.path(main_dir,'courses_tools','resources', 'common_figs')
+course_img_dir <- file.path(main_dir,'resources', 'figs')
+BibOptions(check.entries = FALSE,
+           bib.style = "authoryear",
+           cite.style = "authoryear",
+           style = "markdown",
+           hyperlink = TRUE,
+           max.names = 3,
+           longnamesfirst= FALSE, 
+           dashed = TRUE)
+#myBib <- ReadBib('biblio_soutenance.bib', check = FALSE)
+```
+
+```{r xaringan-fit-screen, echo=FALSE}
+xaringanExtra::use_fit_screen()
+```
+
+
+name: intro
+# Introduction
+
