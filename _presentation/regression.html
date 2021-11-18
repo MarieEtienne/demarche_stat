@@ -21,7 +21,6 @@ class: center, middle, inverse, title-slide
 
 ---
 
-name: intro
 
 &lt;!-- F1D763 --&gt;
 &lt;!-- F7A913 --&gt;
@@ -38,8 +37,7 @@ name: intro
 name: intro
 # Introduction
 
----
-template: intro
+--
 ## Etude de la pollution au SO2
 
 On a mesuré pour 41 villes américaines, la pollution au SO2 ainsi que la population dans la ville
@@ -97,16 +95,6 @@ Comment imagine-t-on le processus aléatoire qui a conduit à nos données ?
 
 
 
-
-```r
-ggplot(data=fake_dta) + 
-  ylab('y') + xlim(range(fake_dta$x)) +ylim(range(fake_dta$y)) +
-  ggtitle('Modèle Mcomp') +
-  geom_abline(slope = beta1, intercept = beta0) + #BREAK
-  geom_point(x=x0, y=beta0+beta1*x0, col = 'red', size=2) + #BREAK
-  geom_point(data=norm_dta, aes(y=y, x=x), col = 'red', alpha=0.02) + #BREAK
-  geom_point(aes(x=x, y=y)) 
-```
 
 ```
 ## Warning: Removed 21 rows containing missing values (geom_point).
@@ -175,16 +163,6 @@ count: false
 ---
 
 
-
-```r
-ggplot(data=fake_dta) + 
-  ylab('y') + xlim(range(fake_dta$x)) +ylim(range(fake_dta$y)) +
-  ggtitle('Modèle nul') +
-  geom_abline(slope = 0, intercept = mean(fake_dta$y)) + #BREAK
-  geom_point(x=x0, y = mean(fake_dta$y), col = 'red', size=2) + #BREAK
-  geom_point(data=norm_dta0, aes(y=y, x=x), col = 'red', alpha=0.02) + #BREAK
-  geom_point(aes(x=x, y=y)) 
-```
 
 ```
 ## Warning: Removed 20 rows containing missing values (geom_point).
@@ -255,22 +233,6 @@ count: false
 
 
 
-```r
-pM0 &lt;- ggplot(data=fake_dta) + 
-  ylab('y') + xlim(range(fake_dta$x)) +ylim(range(fake_dta$y)) +
-  ggtitle('Modèle nul') +
-  geom_abline(slope = 0, intercept = mean(fake_dta$y)) + #BREAK
-  geom_point(x=x0, y = mean(fake_dta$y), col = 'red', size=2) + #BREAK
-  geom_point(data=norm_dta0, aes(y=y, x=x), col = 'red', alpha=0.02) + #BREAK
-  geom_point(aes(x=x, y=y)) 
-pMcomp &lt;- ggplot(data=fake_dta) + 
-  ylab('y') + xlim(range(fake_dta$x)) +ylim(range(fake_dta$y)) +
-  ggtitle('Modèle Mcomp') +
-  geom_abline(slope = beta1, intercept = beta0) + #BREAK
-  geom_point(x=x0, y=beta0+beta1*x0, col = 'red', size=2) + #BREAK
-  geom_point(data=norm_dta, aes(y=y, x=x), col = 'red', alpha=0.02) + #BREAK
-  geom_point(aes(x=x, y=y)) 
-```
 
 
 ---
@@ -564,10 +526,6 @@ template:  prediction
 
 
 
-```r
-ggplot(usdata) + aes(x=pop, y= SO2 ) + geom_point() + geom_smooth(method= 'lm', se = TRUE)
-```
-
 ```
 ## `geom_smooth()` using formula 'y ~ x'
 ```
@@ -584,19 +542,8 @@ template:  prediction
 
 
 
-```r
-pred_interval &lt;- predict(Mpop,  interval="prediction", level = 0.95)
-```
-
 ```
 ## Warning in predict.lm(Mpop, interval = "prediction", level = 0.95): predictions on current data refer to _future_ responses
-```
-
-```r
-pred_interval &lt;- as.data.frame(pred_interval) %&gt;% mutate(pop=usdata$pop) %&gt;% arrange(pop)
-
-ggplot(usdata) + geom_point(aes(x=pop, y= SO2 ) )  + 
-  geom_ribbon(data=pred_interval, aes(x = pop, ymin = lwr, ymax = upr), fill = "blue", alpha = 0.1) + geom_smooth(method= 'lm', se = TRUE, aes(x=pop, y= SO2 ) )
 ```
 
 ```
@@ -912,21 +859,7 @@ template: modcomp
 Sous `\(H_0\)` la loi de distribution de `\(F\)` est 
 
 
-```r
-tibble(x = seq(0, 10, length.out = 2001)) %&gt;% 
-  mutate(y = df(x, df1 = 4, df= 38)) -&gt; chi_dta
-Fobs &lt;- 1
-chi_dta %&gt;% filter(x&gt; Fobs) %&gt;% add_row(x=100,y = 0) %&gt;%  add_row(x=Fobs, y =0)  %&gt;% 
-  add_row(x=Fobs, y =df(Fobs, df1 = 4, df= 38)) %&gt;% arrange(x,y)  -&gt; chi_dta_poly
-```
 
-
-
-```r
-ggplot(data  = chi_dta) + xlab('y') + ylab('density') + geom_line(aes(x=x, y=y)) + #BREAK
-  annotate("text", x = Fobs- 0.5, y = 0.05, label = "Fobs", col = 'red')+  geom_vline(aes(xintercept = Fobs), col = 'red') + #BREAK
-  geom_polygon(data = chi_dta_poly,  aes(x=x, y= y), alpha = 0.3) + xlim(c(0, max(chi_dta$x))) 
-```
 
 ![](regression_files/figure-html/pvalue_graphique-1.png)&lt;!-- --&gt;
 
@@ -1002,10 +935,6 @@ template: test_variable
 
 
 
-```r
-summary(Mcomp)$coefficients
-```
-
 ```
 ##                 Estimate  Std. Error   t value     Pr(&gt;|t|)
 ## (Intercept) 111.72848064 47.31810073  2.361221 0.0240867374
@@ -1015,11 +944,6 @@ summary(Mcomp)$coefficients
 ## wind         -3.18136579  1.81501910 -1.752800 0.0886503978
 ## precip        0.51235896  0.36275507  1.412410 0.1669175999
 ## days         -0.05205019  0.16201386 -0.321270 0.7499724652
-```
-
-```r
-Mcomp_l &lt;- lm(SO2 ~  temp + manuf +  wind + precip + days, data = usdata) 
-anova(Mcomp_l, Mcomp)
 ```
 
 ```
@@ -1055,10 +979,6 @@ template: test_variable
 
 
 
-```r
-summary(Mcomp)$coefficients
-```
-
 ```
 ##                 Estimate  Std. Error   t value     Pr(&gt;|t|)
 ## (Intercept) 111.72848064 47.31810073  2.361221 0.0240867374
@@ -1071,10 +991,6 @@ summary(Mcomp)$coefficients
 ```
 
 --
-
-```r
-GGally::ggpairs(usdata, columns = 2:8)
-```
 
 ```
 ## Registered S3 method overwritten by 'GGally':
@@ -1139,14 +1055,6 @@ h.us.lm
 
 ---
 
-
-```r
-usdata &lt;- usdata %&gt;% mutate(grand = as.factor(ifelse(pop &gt; 2500, 'g', 'p')))
-usdata_sans_chicago &lt;- usdata %&gt;% filter(pop &lt; 2500)
-
-usdata %&gt;% ggplot() + aes(x=pop, y=SO2) + geom_point(aes(col = grand)) + theme(legend.position = 'none') + geom_smooth(method= 'lm', se = FALSE,col= "#FF0000") + #BREAK
-  geom_smooth(data=usdata_sans_chicago, aes(x=pop, y=SO2), method= 'lm', se = FALSE,col= "#00A08A")
-```
 
 ```
 ## `geom_smooth()` using formula 'y ~ x'

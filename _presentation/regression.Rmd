@@ -16,7 +16,6 @@ output:
       countIncrementalSlides: false
       beforeInit: '../courses_tools/resources/collapseoutput.js'
 ---
-name: intro
 
 <!-- F1D763 -->
 <!-- F7A913 -->
@@ -27,7 +26,8 @@ name: intro
 
 ```{r setup, include = FALSE,  eval = TRUE}
 library('RefManageR')
-main_dir <-  '..'
+knitr::opts_chunk$set(echo = FALSE)
+
 common_img_dir <- file.path(main_dir,'courses_tools','resources', 'common_figs')
 course_img_dir <- file.path(main_dir,'resources', 'figs')
 BibOptions(check.entries = FALSE,
@@ -49,8 +49,7 @@ xaringanExtra::use_fit_screen()
 name: intro
 # Introduction
 
----
-template: intro
+--
 ## Etude de la pollution au SO2
 
 On a mesuré pour 41 villes américaines, la pollution au SO2 ainsi que la population dans la ville
