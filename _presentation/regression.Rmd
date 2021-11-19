@@ -7,7 +7,7 @@ institute: https://github.com/marieetienne
 csl: ../courses_tools/resources/apa-no-doi-no-issue.csl
 output:
    xaringan::moon_reader:
-    css: ['metropolis',  'mpe_pres_HDR.css']
+    css: ['metropolis',  'mpe_pres.css']
     lib_dir: libs
     nature:
       ratio: 16:10
@@ -16,6 +16,7 @@ output:
       countIncrementalSlides: false
       beforeInit: '../courses_tools/resources/collapseoutput.js'
 ---
+name: intro
 
 <!-- F1D763 -->
 <!-- F7A913 -->
@@ -26,7 +27,7 @@ output:
 
 ```{r setup, include = FALSE,  eval = TRUE}
 library('RefManageR')
-knitr::opts_chunk$set(echo = FALSE)
+source("../courses_tools/resources/knitr_setup.R")
 
 common_img_dir <- file.path(main_dir,'courses_tools','resources', 'common_figs')
 course_img_dir <- file.path(main_dir,'resources', 'figs')
@@ -46,7 +47,6 @@ xaringanExtra::use_fit_screen()
 ```
 
 
-name: intro
 # Introduction
 
 --
@@ -60,7 +60,7 @@ ggplot <- function(...) ggplot2::ggplot(...) + scale_fill_manual(values = wesand
 ```
 
 ```{r usfata, eval = TRUE, echo = c(1,2), warning = FALSE}
-library(coursesdata)
+library(coursesdata) #remotes::install_github('MarieEtienne/coursesdata')
 data(usdata)
 usdata %>% ggplot() +  aes(x= pop, y = SO2)+  geom_point()
 ```
@@ -82,26 +82,18 @@ Les données peuvent être visualisées à l'aide d'un nuage de points.
 
 
 --
-<p class="question"> La variable x permet elle d'expliquer la variabilité de la variable Y ?</p>
+<p class="question"> La variable x permet-elle d'expliquer la variabilité de la variable Y ?</p>
 
 ---
 name: model
-# Le modèle de régression simple
+# Rappel : la régression simple
 
----
-template: model
-
-## Graphiquement 
-
-Une visualisation graphique du modèle d'analyse de régression simple
-
-<br> <br> <br> <br>
+--
 
 
-Comment imagine-t-on le processus aléatoire qui a conduit à nos données ?
+##  Une visualisation graphique du modèle d'analyse de régression simple
 
-
-
+ .center[Si la population et la pollution en SO2 sont liées, comment imagine-t-on le processus aléatoire qui a conduit à nos données ?]
 
 ---
 
@@ -114,7 +106,8 @@ beta1 <- 0.5
 sigma <- 1
 fake_dta <- tibble(x= x, y = rnorm(n, mean = beta0 + beta1*x, sd =sigma))  
 
-x0 <-  x[4]
+x0 <-  x[9]
+y0 <- fake_dta$y[9]
 norm_dta <- tibble::tibble(y = rnorm(1000, mean=beta0 + beta1*x0, sd= sigma), x= x0 + dnorm(x = y- beta0 - beta1*x0, mean= 0,  sd=0.5))
 
 norm_dta0 <- tibble::tibble(y = rnorm(1000, mean=mean(fake_dta$y), sd= sigma), x= x0 + dnorm(x = y - mean(fake_dta$y), mean= 0,  sd=0.5))
@@ -123,8 +116,12 @@ norm_dta0 <- tibble::tibble(y = rnorm(1000, mean=mean(fake_dta$y), sd= sigma), x
 
 ```{r reg_versiongraphique}
 ggplot(data=fake_dta) + 
-  ylab('y') + xlim(range(fake_dta$x)) +ylim(range(fake_dta$y)) +
+  xlim(range(fake_dta$x)) +ylim(range(fake_dta$y)) +
   ggtitle('Modèle Mcomp') +
+  labs(x = 'Population', y = 'SO2') +
+  theme(axis.text=element_blank(),
+        axis.ticks=element_blank(),
+        ) +
   geom_abline(slope = beta1, intercept = beta0) + #BREAK
   geom_point(x=x0, y=beta0+beta1*x0, col = 'red', size=2) + #BREAK
   geom_point(data=norm_dta, aes(y=y, x=x), col = 'red', alpha=0.02) + #BREAK
@@ -134,22 +131,91 @@ ggplot(data=fake_dta) +
 `r chunk_reveal("reg_versiongraphique", break_type = "user", display_type="output")`
 
 ---
+template: model
+
+.pull-left[
+## Le modèle de régression simple, graphiquement
+
+```{r reg_versiongraphique, eval = TRUE}
+```
+]
+
+.pull-right[
+
+## Le modèle de régression simple, mathématiquement 
+
+$$Y_{k} = \beta_0 +\beta_1 x_{k}  +E_{k},\quad E_{k}\overset{ind}{\sim}\mathcal{N}(0, \sigma^2),$$
+avec 
+- $x_k$ la valeur de la variable explicative pour l'observation $k$, 
+- $k=1,\ldots,n$ le numéro d'individu, $n$ le nombre total d'individus,
+- $\beta_0$ l'ordonnée à l'origine, 
+- $\beta_1$ la pente de la droite, mesure de l'effet de la variable $x$
+
+- $\sigma^2$ la variance.
+
+### Nombre de paramètres du modèle
+
+- $2$ paramètres de moyenne  $(\beta_0, \beta_1)$; 
+- 1 paramètre de variance $\sigma^2$
+
+]
+
+---
+template: model
+
+##  Une visualisation graphique du modèle d'analyse de régression simple
+
+ .center[Si la population et la pollution en SO2 n'ont aucun lien , comment imagine-t-on le processus aléatoire qui a conduit à nos données ?]
 
 
+---
 ```{r reg_versiongraphique_M0}
 ggplot(data=fake_dta) + 
-  ylab('y') + xlim(range(fake_dta$x)) +ylim(range(fake_dta$y)) +
+  xlim(range(fake_dta$x)) +ylim(range(fake_dta$y)) +
+  labs(x = 'Population', y = 'SO2') +
+  theme(axis.text=element_blank(),
+        axis.ticks=element_blank(),
+        ) +
   ggtitle('Modèle nul') +
   geom_abline(slope = 0, intercept = mean(fake_dta$y)) + #BREAK
   geom_point(x=x0, y = mean(fake_dta$y), col = 'red', size=2) + #BREAK
   geom_point(data=norm_dta0, aes(y=y, x=x), col = 'red', alpha=0.02) + #BREAK
-  geom_point(aes(x=x, y=y)) 
+  geom_point(aes(x=x, y=y)) +
+  labs(x = 'Population', y = 'SO2')
+
 ```
 
 
 `r chunk_reveal("reg_versiongraphique_M0", break_type = "user", display_type="output")`
 
 
+---
+template: model
+
+.pull-left[
+## Le modèle sans effet de la variable population, graphiquement
+
+```{r reg_versiongraphique_M0, eval = TRUE}
+```
+]
+
+.pull-right[
+
+## Le modèle sans effet de la variable population, mathématiquement
+
+$$Y_{k} = \beta_0  + E_{k},\quad E_{k}\overset{ind}{\sim}\mathcal{N}(0, \sigma^2),$$
+avec 
+- $k=1,\ldots,n$ le numéro d'individu, $n$ le nombre total d'individus,
+- $\beta_0$ l'ordonnée à l'origine, 
+
+- $\sigma^2$ la variance.
+
+### Nombre de paramètres du modèle
+
+- $1$ paramètres de moyenne  $(\beta_0, \beta_1)$; 
+- 1 paramètre de variance $\sigma^2$
+
+]
 
 
 ```{r anova_versiongraphique_save, eval = TRUE}
@@ -173,35 +239,15 @@ pMcomp <- ggplot(data=fake_dta) +
 ---
 template: model
 
-Lequel de ces mécanismes est le plus crédible au vu des donées ?
+.center[Lequel de ces mécanismes est le plus crédible au vu des données ?]
 
 ```{r compare_model_graph, eval = TRUE, echo = FALSE}
 ggpubr::ggarrange(pMcomp, pM0, nrow = 1, common.legend = TRUE)
 ```
+--
 
----
-template: model
+Les statistiques permettent de comparer ces deux modèles pour répondre à cette question.
 
-## Le modèle de régression simple 
-
-$$Y_{k} = \beta_0 +\beta_1 x_{k}  +E_{k},\quad E_{k}\overset{ind}{\sim}\mathcal{N}(0, \sigma^2),$$
-avec 
-- $x_k$ la valeur de la variable explicative pour l'observation $k$, 
-- $k=1,\ldots,n$ le numéro d'individu, $n$ le nombre total d'individus,
-- $\beta_0$ l'ordonnée à l'origine, 
-- $\beta_1$ la pente de la droite, mesure de l'effet de la variable $x$
-
-- $\sigma^2$ la variance.
-
-### Une écriture équivalente 
-
-$$Y_{k} \overset{ind}{\sim}\mathcal{N}(\beta_0+\beta_1 x_k, \sigma^2).$$
-
-
-### Nombre de paramètres du modèle
-
-- $2$ paramètres de moyenne  $(\beta_0, \beta_1)$; 
-- 1 paramètre de variance $\sigma^2$
 
 ---
 template: model
@@ -224,19 +270,34 @@ avec
 
 ---
 template: model
-## Sous forme matricielle
- $$\bf{Y = X\theta + E}$$
-### Forme régulière 
 
-$$Y=\begin{pmatrix}
+## L'écriture générique du modèle linéaire
+
+$$\bf{Y}=\begin{pmatrix}
 Y_{1}\\
 Y_{2}\\
 \vdots\\
 Y_{k}\\
 \vdots\\
-Y_{n}\end{pmatrix},
- \quad
-{\bf{X}} =\overset{\color{gray}{\begin{matrix}\beta_0  & \beta_1\end{matrix}}}{\begin{pmatrix}
+Y_{n}\end{pmatrix} 
+ = \begin{pmatrix} 
+\beta_0 + \beta_1\,x_1\\
+\beta_0 + \beta_1\,x_2\\
+\vdots \\
+\beta_0 + \beta_1\,x_k\\
+ \vdots \\
+\beta_0 + \beta_1\,x_n\\
+ \end{pmatrix}+ \overset{}{\begin{pmatrix}
+E_{1}\\
+E_{2}\\
+\vdots\\
+E_{k}\\
+\vdots\\
+E_{n}\\
+\end{pmatrix}}$$
+
+--
+$${\bf{X}} =\overset{\color{gray}{\begin{matrix}\beta_0  & \beta_1\end{matrix}}}{\begin{pmatrix}
 1 & x_1\\
 1 & x_2\\
 \vdots & \vdots\\
@@ -255,170 +316,52 @@ E_{k}\\
 \vdots\\
 E_{n}\\
 \end{pmatrix}}$$
+
+--
+ 
+ 
+ $$\class{rouge}{ \bf{Y = X\theta + E}}$$
+ 
+
 ---
 template: model
 
 ## Exercice
 
+Les données de pollution
+.pull-left[
+
+```{r pol_data, eval = TRUE}
+usdata %>% select(City, pop, SO2) %>% as_tibble() %>% print(n=4)
+```
+
+
 <p class=question> Détailler le modèle sous forme matricielle pour l'exemple de la pollution (écrire les 3 premières lignes de la matrice $X$ )</p>
+]
 
 --
-Attention, la réponse est dans la slide qui suit !
 
-
----
-template: model
-
+.pull-right[
 ## Correction 
 
 
-```{r m_comp_false, eval = TRUE, echo = TRUE, out.width="100%"}
+```{r m_comp_false, eval = TRUE, echo = FALSE, out.width="100%"}
 Mpop <- lm(SO2 ~ pop , data = usdata)
 model.matrix(Mpop) %>% head(n = 3)
 ```
+
+]
+
+
+
 ---
-name: parametre
-# Estimation des paramètres
-
-
----
-template: parametre
-## Estimation des paramètres du modèle version matricielle
-
-
-Le modèle sous forme matricielle s'écrit
-
-$$\bf{Y = X\theta + E}.$$
---
-
-### Estimation de $\theta$
-
-$$\hat{\theta} = (X^\intercal X )^{-1} X^\intercal Y_{obs}.$$
+name: reg_multiple
+# Le modèle de régression multiple
 
 --
 
-### Estimateur de $\theta$
-
-$$T = (X^\intercal X )^{-1} X^\intercal Y.$$
---
-
-### Loi de l'estimateur de $\theta$
-
-
-$$T  \sim \mathcal{N}_{I}\left(\theta, \sigma^2 (X^\intercal X )^{-1}\right).$$
-
----
-template: parametre
-## Le paramètre de variance
-
-La somme des carrés résiduelles s'écrit sous la forme 
-
-$$RSS = || Y- X \hat{\theta} ||^2$$
-
-### Estimateur de la variance 
-
-  $$S^2 =\frac{1}{DF_{res}} RSS, $$
-est un <a class=care> estimateur sans bias de  $\sigma^2$ </a> .
-
-Dans le cas du modèle de régression simple  $DF_{res}=n-2$ (n observations et 2 paramètres de moyennes à estimer, le nombre de composantes dans le vecteur $\theta$)
-
---
-
-## Estimation de $\sigma^2$
-
-$$\hat{\sigma}^2 =\frac{1}{n-2} RSS_{obs}.$$
----
-template: parametre
-## Vérifier l'estimation sur l'exemple de la pollution
-
-
-```{r estimation, eval = TRUE, echo = TRUE}
-X <- model.matrix(Mpop)
-XXprimemoinsUn <- solve(t(X)%*%X)
-XXprimemoinsUn %*% t(X) %*% matrix(usdata$SO2, ncol =1)
-summary(Mpop)$coefficients
-```
---
-## Loi de l'estimateur
-
-```{r loi_estim,  eval = TRUE, echo = TRUE}
-summary(Mpop)$sigma^2 * XXprimemoinsUn  # sigma2 Xt X
-sqrt(diag(summary(Mpop)$sigma^2 * XXprimemoinsUn ))
-```
----
-name: prediction
-# Prediction avec un modèle de régression simple
----
-template:  prediction
-Il est fréquent d'utiliser un modèle de régression pour prédire. 
-
-## Prédiction de la valeur moyenne pour un $x$ particulier
-
-### Valeur moyenne attendue pour $y$ pour un $x$ donné
-$\beta_0+\beta_1 x.$
-
-### Valeur moyenne prédite pour $y$ pour un $x$ donné
-$\hat{\beta}_0+\hat{\beta}_1 x.$
-
-```{r pred, eval = TRUE, echo = TRUE}
-predict(Mpop, newdata=data.frame(pop=333))
-```
-
-### Intervalle de confiance pour la valeur moyenne prédite  pour $y$ pour un $x$ donné
-$\hat{\beta}_0+\hat{\beta}_1 x.$
-
-```{r pred_IC, eval = TRUE, echo = TRUE}
-predict(Mpop, newdata=data.frame(pop=333), interval = 'confidence')
-```
-
----
-template:  prediction
-Il est fréquent d'utiliser un modèle de régression pour prédire. 
-
-## Prédiction de la valeur possible $y$ pour un  $x$ particulier
-
-```{r pred_x, eval = TRUE, echo = TRUE}
-predict(Mpop, newdata=data.frame(pop=333), interval = 'prediction')
-```
-
----
-template:  prediction
-## Sur l'exemple de la polution
-
-## Intervalle de confiance pour le comportement moyen
-
-
-```{r predic_plot, eval = TRUE}
-ggplot(usdata) + aes(x=pop, y= SO2 ) + geom_point() + geom_smooth(method= 'lm', se = TRUE)
-
-```
-
-
----
-count: false
-template:  prediction
-## Sur l'exemple de la polution
-
-## Intervalle de confiance pour le comportement moyen
-
-
-```{r predic_plot_pred, eval = TRUE}
-pred_interval <- predict(Mpop,  interval="prediction", level = 0.95)
-pred_interval <- as.data.frame(pred_interval) %>% mutate(pop=usdata$pop) %>% arrange(pop)
-
-ggplot(usdata) + geom_point(aes(x=pop, y= SO2 ) )  + 
-  geom_ribbon(data=pred_interval, aes(x = pop, ymin = lwr, ymax = upr), fill = "blue", alpha = 0.1) + geom_smooth(method= 'lm', se = TRUE, aes(x=pop, y= SO2 ) )
-```
-
----
-name: model
-# Modèle de régression multiple
-
----
-template: model
-
-## Le modèle de régression multiple
-
+## Présentation du problème
+.pull-left[
 Plusieurs variables sont potentiellement liées à la pollution en SO2
 
 
@@ -429,40 +372,49 @@ Plusieurs variables sont potentiellement liées à la pollution en SO2
 - precip : annual precipitation height in inches
 - days : No. of days of precipitation
 
+]
 
+--
+
+.pull-right[
+
+```{r show_data, eval = TRUE}
+usdata %>% as_tibble() %>% print(n=5)
+```
+
+]
+
+--
+.center[
 <a class=question> Quelles sont les variables liées à la pollution en SO2 ? </a>
-
+]
 
 
 
 ---
-template: model
+template: reg_multiple
 
 ## Le modèle de régression multiple 
 
-$$Y_{k} = \beta_0 +\beta_1 x_{k}^{1}  + \beta_2 x_{k}^{2} + \ldots +  \beta_p x_{k}^{p}  +  E_{k},\quad E_{k}\overset{ind}{\sim}\mathcal{N}(0, \sigma^2),$$
+$$Y_{k} = \beta_0 +\beta_1 x_{k,1}  + \beta_2 x_{k,2} + \ldots +  \beta_p x_{k,p}  +  E_{k},\quad E_{k}\overset{ind}{\sim}\mathcal{N}(0, \sigma^2),$$
 avec 
-- $x_{k}^{l}$ la valeur de la variable explicative $l$ pour l'observation $k$, 
+- $x_{k,l}$ la valeur de la variable explicative $l$ pour l'observation $k$, 
 - $k=1,\ldots,n$ le numéro d'individu, $n$ le nombre total d'individus,
 - $\beta_0$ l'ordonnée à l'origine, 
-- $\beta_l$ l'effet de la variable $X^{l}$ sur la variable à expliquer,
+- $\beta_l$ l'effet de la variable $x{,l}$ sur la variable à expliquer,
 - $\sigma^2$ la variance.
 
-### Une écriture équivalente 
-
-$$Y_{k} \overset{ind}{\sim}\mathcal{N}(\beta_0 +\beta_1 x_{k}^{1}  + \beta_2 x_{k}^{2} + \ldots +  \beta_p x_{k}^{p} , \sigma^2).$$
-
+--
 
 ### Nombre de paramètres du modèle
 
-- $l+1$ paramètres de moyenne  $(\beta_0, \beta_1, \ldots, \beta_l)$; 
+- $p+1$ paramètres de moyenne  $(\beta_0, \beta_1, \ldots, \beta_p)$; 
 - 1 paramètre de variance $\sigma^2$
 
 ---
 template: model
 ## Sous forme matricielle
  $$\bf{Y = X\theta + E}$$
-### Forme régulière 
 
 $$Y=\begin{pmatrix}
 Y_{1}\\
@@ -472,7 +424,7 @@ Y_{k}\\
 \vdots\\
 Y_{n}\end{pmatrix},
  \quad
-{\bf{X}} =\overset{\color{gray}{\begin{matrix}\beta_0  && \beta_1&& \beta_2&&\ldots &&\beta_l\end{matrix}}}{\begin{pmatrix}
+{\bf{X}} =\overset{\color{gray}{\begin{matrix}\beta_0  && \beta_1&& \beta_2&&\ldots &&\beta_p\end{matrix}}}{\begin{pmatrix}
 1 & x_1^{1} & x_1^{2} & \ldots &x_1^{l}\\
 1 & x_2^{1} & x_2^{2} & \ldots &x_2^{l}\\
 \vdots & \vdots& \vdots && \vdots\\
@@ -485,7 +437,7 @@ Y_{n}\end{pmatrix},
 \beta_1\\
 \beta_2\\
 \vdots\\
-\beta_l\\
+\beta_p\\
 \end{pmatrix}, \quad{\bf{E}} = \overset{}{\begin{pmatrix}
 E_{1}\\
 E_{2}\\
@@ -495,47 +447,71 @@ E_{k}\\
 E_{n}\\
 \end{pmatrix}}$$
 
----
-template: model
 
-## Sur l'exemple de la pollution
+--
+
+.care[BREAKING NEWS !!!
+]
+
+.center[
+.rouge[
 
 
-```{r m_comp_mult, eval = TRUE, echo = TRUE, out.width="100%"}
-Mcomp <- lm(SO2 ~ temp + manuf + pop + wind + precip + days, data = usdata) 
-#Mcomp <- lm(SO2 ~ . - City , data = usdata) # toutes les variables sauf City
-model.matrix(Mcomp) %>% head(n = 3)
-```
+Tous les modèles vus en cours depuis le début peuvent s'écrire sous la forme 
+$$ Y = X\theta +E $$ 
+Ce sont tous des modèle slinéaires (d'où la commande `lm` ).
+]
+]
+
 ---
 name: parametre
-# Estimation des paramètres
+# Estimation des paramètres d'un modèle linéaire.
 
 
 ---
 template: parametre
 ## Estimation des paramètres du modèle version matricielle
 
-
 Le modèle sous forme matricielle s'écrit
 
 $$\bf{Y = X\theta + E}.$$
---
-
-### Estimation de $\theta$
-
-$$\hat{\theta} = (X^\intercal X )^{-1} X^\intercal Y_{obs}.$$
+avec  $\class{rouge}{\theta}$ .rouge[inconnu]  qu'on cherche à estimer.
 
 --
 
+## Propriété mathématique
+
+$$\mathbb{E}(\bf{Y}) = \bf{X\theta}$$ 
+Il s'agit donc de résoudre un système.
+
+--
+
+$$\bf{X^\intercal}\mathbb{E}(\bf{Y}) = \bf{X^\intercal}\bf{X\theta}$$ 
+--
+
+Si $\bf{X^\intercal}\bf{X}$ est inversible  alors
+
+$$\bf{\theta} = (X^\intercal X )^{-1} X^\intercal \mathbb{E}(Y).$$
+
+--
+On remplace $\mathbb{E}(\bf{Y})$ par notre meilleure approximation et 
+--
+.care[ TADAAA !!!!]
+
+
+---
+
+template: parametre
 ### Estimateur de $\theta$
 
 $$T = (X^\intercal X )^{-1} X^\intercal Y.$$
+
 --
 
 ### Loi de l'estimateur de $\theta$
 
 
-$$T  \sim \mathcal{N}_{I}\left(\theta, \sigma^2 (X^\intercal X )^{-1}\right).$$
+$$T  \sim \mathcal{N}_{l+1}\left(\theta, \sigma^2 (X^\intercal X )^{-1}\right).$$
 
 ---
 template: parametre
@@ -550,45 +526,54 @@ $$RSS = || Y- X \hat{\theta} ||^2$$
   $$S^2 =\frac{1}{DF_{res}} RSS, $$
 est un <a class=care> estimateur sans bias de  $\sigma^2$ </a> .
 
-Dans le cas du modèle de régression simple  $DF_{res}=n-l-1$ (n observations et 2 paramètres de moyennes à estimer, le nombre de composantes dans le vecteur $\theta$)
+Dans le cas du modèle de régression simple  $DF_{res}=n-(p+1)$ (n observations et p+1 paramètres de moyennes à estimer, le nombre de composantes dans le vecteur $\theta$)
 
 --
 
 ## Estimation de $\sigma^2$
 
-$$\hat{\sigma}^2 =\frac{1}{n-l-1} RSS_{obs}.$$
+$$\hat{\sigma}^2 =\frac{1}{n-(p+1)} RSS_{obs}.$$
+
+
+
 ---
 template: parametre
 ## Vérifier l'estimation sur l'exemple de la pollution
 
-### Estimation
+.pull-left[
+
+### Estimation manuelle des paramètres de moyenne
 
 ```{r estimation_mult, eval = TRUE, echo = TRUE}
+Mcomp <- lm(SO2 ~ pop + temp + manuf + wind + precip + days, data = usdata)
 X <- model.matrix(Mcomp)
 XXprimemoinsUn <- solve(t(X)%*%X)
 XXprimemoinsUn %*% t(X) %*% matrix(usdata$SO2, ncol =1)
+```
+
+```{r loi_estim,  eval = TRUE, echo = TRUE}
+sqrt( diag( summary(Mpop)$sigma^2 * XXprimemoinsUn ) )
+```
+] 
+
+--
+
+.pull-right[
+### En demandant à R
+
+```{r summary_Mcomp, eval = TRUE, echo = TRUE}
 summary(Mcomp)$coefficients
 ```
----
 
-template: parametre
-## Vérifier l'estimation sur l'exemple de la pollution
-
-### Loi de l'estimateur
-
-```{r loi_estim_mult,  eval = TRUE, echo = TRUE}
-summary(Mcomp)$coefficients
-sqrt(diag(summary(Mcomp)$sigma^2 * XXprimemoinsUn ))
-```
+]
 
 
 ---
 name: modcomp
 # Test du modèle complet
 
+--
 
----
-template: modcomp
 ## Pollution 
 
 <p class="question"> La pollution en SO2 dans les villes américaines est elles liées à l'une au moins des variables caractérisiques des villes ?</p>
@@ -606,6 +591,8 @@ template: modcomp
 ```{r compare_model_graph2, ref.label='compare_model_graph', eval = TRUE, echo = FALSE, results='markup'}
 ```
 
+Sauf que le modèle complet est bien plus complet ....
+
 --
 <p class="question"> Le modèle Mcomp est il plus pertinent que le modèle M0 ?</p>
 
@@ -620,7 +607,7 @@ On va donc opposer une hypothèse de travail $H_0$ contre une hypothèse alterna
 
 $$\begin{align} 
 H_0 & =\left \lbrace \mbox{Auncune variable n'est liée à la pollution en SO2}\right\rbrace\\
-    & =\left \lbrace  \mbox{pour tout }p\geq 1, \beta_p =0   \right\rbrace\\
+    & =\left \lbrace  \mbox{pour tout }l\geq 1, \beta_l =0   \right\rbrace\\
     & =\left \lbrace  M_{comp} \mbox{ est équivalent à } M0 \right\rbrace.
 \end{align}$$
 
@@ -629,14 +616,14 @@ $H_1$ prend les formes équivalentes suivantes
 
 $$\begin{align} 
 H_1 & =\left \lbrace \mbox{Au moins 1 variable est liée à la pollution en SO2}\right\rbrace\\
-    & =\left \lbrace  \mbox{Il existe un } p, \beta_p \ne 0  \right\rbrace\\
+    & =\left \lbrace  \mbox{Il existe un } l, \beta_l \ne 0  \right\rbrace\\
     & =\left \lbrace  M_{comp} \mbox{ est préférable à } M0 \right\rbrace.
 \end{align}$$
 
 --
 
 Sous $H_0$, 
-$$F= \frac{\frac{SS_{M_{comp}}}{l}}{\frac{RSS}{n-l-1}} \underset{H_0}{\sim}\mathcal{F}(l, n-l-1)$$  
+$$F= \frac{\frac{RSS_0 - RSS}}{l}}{\frac{RSS}{n-(p+1)}} \underset{H_0}{\sim}\mathcal{F}(l, n-(p+1))$$  
 
 ---
 template: modcomp
