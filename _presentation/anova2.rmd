@@ -94,6 +94,7 @@ freqdata %>% ggplot() + aes(y = freqC, x = Sport_Fact, fill = Sexe) + geom_boxpl
 <p class=question> Y a t il un effet du sexe ou du sport sur la fréquence cardiaque ? </p>
 <p class=question> Y a t il un effet du sexe  sur la fréquence cardiaque ? </p>
 <p class=question> Y a t il un effet du sport sur la fréquence cardiaque ? </p>
+<p class=question> L'effet du sport sur la fréquence cardiaque est-il le même pour les hommes et les femmes ? </p>
 
 ---
 template: intro
