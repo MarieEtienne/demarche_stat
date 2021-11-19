@@ -2,8 +2,8 @@
 title: Régression linéaire 
 subtitle: simple et multiple
 author: Marie-Pierre Etienne
-date: '2020/09/11 (updated: `r Sys.Date()`)'
-institute: https://github.com/marieetienne
+date: '2021/11/19 (updated: `r Sys.Date()`)'
+institute: marie-pierre.etienne@ægrocampus-ouest.fr
 csl: ../courses_tools/resources/apa-no-doi-no-issue.csl
 output:
    xaringan::moon_reader:
