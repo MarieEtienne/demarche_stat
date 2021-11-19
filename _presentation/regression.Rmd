@@ -152,20 +152,19 @@ template: model
 .pull-right[
 
 ## Le modèle de régression simple, mathématiquement 
-
-$$M_{comp}:  \quad Y_{k} = \beta_0 +\beta_1 x_{k}  +E_{k},\quad E_{k}\overset{ind}{\sim}\mathcal{N}(0, \sigma^2),$$
+$$M_{comp}:  \quad Y_{k} = \class{rouge}{\beta_0} +\class{rouge}{\beta_1} x_{k}  +E_{k},\quad E_{k}\overset{ind}{\sim}\mathcal{N}(0, \class{fixe}{\sigma^2}),$$
 avec 
 - $x_k$ la valeur de la variable explicative pour l'observation $k$, 
 - $k=1,\ldots,n$ le numéro d'individu, $n$ le nombre total d'individus,
-- $\beta_0$ l'ordonnée à l'origine, 
-- $\beta_1$ la pente de la droite, mesure de l'effet de la variable $x$
+- $\class{rouge}{\beta_0}$ l'ordonnée à l'origine, 
+- $\class{rouge}{\beta_1}$ la pente de la droite, mesure de l'effet de la variable $x$
 
-- $\sigma^2$ la variance.
+- $\class{fixe}{\sigma^2}$ la variance.
 
 ### Nombre de paramètres du modèle
 
-- $2$ paramètres de moyenne  $(\beta_0, \beta_1)$; 
-- 1 paramètre de variance $\sigma^2$
+- $2$ paramètres de moyenne  $(\class{rouge}{\beta_0}, \class{rouge}{\beta_1})$; 
+- 1 paramètre de variance $\class{fixe}{\sigma^2}$
 
 ]
 
@@ -212,17 +211,17 @@ template: model
 
 ## Le modèle sans effet de la variable population, mathématiquement
 
-$$M_0: \quad Y_{k} = \beta_0  + E_{k},\quad E_{k}\overset{ind}{\sim}\mathcal{N}(0, \sigma^2),$$
+$$M_0: \quad Y_{k} = \class{rouge}{\beta_0}  + E_{k},\quad E_{k}\overset{ind}{\sim}\mathcal{N}(0, \class{fixe}{\sigma^2}),$$
 avec 
 - $k=1,\ldots,n$ le numéro d'individu, $n$ le nombre total d'individus,
-- $\beta_0$ l'ordonnée à l'origine, 
+- $\class{rouge}{\beta_0}$ l'ordonnée à l'origine, 
 
-- $\sigma^2$ la variance.
+- $\class{fixe}{\sigma^2}$ la variance.
 
 ### Nombre de paramètres du modèle
 
-- $1$ paramètres de moyenne  $(\beta_0, \beta_1)$; 
-- 1 paramètre de variance $\sigma^2$
+- $1$ paramètres de moyenne  $\class{rouge}{\beta_0}$; 
+- 1 paramètre de variance $\class{fixe}{\sigma^2}$
 
 ]
 
@@ -263,14 +262,14 @@ template: model
 
 ## Le modèle de régression simple sur l'exemple de la pollution.
 
-$$Y_{k} = \beta_0 +\beta_1 x_{k}  +E_{k},\quad E_{k}\overset{ind}{\sim}\mathcal{N}(0, \sigma^2),$$
+$$\class{alea}{Y_k} = \class{rouge}{\beta_0} +\class{rouge}{\beta_1} x_{k}  +\class{alea}{E_{k}},\quad \class{alea}{E_{k}}\overset{ind}{\sim}\mathcal{N}(0, \class{fixe}{\sigma^2}),$$
 avec 
 - $x_k$ la population dans la ville $k$, 
 - $k=1,\ldots,n$ le numéro de la ville, $n=41$,
-- $\beta_0$ l'ordonnée à l'origine, 
-- $\beta_1$ la pente de la droite, mesure de l'effet de la population sur la pollution.
+- $\class{rouge}{\beta_0}$ l'ordonnée à l'origine, 
+- $\class{rouge}{\beta_1}$ la pente de la droite, mesure de l'effet de la population sur la pollution.
 
-- $\sigma^2$ la variance.
+- $\class{fixe}{\sigma^2}$ la variance.
 
 ### Nombre de paramètres du modèle
 - 2 paramètres de moyennes
@@ -282,31 +281,31 @@ template: model
 
 ## L'écriture générique du modèle linéaire
 
-$$\bf{Y}=\begin{pmatrix}
-Y_{1}\\
-Y_{2}\\
+$$\bf{\class{alea}{Y}}=\begin{pmatrix}
+\class{alea}{Y_{1}}\\
+\class{alea}{Y_{2}}\\
 \vdots\\
-Y_{k}\\
+\class{alea}{Y_{k}}\\
 \vdots\\
-Y_{n}\end{pmatrix} 
+\class{alea}{Y_{n}}\end{pmatrix} 
  = \begin{pmatrix} 
-\beta_0 + \beta_1\,x_1\\
-\beta_0 + \beta_1\,x_2\\
+\class{rouge}{\beta_0} + \class{rouge}{\beta_1}\,x_1\\
+\class{rouge}{\beta_0} + \class{rouge}{\beta_1}\,x_2\\
 \vdots \\
-\beta_0 + \beta_1\,x_k\\
+\class{rouge}{\beta_0} + \class{rouge}{\beta_1}\,x_k\\
  \vdots \\
-\beta_0 + \beta_1\,x_n\\
+\class{rouge}{\beta_0} + \class{rouge}{\beta_1}\,x_n\\
  \end{pmatrix}+ \overset{}{\begin{pmatrix}
-E_{1}\\
-E_{2}\\
+\class{alea}{E_{1}}\\
+\class{alea}{E_{2}}\\
 \vdots\\
-E_{k}\\
+\class{alea}{E_{k}}\\
 \vdots\\
-E_{n}\\
+\class{alea}{E_{n}}\\
 \end{pmatrix}}$$
 
 --
-$${\bf{X}} =\overset{\color{gray}{\begin{matrix}\beta_0  & \beta_1\end{matrix}}}{\begin{pmatrix}
+$${\bf{X}} =\overset{\color{gray}{\begin{matrix}{\beta_0}  & {\beta_1}\end{matrix}}}{\begin{pmatrix}
 1 & x_1\\
 1 & x_2\\
 \vdots & \vdots\\
@@ -314,22 +313,22 @@ $${\bf{X}} =\overset{\color{gray}{\begin{matrix}\beta_0  & \beta_1\end{matrix}}}
  \vdots & \vdots\\
 1 & x_n\\
  \end{pmatrix}},\quad
-{\bf{\theta}} =\begin{pmatrix}
-\beta_0\\
-\beta_1\\
-\end{pmatrix}, \quad{\bf{E}} = \overset{}{\begin{pmatrix}
-E_{1}\\
-E_{2}\\
+{\bf{\class{rouge}{\theta}}} =\begin{pmatrix}
+\class{rouge}{\beta_0}\\
+\class{rouge}{\beta_1}\\
+\end{pmatrix}, \quad{\class{alea}{\bf{E}}} = \overset{}{\begin{pmatrix}
+\class{alea}{E_{1}}\\
+\class{alea}{E_{2}}\\
 \vdots\\
-E_{k}\\
+\class{alea}{E_{k}}\\
 \vdots\\
-E_{n}\\
+\class{alea}{E_{n}}\\
 \end{pmatrix}}$$
 
 --
  
  
- $$\class{rouge}{ \bf{Y = X\theta + E}}$$
+ $${ \bf{\class{alea}{Y} = X\class{rouge}{\theta} + \class{alea}{E}}}$$
  
 
 ---
@@ -405,35 +404,36 @@ template: reg_multiple
 
 ## Le modèle de régression multiple 
 
-$$Y_{k} = \beta_0 +\beta_1 x_{k,1}  + \beta_2 x_{k,2} + \ldots +  \beta_p x_{k,p}  +  E_{k},\quad E_{k}\overset{ind}{\sim}\mathcal{N}(0, \sigma^2),$$
+$$\class{alea}{Y_{k}} = \class{rouge}{\beta_0} +\class{rouge}{\beta_1} x_{k,1}  + \class{rouge}{\beta_2} x_{k,2} + \ldots +  \class{rouge}{\beta_p} x_{k,p}  +  \class{alea}{E_{k}},\quad \class{alea}{E_{k}}\overset{ind}{\sim}\mathcal{N}(0, \class{fixe}{\sigma^2}),$$
 avec 
 - $x_{k,l}$ la valeur de la variable explicative $l$ pour l'observation $k$, 
 - $k=1,\ldots,n$ le numéro d'individu, $n$ le nombre total d'individus,
-- $\beta_0$ l'ordonnée à l'origine, 
-- $\beta_l$ l'effet de la variable $x{,l}$ sur la variable à expliquer,
-- $\sigma^2$ la variance.
+- $\class{rouge}{\beta_0}$ l'ordonnée à l'origine, 
+- $\class{rouge}{\beta_l}$ l'effet de la variable $x{,l}$ sur la variable à expliquer,
+- $\class{rouge}{\sigma^2}$ la variance.
 
 --
 
 ### Nombre de paramètres du modèle
 
-- $p+1$ paramètres de moyenne  $(\beta_0, \beta_1, \ldots, \beta_p)$; 
-- 1 paramètre de variance $\sigma^2$
+- $p+1$ paramètres de moyenne  $(\class{rouge}{\beta_0}, \class{rouge}{\beta_1}, \ldots, \class{rouge}{\beta_p})$; 
+- 1 paramètre de variance $\class{fixe}{\sigma^2}$
 
 ---
 template: model
 ## Sous forme matricielle
- $$\bf{Y = X\theta + E}$$
+$${ \bf{\class{alea}{Y} = X\class{rouge}{\theta} + \class{alea}{E}}}$$
 
-$$Y=\begin{pmatrix}
-Y_{1}\\
-Y_{2}\\
+
+$$\class{alea}{Y}=\begin{pmatrix}
+\class{alea}{Y_{1}}\\
+\class{alea}{Y_{2}}\\
 \vdots\\
-Y_{k}\\
+\class{alea}{Y_{k}}\\
 \vdots\\
-Y_{n}\end{pmatrix},
+\class{alea}{Y_{n}}\end{pmatrix},
  \quad
-{\bf{X}} =\overset{\color{gray}{\begin{matrix}\beta_0  && \beta_1&& \beta_2&&\ldots &&\beta_p\end{matrix}}}{\begin{pmatrix}
+{\bf{X}} =\overset{\color{gray}{\begin{matrix}{\beta_0}  && {\beta_1}&& \beta_2&&\ldots &&\beta_p\end{matrix}}}{\begin{pmatrix}
 1 & x_1^{1} & x_1^{2} & \ldots &x_1^{p}\\
 1 & x_2^{1} & x_2^{2} & \ldots &x_2^{p}\\
 \vdots & \vdots& \vdots && \vdots\\
@@ -441,19 +441,19 @@ Y_{n}\end{pmatrix},
  \vdots & \vdots& \vdots && \vdots\\
 1 & x_n^{1} & x_n^{2} & \ldots &x_n^{p}\\
  \end{pmatrix}},\quad
-{\bf{\theta}} =\begin{pmatrix}
-\beta_0\\
-\beta_1\\
-\beta_2\\
+{\bf{\class{rouge}{\theta}}} =\begin{pmatrix}
+\class{rouge}{\beta_0}\\
+\class{rouge}{\beta_1}\\
+\class{rouge}{\class{rouge}{\beta_2}}\\
 \vdots\\
-\beta_p\\
-\end{pmatrix}, \quad{\bf{E}} = \overset{}{\begin{pmatrix}
-E_{1}\\
-E_{2}\\
+\class{rouge}{\beta_p}\\
+\end{pmatrix}, \quad{\class{alea}{\bf{E}}} = \overset{}{\begin{pmatrix}
+\class{alea}{E_{1}}\\
+\class{alea}{E_{2}}\\
 \vdots\\
-E_{k}\\
+\class{alea}{E_{k}}\\
 \vdots\\
-E_{n}\\
+\class{alea}{E_{n}}\\
 \end{pmatrix}}$$
 
 
@@ -467,7 +467,8 @@ E_{n}\\
 
 
 Tous les modèles vus en cours depuis le début peuvent s'écrire sous la forme 
-$$ Y = X\theta +E $$ 
+$${ \bf{\class{alea}{Y} = X\class{rouge}{\theta} + \class{alea}{E}}}$$
+
 Ce sont tous des modèle slinéaires (d'où la commande `lm` ).
 ]
 ]
@@ -483,24 +484,24 @@ template: parametre
 
 Le modèle sous forme matricielle s'écrit
 
-$$\bf{Y = X\theta + E}.$$
+$${ \bf{\class{alea}{Y} = X\class{rouge}{\theta} + \class{alea}{E}}}$$
 avec  $\class{rouge}{\theta}$ .rouge[inconnu]  qu'on cherche à estimer.
 
 --
 
 ## Propriété mathématique
 
-$$\mathbb{E}(\bf{Y}) = \bf{X\theta}$$ 
+$$\mathbb{E}(\bf{Y}) = \bf{X\class{rouge}{\theta}}$$ 
 Il s'agit donc de résoudre un système.
 
 --
 
-$$\bf{X^\intercal}\mathbb{E}(\bf{Y}) = \bf{X^\intercal}\bf{X\theta}$$ 
+$$\bf{X^\intercal}\mathbb{E}(\bf{Y}) = \bf{X^\intercal}\bf{X\class{rouge}{\theta}}$$ 
 --
 
 Si $\bf{X^\intercal}\bf{X}$ est inversible  alors
 
-$$\bf{\theta} = (X^\intercal X )^{-1} X^\intercal \mathbb{E}(Y) .$$
+$$\bf{\class{rouge}{\theta}} = (X^\intercal X )^{-1} X^\intercal \mathbb{E}(Y) .$$
 
 --
 On remplace $\mathbb{E}(\bf{Y})$ par notre meilleure approximation et 
@@ -511,22 +512,22 @@ On remplace $\mathbb{E}(\bf{Y})$ par notre meilleure approximation et
 ---
 
 template: parametre
-###  Estimateur de $\theta$ : $\class{alea}{T}$
+###  Estimateur de $\class{rouge}{\theta}$ : $\class{alea}{T}$
 
-$$\class{alea}{T} = \begin{pmatrix} B_0 \\ B_1 \\ \vdots \\ B_p \end{pmatrix} = (X^\intercal X )^{-1} X^\intercal Y$$
+$$\class{alea}{T} = \begin{pmatrix} \class{alea}{B_0} \\ \class{alea}{B_1} \\ \vdots \\ \class{alea}{B_p} \end{pmatrix} = (X^\intercal X )^{-1} X^\intercal Y$$
 
 $B_i$ représente un estimateur de $\beta_i$.
 
 --
 
-### Loi de l'estimateur de $\theta$
+### Loi de l'estimateur de $\class{rouge}{\theta}$
 
 
-$$\class{alea}{T}  \sim \mathcal{N}_{p+1}\left(\theta, \sigma^2 (X^\intercal X )^{-1}\right).$$
+$$\class{alea}{T}  \sim \mathcal{N}_{p+1}\left(\class{rouge}{\theta}, \class{fixe}{\sigma^2} (X^\intercal X )^{-1}\right).$$
 
 --
 
-### Estimation de $\theta$ : $\class{fixe}{\hat{\theta}}$
+### Estimation de $\class{rouge}{\theta}$ : $\class{fixe}{\hat{\theta}}$
 
 
 $$\class{fixe}{\hat{\theta}}  = (X^\intercal X )^{-1} X^\intercal Y_{obs} $$
@@ -538,21 +539,21 @@ template: parametre
 
 L'estimateur de la somme des carrés résiduels s'écrit sous la forme 
 
-$$RSS = || Y- X \, \class{alea}{T} ||^2 = \sum_{k=1}^{n} (Y_k - B_0 + B_1 x_1 + \ldots + B_p x_p)^2$$
+$$RSS = || Y- X \, \class{alea}{T} ||^2 = \sum_{k=1}^{n} (\class{alea}{Y_k} - \class{alea}{B_0} + \class{alea}{B_1} x_1 + \ldots + \class{alea}{B_p} x_p)^2$$
 
 ### Estimateur de la variance 
 
   $$S^2 =\frac{1}{DF_{res}} RSS, $$
-est un <a class=care> estimateur sans bias de  $\sigma^2$ </a> .
+est un <a class=care> estimateur sans bias de  $\class{fixe}{\sigma^2}$ </a> .
 
-Dans le cas du modèle de régression simple  $DF_{res}=n-(p+1)$ (n observations et p+1 paramètres de moyennes à estimer, le nombre de composantes dans le vecteur $\theta$)
+Dans le cas du modèle de régression simple  $DF_{res}=n-(p+1)$ (n observations et p+1 paramètres de moyennes à estimer, le nombre de composantes dans le vecteur $\class{rouge}{\theta}$)
 
 --
 
-### Estimation de $\sigma^2$
+### Estimation de $\class{fixe}{\sigma^2}$
 
 $$\class{fixe}{\hat{\sigma}}^2 =\frac{1}{n-(p+1)} \class{fixe}{RSS_{obs}},$$
-$$\class{fixe}{RSS_{obs}} = || Y- X \, \class{fixe}{\hat{\theta}} ||^2 = \sum_{k=1}^{n} (Y_k - \class{fixe}{\hat{\beta}_0} + _0_1 x_1 + \ldots + \class{fixe}{\hat{\beta}_p} x_p)^2$$
+$$\class{fixe}{RSS_{obs}} = || Y- X \, \class{fixe}{\hat{\theta}}  ||^2 =  \sum_{k=1}^{n} (y_k - \class{fixe}{\hat{\beta}_0} + \class{fixe}{\hat{\beta}_1} x_1 + \ldots + \class{fixe}{\hat{\beta}_p} x_p)^2$$
 
 
 
@@ -627,7 +628,7 @@ On va donc opposer une hypothèse de travail $H_0$ contre une hypothèse alterna
 
 $$\begin{align} 
 H_0 & =\left \lbrace \mbox{Auncune variable n'est liée à la pollution en SO2}\right\rbrace\\
-    & =\left \lbrace  \mbox{pour tout }l\geq 1, \beta_l =0   \right\rbrace\\
+    & =\left \lbrace  \mbox{pour tout }l\geq 1, \class{rouge}{\beta_l} =0   \right\rbrace\\
     & =\left \lbrace  M_{comp} \mbox{ est équivalent à } M0 \right\rbrace.
 \end{align}$$
 
@@ -636,7 +637,7 @@ $H_1$ prend les formes équivalentes suivantes
 
 $$\begin{align} 
 H_1 & =\left \lbrace \mbox{Au moins 1 variable est liée à la pollution en SO2}\right\rbrace\\
-    & =\left \lbrace  \mbox{Il existe un } l, \beta_l \ne 0  \right\rbrace\\
+    & =\left \lbrace  \mbox{Il existe un } l, \class{rouge}{\beta_l} \ne 0  \right\rbrace\\
     & =\left \lbrace  M_{comp} \mbox{ est préférable à } M0 \right\rbrace.
 \end{align}$$
 
@@ -681,7 +682,7 @@ template: test_variable
 
 ## Test sur les paramètres
 
-Tester la nullité du paramètre $\beta_l$ revient à tester si la variable $x^{l}$ et la variable $Y$ sont liées.
+Tester la nullité du paramètre $\class{rouge}{\beta_l}$ revient à tester si la variable $x^{l}$ et la variable $Y$ sont liées.
 
 
 --
@@ -691,12 +692,12 @@ Ce test est similaire  au test de comparaison entre le modèle complet et le mod
 
 $$\begin{align} 
 H_0 & =\left \lbrace \mbox{Dans le modèle complet la variable } l \mbox{ n'a pas d'influence}\right\rbrace\\
-    & =\left \lbrace  \mbox{Dans le modèle complet la variable } \beta_l \mbox{ n'a pas d'influence}\right\rbrace\\
+    & =\left \lbrace  \mbox{Dans le modèle complet la variable } \class{rouge}{\beta_l} \mbox{ n'a pas d'influence}\right\rbrace\\
     & =\left \lbrace  M_{comp} \mbox{ est équivalent à } M_{-l} \right\rbrace,
 \end{align}$$
 
 avec 
-$$M_{-l}: Y_k = \beta_0 + \beta_1 x_{k,1} + \ldots + \beta_{l-1} x_{k,l-1} + \beta_{l+1} x_{k,l+1} + \ldots + \beta_{p} x_{k,p} + E_{k}$$
+$$M_{-l}: \class{alea}{Y_k} = \class{rouge}{\beta_0} + \class{rouge}{\beta_1} x_{k,1} + \ldots + \class{rouge}{\beta_{l-1}} x_{k,l-1} + \class{rouge}{\beta_{l+1}} x_{k,l+1} + \ldots + \beta_{p} x_{k,p} + E_{k}$$
 
 ---
 count: false
@@ -871,7 +872,7 @@ Il est fréquent d'utiliser un modèle de régression pour prédire.
 
 ### Prédiction de la valeur moyenne pour un $x$ particulier
 
-* Valeur moyenne .rouge[attendue] pour $y$ pour un $x$ donné : $\class{rouge}{\beta_0} + \class{rouge}{\beta_1} x.$
+* Valeur moyenne .rouge[attendue] pour $y$ pour un $x$ donné : $\class{rouge}{\beta_0} + \class{rouge}{\class{rouge}{\beta_1}} x.$
 
 * Valeur moyenne .orange[prédite] pour $y$ pour un $x$ donné : $\class{fixe}{\hat{\beta}_0} + \class{fixe}{\hat{\beta}_1 x.}$
 
@@ -882,7 +883,7 @@ predict(Mpop, newdata=data.frame(pop=333))
 --
 
 ### Intervalle de confiance pour la valeur moyenne prédite  pour $y$ pour un $x$ donné : 
-$\class{alea}{B_0} + \class{alea}{B_1} x \sim\mathcal{N}(\beta_0 + \beta_1 x, \sigma^2 \class{clair}{Constante} )$
+$\class{alea}{B_0} + \class{alea}{B_1} x \sim\mathcal{N}(\class{rouge}{\beta_0 + \class{rouge}{\beta_1} x, \class{fixe}{\sigma^2} \class{clair}{Constante} )$
 
 ```{r pred_IC, eval = TRUE, echo = TRUE}
 predict(Mpop, newdata=data.frame(pop=333), interval = 'confidence')
@@ -915,9 +916,9 @@ Il est fréquent d'utiliser un modèle de régression pour prédire.
 
 ### Prédiction d'une .vert[nouvelle valeur]  $\class{vert}{Y_{new}}$ pour un $x$ donné
 
-*  $\mathbb{E}(Y_{new}) = \beta_0 + \beta_1 x$
+*  $\mathbb{E}(Y_{new}) = \class{rouge}{\beta_0 + \class{rouge}{\beta_1} x$
 
-* La variance de $Y_{new}$ prend en compte l'incertitude sur les paramètres et la variabilité naturelle des observations ( $\sigma^2$ )
+* La variance de $Y_{new}$ prend en compte l'incertitude sur les paramètres et la variabilité naturelle des observations ( $\class{fixe}{\sigma^2}$ )
 
 ```{r pred_x, eval = TRUE, echo = TRUE}
 predict(Mpop, newdata=data.frame(pop=333), interval = 'prediction')
@@ -967,14 +968,14 @@ $$\hat{Y}_k = \class{fixe}{\hat{\beta}_0} +\class{fixe}{\hat{\beta}_1} x_{k,1}+ 
 --
 
 ### Intervalle de confiance pour la valeur moyenne préditepour des variables explicatives  $(x_1, \ldots, x_p)$ particulières :
-$$B_0+B_1 x_1 + \ldots + B_p x_p \sim\mathcal{N}(\beta_0 + \beta_1 x_1 +\ldots +\beta_p x_p, \sigma^2 \class{clair}{Constante} )$$
+$$\class{alea}{B_0}+\class{alea}{B_1} x_1 + \ldots + \class{alea}{B_p} x_p \sim\mathcal{N}( + \class{rouge}{\beta_1} x_1 +\ldots +\class{rouge}{\beta_p} x_p, \class{fixe}{\sigma^2} \class{clair}{Constante} )$$
 
 
 --
 
 .bonus[Bonus :] On connaît la loi de n'importe quelle combinaison linéaire des paramères
 
-$$c \class{alea}{T} \sim\mathcal{N}(c\theta , \sigma^2 \class{clair}{Constante_c} )$$
+$$c \class{alea}{T} \sim\mathcal{N}(c\class{rouge}{\theta} , \class{fixe}{\sigma^2} \class{clair}{Constante_c} )$$
 
 
 
