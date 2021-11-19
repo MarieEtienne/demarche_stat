@@ -49,7 +49,9 @@ library(coursesdata) #remotes::install_github('MarieEtienne/coursesdata')
 data(usdata)
 ```
 
-&lt;img src="regression_files/figure-html/usfata-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
+
+&lt;img src="regression_files/figure-html/visu_reg_simple-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
+
 
 
 --
@@ -62,10 +64,12 @@ template: intro
 
 On étudie le lien entre  
 - une variable quantitative notée `\(Y\)` (l'indicateur de SO2),
-- et une variable quantitative `\(x\)`.
+- et une variable quantitative `\(x\)` (la taille de la population)
 
 Les données peuvent être visualisées à l'aide d'un nuage de points.
 
+--
+&lt;img src="regression_files/figure-html/visu_reg_simple-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
 
 --
 &lt;p class="question"&gt; La variable x permet-elle d'expliquer la variabilité de la variable Y ?&lt;/p&gt;
@@ -149,7 +153,7 @@ template: model
 
 ## Le modèle de régression simple, mathématiquement 
 
-`$$Y_{k} = \beta_0 +\beta_1 x_{k}  +E_{k},\quad E_{k}\overset{ind}{\sim}\mathcal{N}(0, \sigma^2),$$`
+`$$M_{comp}:  \quad Y_{k} = \beta_0 +\beta_1 x_{k}  +E_{k},\quad E_{k}\overset{ind}{\sim}\mathcal{N}(0, \sigma^2),$$`
 avec 
 - `\(x_k\)` la valeur de la variable explicative pour l'observation `\(k\)`, 
 - `\(k=1,\ldots,n\)` le numéro d'individu, `\(n\)` le nombre total d'individus,
@@ -239,7 +243,7 @@ template: model
 
 ## Le modèle sans effet de la variable population, mathématiquement
 
-`$$Y_{k} = \beta_0  + E_{k},\quad E_{k}\overset{ind}{\sim}\mathcal{N}(0, \sigma^2),$$`
+`$$M_0: \quad Y_{k} = \beta_0  + E_{k},\quad E_{k}\overset{ind}{\sim}\mathcal{N}(0, \sigma^2),$$`
 avec 
 - `\(k=1,\ldots,n\)` le numéro d'individu, `\(n\)` le nombre total d'individus,
 - `\(\beta_0\)` l'ordonnée à l'origine, 
@@ -541,7 +545,7 @@ On remplace `\(\mathbb{E}(\bf{Y})\)` par notre meilleure approximation et
 ---
 
 template: parametre
-###  Estimateur de `\(\theta\)` : `\(T\)`^
+###  Estimateur de `\(\theta\)` : `\(T\)`
 
 `$$T = \begin{pmatrix} B_0 \\ B_1 \\ \vdots \\ B_p \end{pmatrix} = (X^\intercal X )^{-1} X^\intercal Y$$`
 
@@ -552,15 +556,15 @@ template: parametre
 ### Loi de l'estimateur de `\(\theta\)`
 
 
-`$$T  \sim \mathcal{N}_{l+1}\left(\theta, \sigma^2 (X^\intercal X )^{-1}\right).$$`
+`$$T  \sim \mathcal{N}_{p+1}\left(\theta, \sigma^2 (X^\intercal X )^{-1}\right).$$`
 
 ---
 template: parametre
 ## Le paramètre de variance
 
-La somme des carrés résiduelles s'écrit sous la forme 
+L'estimateur de la somme des carrés résiduels s'écrit sous la forme 
 
-`$$RSS = || Y- X \hat{\theta} ||^2$$`
+`$$RSS = || Y- X \, T ||^2 = \sum_{k=1}^{n} (Y_k - B_0 + B_1 x_1 + \ldots + B_p x_p)^2$$`
 
 ### Estimateur de la variance 
 
@@ -573,7 +577,8 @@ Dans le cas du modèle de régression simple  `\(DF_{res}=n-(p+1)\)` (n observat
 
 ## Estimation de `\(\sigma^2\)`
 
-`$$\hat{\sigma}^2 =\frac{1}{n-(p+1)} RSS_{obs}.$$`
+`$$\hat{\sigma}^2 =\frac{1}{n-(p+1)} RSS_{obs},$$`
+`$$RSS_{obs} = || Y- X \, \hat{\theta} ||^2 = \sum_{k=1}^{n} (Y_k - \hat{\beta}_0 + \hat{\beta}_1 x_1 + \ldots + \hat{\beta}_p x_p)^2$$`
 
 
 
@@ -784,7 +789,7 @@ avec
 count: false
 template: test_variable
 
-## Equivalence des tests sur l'exemple de la pollution
+## Equivalence des tests sur l'exemple de la pollution : efft de la population
 .pull-left[
 
 
@@ -829,7 +834,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ]
 ---
 template: test_variable
-## Vigilance sur l'interprétation des tests
+## Vigilance sur l'interprétation des tests et des estimations
 
 
 
@@ -861,9 +866,9 @@ name: ajust
 
 --
 
-### Le coefficient de détermination `\(R^2\)`
+### Le coefficient de détermination `\(R^2\)` pour un modèle
 
-`$$R^2=\frac{RSS_0-RSS}{RSS_0}= 1 -\frac{RSS}{RSS_0}$$`
+`$$R^2(M)=\frac{RSS_0-RSS_M}{RSS_0}= 1 -\frac{RSS_M}{RSS_0}$$`
 
 --
 ### Les limites de `\(R^2\)` pour la sélection
@@ -883,35 +888,35 @@ name: ajust
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; M1 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.4614 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0172 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; M2 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.8518 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9938 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; M3 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.8928 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9941 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; M4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.9130 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9941 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; M5 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.9268 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9944 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; M6 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.9358 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9946 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; M7 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.9374 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9955 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; M8 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.9637 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9955 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
@@ -932,7 +937,7 @@ template: ajust
 
 ### Le coefficient de détermination `\(R^2\)`
 
-`$$R^2=\frac{RSS_0-RSS}{RSS_0}= 1 -\frac{RSS}{RSS_0}$$`
+`$$R^2(M)=\frac{RSS_0-RSS_M}{RSS_0}= 1 -\frac{RSS_M}{RSS_0}$$`
 
 ### Le critère Akaike (AIC)
 
@@ -944,7 +949,84 @@ Il est défini de manière générale pour les modèles statistiques mais dans l
 $$ AIC(M) = p +  n \class{orange}{\ln{\frac{RSS}{n-(p+1))}}} + n + 3 + n\ln{2\pi} $$
 
 $$ AIC(M) = p +  n \class{orange}{\ln{\hat{\sigma}_M}}  \class{clair}{ + n + 3 + n\ln{2\pi}} $$
---
+.care[On va préférer le modèle avec l'AIC le plus petit]
+
+
+---
+
+name: ajust
+# Ajustement et choix de modèles
+
+## Comparaison AIC et `\(R^2\)`
+
+-
+.pull-left[
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Model &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; R2 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; AIC &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; M0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 198.9077 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; M1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0172 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 201.5568 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; M2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9938 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 103.2894 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; M3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9941 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 105.3239 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; M4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9941 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 108.3161 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; M5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9944 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 110.2911 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; M6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9946 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 112.4465 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; M7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9955 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 111.8827 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; M8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9955 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 114.8767 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+
+
+ .pull-right[
+
+  &lt;IMG SRC="Ajustement.gif"&gt;
+ 
+ ]
+
 
 Utilisé en TD pour choisir un modèle avec un bon compromis ajustement et parcimonie (petit nombre de paramètres).
 
@@ -1012,7 +1094,7 @@ Il est fréquent d'utiliser un modèle de régression pour prédire.
 
 *  `\(\mathbb{E}(Y_{new}) = \beta_0 + \beta_1 x\)`
 
-* La variance de `\(Y_{new}\)` prend en compte l'incerertitude sur les paramètre et la variabilité naturelle des observations ($\sigma^2$)
+* La variance de `\(Y_{new}\)` prend en compte l'incertitude sur les paramètres et la variabilité naturelle des observations ( `\(\sigma^2\)` )
 
 
 ```r
@@ -1043,12 +1125,50 @@ Il est fréquent d'utiliser un modèle de régression pour prédire.
 
 ## Cas de la régression multiple
 
-### Prédiction de la valeur moyenne pour un `\(x\)` particulier
+### Prédiction de la valeur moyenne pour des variables explicatives  `\((x_1, \ldots, x_p)\)` particulières
 
 --
 
-`$$Y_k = \hat{beta_0} +\hat{beta_1} x_{k,1}+ \ldots + \hat{beta_p} x_{k,p}$$`
+`$$Y_k = \hat{\beta_0} +\hat{\beta_1} x_{k,1}+ \ldots + \hat{\beta_p} x_{k,p}$$`
 
+
+
+--
+
+### Intervalle de confiance pour la valeur moyenne préditepour des variables explicatives  `\((x_1, \ldots, x_p)\)` particulières :
+`$$B_0+B_1 x_1 + \ldots + B_p x_p \sim\mathcal{N}(\beta_0 + \beta_1 x_1 +\ldots +\beta_p x_p, \sigma^2 \class{clair}{Constante} )$$`
+
+
+--
+
+Plus généralement, on connaît la loi de n'importe quelle combinaison linéaire des paramères
+
+`$$c T \sim\mathcal{N}(c\theta , \sigma^2 \class{clair}{Constante_c} )$$`
+
+
+
+---
+# Ce qu'il faut absolument savoir pour les TDs
+
+- savoir reconnaître une situtation de régression multiple
+--
+
+  * On cherche à comprendre le lien entre une variable d'intérêt `\(Y\)` et des variables potentiellement explicatives toutes quantitatives.
+  
+--
+- savoir écrire le modèle de régression multiple
+
+--
+- Tester l'existence de l'effet d'au moins une des variables explicatives candidates
+
+--
+- Tester l'existence de l'effet d'une variable explicative particulière
+
+--
+- Pourquoi il faut se méfier du `\(R^2\)`
+
+--
+- Ce que signifie prédire en tuilisant le modèle et comment le faire
 
 
 

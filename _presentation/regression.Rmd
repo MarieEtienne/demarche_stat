@@ -59,11 +59,17 @@ ggplot <- function(...) ggplot2::ggplot(...) + scale_fill_manual(values = wesand
 #remotes::install_github('MarieEtienne/coursesdata', force = TRUE)
 ```
 
-```{r usfata, eval = TRUE, echo = c(1,2), warning = FALSE}
+```{r usdata_load, eval = TRUE, echo = c(1,2), warning = FALSE}
 library(coursesdata) #remotes::install_github('MarieEtienne/coursesdata')
 data(usdata)
-usdata %>% ggplot() +  aes(x= pop, y = SO2)+  geom_point()
 ```
+
+
+```{r visu_reg_simple, eval = TRUE, echo = FALSE}
+usdata %>% ggplot() +  aes(x= pop, y = SO2)+  geom_point()
+
+```
+
 
 
 --
@@ -76,10 +82,13 @@ template: intro
 
 On étudie le lien entre  
 - une variable quantitative notée $Y$ (l'indicateur de SO2),
-- et une variable quantitative $x$.
+- et une variable quantitative $x$ (la taille de la population)
 
 Les données peuvent être visualisées à l'aide d'un nuage de points.
 
+--
+```{r visu_reg_simple, eval = TRUE}
+```
 
 --
 <p class="question"> La variable x permet-elle d'expliquer la variabilité de la variable Y ?</p>
@@ -144,7 +153,7 @@ template: model
 
 ## Le modèle de régression simple, mathématiquement 
 
-$$Y_{k} = \beta_0 +\beta_1 x_{k}  +E_{k},\quad E_{k}\overset{ind}{\sim}\mathcal{N}(0, \sigma^2),$$
+$$M_{comp}:  \quad Y_{k} = \beta_0 +\beta_1 x_{k}  +E_{k},\quad E_{k}\overset{ind}{\sim}\mathcal{N}(0, \sigma^2),$$
 avec 
 - $x_k$ la valeur de la variable explicative pour l'observation $k$, 
 - $k=1,\ldots,n$ le numéro d'individu, $n$ le nombre total d'individus,
@@ -203,7 +212,7 @@ template: model
 
 ## Le modèle sans effet de la variable population, mathématiquement
 
-$$Y_{k} = \beta_0  + E_{k},\quad E_{k}\overset{ind}{\sim}\mathcal{N}(0, \sigma^2),$$
+$$M_0: \quad Y_{k} = \beta_0  + E_{k},\quad E_{k}\overset{ind}{\sim}\mathcal{N}(0, \sigma^2),$$
 avec 
 - $k=1,\ldots,n$ le numéro d'individu, $n$ le nombre total d'individus,
 - $\beta_0$ l'ordonnée à l'origine, 
@@ -502,7 +511,7 @@ On remplace $\mathbb{E}(\bf{Y})$ par notre meilleure approximation et
 ---
 
 template: parametre
-###  Estimateur de $\theta$ : $T$^
+###  Estimateur de $\theta$ : $T$
 
 $$T = \begin{pmatrix} B_0 \\ B_1 \\ \vdots \\ B_p \end{pmatrix} = (X^\intercal X )^{-1} X^\intercal Y$$
 
@@ -513,15 +522,15 @@ $B_i$ représente un estimateur de $\beta_i$.
 ### Loi de l'estimateur de $\theta$
 
 
-$$T  \sim \mathcal{N}_{l+1}\left(\theta, \sigma^2 (X^\intercal X )^{-1}\right).$$
+$$T  \sim \mathcal{N}_{p+1}\left(\theta, \sigma^2 (X^\intercal X )^{-1}\right).$$
 
 ---
 template: parametre
 ## Le paramètre de variance
 
-La somme des carrés résiduelles s'écrit sous la forme 
+L'estimateur de la somme des carrés résiduels s'écrit sous la forme 
 
-$$RSS = || Y- X \hat{\theta} ||^2$$
+$$RSS = || Y- X \, T ||^2 = \sum_{k=1}^{n} (Y_k - B_0 + B_1 x_1 + \ldots + B_p x_p)^2$$
 
 ### Estimateur de la variance 
 
@@ -534,7 +543,8 @@ Dans le cas du modèle de régression simple  $DF_{res}=n-(p+1)$ (n observations
 
 ## Estimation de $\sigma^2$
 
-$$\hat{\sigma}^2 =\frac{1}{n-(p+1)} RSS_{obs}.$$
+$$\hat{\sigma}^2 =\frac{1}{n-(p+1)} RSS_{obs},$$
+$$RSS_{obs} = || Y- X \, \hat{\theta} ||^2 = \sum_{k=1}^{n} (Y_k - \hat{\beta}_0 + \hat{\beta}_1 x_1 + \ldots + \hat{\beta}_p x_p)^2$$
 
 
 
@@ -684,7 +694,7 @@ $$M_{-l}: Y_k = \beta_0 + \beta_1 x_{k,1} + \ldots + \beta_{l-1} x_{k,l-1} + \be
 count: false
 template: test_variable
 
-## Equivalence des tests sur l'exemple de la pollution
+## Equivalence des tests sur l'exemple de la pollution : efft de la population
 .pull-left[
 
 ```{r car, echo=FALSE, eval=TRUE}
@@ -706,7 +716,7 @@ anova(Mcomp_l, Mcomp)
 ]
 ---
 template: test_variable
-## Vigilance sur l'interprétation des tests
+## Vigilance sur l'interprétation des tests et des estimations
 
 
 ```{r test_inter, eval =TRUE}
@@ -726,15 +736,15 @@ name: ajust
 
 
 ```{r surajust_simulation, eval = TRUE, echo = FALSE}
-set.seed(12)
+set.seed(123)
 beta0 <- 100
 beta1 <- 2
 beta2 <- 1
 
 n <- 20
 imax <-9
-x <- round(rnorm(n, mean=0, sd = 4),1)
-y <- rnorm(n, mean= beta0+beta1*x - beta2 * x^2, sd = 10)
+x <- round(rnorm(n, mean=0, sd = 5),1)
+y <- rnorm(n, mean= beta0+beta1*x - beta2 * x^2, sd = 3)
 dta <- tibble(x1=x, y=y, x2 =x^2, x3 = x^3, x4 = x^4 , x5 =x^5, x6 =x^6, x7= x^7, x8 = x^8, x9 =x^9, x10= x^10, x11 = x^{11} ) 
 
 new_dta <- tibble(x=seq(min(x), max(x), length.out=1000),x1=x,  x2=x^2, x3 =x^3, x4 =x^4, x5 = x^5, x6 =x^6, x7= x^7, x8 = x^8, x9 =x^9, x10= x^10, x11 = x^{11} ) 
@@ -750,7 +760,7 @@ surajust_list <- lapply(1:imax, function(i){
   ggplot() +geom_line(aes(x=x, y=y), col =  "#33658A")+ geom_point(data=dta, aes(x=x, y=y))+
   ylim(c(-55,150)) + labs(x='', y='') +ggtitle(paste0('Ajustement avec ', i-1, ' variable(s)'))
   R2 <- summary(M)$r.squared
-  return(list(p=p, R2=R2, AIC = AIC(M), Model=paste0('M',i-1)))
+  return(list(p=p, R2=R2, AIC = BIC(M), Model=paste0('M',i-1)))
 })
 ```
 
@@ -759,9 +769,9 @@ surajust_list <- lapply(1:imax, function(i){
 
 --
 
-### Le coefficient de détermination $R^2$
+### Le coefficient de détermination $R^2$ pour un modèle
 
-$$R^2=\frac{RSS_0-RSS}{RSS_0}= 1 -\frac{RSS}{RSS_0}$$
+$$R^2(M)=\frac{RSS_0-RSS_M}{RSS_0}= 1 -\frac{RSS_M}{RSS_0}$$
 
 --
 ### Les limites de $R^2$ pour la sélection
@@ -797,7 +807,7 @@ template: ajust
 
 ### Le coefficient de détermination $R^2$
 
-$$R^2=\frac{RSS_0-RSS}{RSS_0}= 1 -\frac{RSS}{RSS_0}$$
+$$R^2(M)=\frac{RSS_0-RSS_M}{RSS_0}= 1 -\frac{RSS_M}{RSS_0}$$
 
 ### Le critère Akaike (AIC)
 
@@ -809,7 +819,34 @@ Il est défini de manière générale pour les modèles statistiques mais dans l
 $$ AIC(M) = p +  n \class{orange}{\ln{\frac{RSS}{n-(p+1))}}} + n + 3 + n\ln{2\pi} $$
 
 $$ AIC(M) = p +  n \class{orange}{\ln{\hat{\sigma}_M}}  \class{clair}{ + n + 3 + n\ln{2\pi}} $$
---
+.care[On va préférer le modèle avec l'AIC le plus petit]
+
+
+---
+
+name: ajust
+# Ajustement et choix de modèles
+
+## Comparaison AIC et $R^2$
+
+-
+.pull-left[
+```{r R2_AIC_table, echo = FALSE, eval = TRUE}
+tibble(Model = paste0('M', (1:imax)-1), R2= unlist(lapply(surajust_list, function(l){l$R2})),
+       AIC = unlist(lapply(surajust_list, function(l){l$AIC}))) %>% 
+  kableExtra::kable(digits=4, format = "html", escape = FALSE) 
+  
+```
+]
+
+
+
+ .pull-right[
+
+  <IMG SRC="Ajustement.gif">
+ 
+ ]
+
 
 Utilisé en TD pour choisir un modèle avec un bon compromis ajustement et parcimonie (petit nombre de paramètres).
 
@@ -872,7 +909,7 @@ Il est fréquent d'utiliser un modèle de régression pour prédire.
 
 *  $\mathbb{E}(Y_{new}) = \beta_0 + \beta_1 x$
 
-* La variance de $Y_{new}$ prend en compte l'incerertitude sur les paramètre et la variabilité naturelle des observations ($\sigma^2$)
+* La variance de $Y_{new}$ prend en compte l'incertitude sur les paramètres et la variabilité naturelle des observations ( $\sigma^2$ )
 
 ```{r pred_x, eval = TRUE, echo = TRUE}
 predict(Mpop, newdata=data.frame(pop=333), interval = 'prediction')
@@ -911,12 +948,50 @@ Il est fréquent d'utiliser un modèle de régression pour prédire.
 
 ## Cas de la régression multiple
 
-### Prédiction de la valeur moyenne pour un $x$ particulier
+### Prédiction de la valeur moyenne pour des variables explicatives  $(x_1, \ldots, x_p)$ particulières
 
 --
 
-$$Y_k = \hat{beta_0} +\hat{beta_1} x_{k,1}+ \ldots + \hat{beta_p} x_{k,p}$$
+$$Y_k = \hat{\beta_0} +\hat{\beta_1} x_{k,1}+ \ldots + \hat{\beta_p} x_{k,p}$$
 
+
+
+--
+
+### Intervalle de confiance pour la valeur moyenne préditepour des variables explicatives  $(x_1, \ldots, x_p)$ particulières :
+$$B_0+B_1 x_1 + \ldots + B_p x_p \sim\mathcal{N}(\beta_0 + \beta_1 x_1 +\ldots +\beta_p x_p, \sigma^2 \class{clair}{Constante} )$$
+
+
+--
+
+Plus généralement, on connaît la loi de n'importe quelle combinaison linéaire des paramères
+
+$$c T \sim\mathcal{N}(c\theta , \sigma^2 \class{clair}{Constante_c} )$$
+
+
+
+---
+# Ce qu'il faut absolument savoir pour les TDs
+
+- savoir reconnaître une situtation de régression multiple
+--
+
+  * On cherche à comprendre le lien entre une variable d'intérêt $Y$ et des variables potentiellement explicatives toutes quantitatives.
+  
+--
+- savoir écrire le modèle de régression multiple
+
+--
+- Tester l'existence de l'effet d'au moins une des variables explicatives candidates
+
+--
+- Tester l'existence de l'effet d'une variable explicative particulière
+
+--
+- Pourquoi il faut se méfier du $R^2$
+
+--
+- Ce que signifie prédire en tuilisant le modèle et comment le faire
 
 
 
