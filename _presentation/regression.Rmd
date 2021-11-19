@@ -491,20 +491,20 @@ avec  $\class{rouge}{\theta}$ .rouge[inconnu]  qu'on cherche à estimer.
 
 ## Propriété mathématique
 
-$$\mathbb{E}(\bf{Y}) = \bf{X\class{rouge}{\theta}}$$ 
+$$\mathbb{E}(\class{alea}{\bf{Y}}) = \bf{X\class{rouge}{\theta}}$$ 
 Il s'agit donc de résoudre un système.
 
 --
 
-$$\bf{X^\intercal}\mathbb{E}(\bf{Y}) = \bf{X^\intercal}\bf{X\class{rouge}{\theta}}$$ 
+$$\bf{X^\intercal}\mathbb{E}(\class{alea}{\bf{Y}}) = \bf{X^\intercal}\bf{X\class{rouge}{\theta}}$$ 
 --
 
 Si $\bf{X^\intercal}\bf{X}$ est inversible  alors
 
-$$\bf{\class{rouge}{\theta}} = (X^\intercal X )^{-1} X^\intercal \mathbb{E}(Y) .$$
+$$\bf{\class{rouge}{\theta}} = (X^\intercal X )^{-1} X^\intercal \mathbb{E}(\class{alea}{Y}) .$$
 
 --
-On remplace $\mathbb{E}(\bf{Y})$ par notre meilleure approximation et 
+On remplace $\mathbb{E}(\class{alea}{\bf{Y}})$ par notre meilleure approximation et 
 --
 .care[ TADAAA !!!!]
 
@@ -516,7 +516,7 @@ template: parametre
 
 $$\class{alea}{T} = \begin{pmatrix} \class{alea}{B_0} \\ \class{alea}{B_1} \\ \vdots \\ \class{alea}{B_p} \end{pmatrix} = (X^\intercal X )^{-1} X^\intercal Y$$
 
-$B_i$ représente un estimateur de $\beta_i$.
+$\class{alea}{B_i}$ représente un estimateur de $\class{rouge}{\beta_i}$.
 
 --
 
@@ -539,11 +539,11 @@ template: parametre
 
 L'estimateur de la somme des carrés résiduels s'écrit sous la forme 
 
-$$RSS = || Y- X \, \class{alea}{T} ||^2 = \sum_{k=1}^{n} (\class{alea}{Y_k} - \class{alea}{B_0} + \class{alea}{B_1} x_1 + \ldots + \class{alea}{B_p} x_p)^2$$
+$$RSS = || \class{alea}{Y}- X \, \class{alea}{T} ||^2 = \sum_{k=1}^{n} (\class{alea}{Y_k} - \class{alea}{B_0} + \class{alea}{B_1} x_1 + \ldots + \class{alea}{B_p} x_p)^2$$
 
 ### Estimateur de la variance 
 
-  $$S^2 =\frac{1}{DF_{res}} RSS, $$
+  $$\class{alea}{S^2} =\frac{\class{alea}{RSS}}{DF_{res}} , $$
 est un <a class=care> estimateur sans bias de  $\class{fixe}{\sigma^2}$ </a> .
 
 Dans le cas du modèle de régression simple  $DF_{res}=n-(p+1)$ (n observations et p+1 paramètres de moyennes à estimer, le nombre de composantes dans le vecteur $\class{rouge}{\theta}$)
@@ -645,7 +645,7 @@ H_1 & =\left \lbrace \mbox{Au moins 1 variable est liée à la pollution en SO2}
 
 Sous $H_0$, 
 
-$$F= \frac{ \frac{RSS_0 - RSS}{p} }{\frac{RSS}{n-(p+1)}}  \underset{H_0}{\sim}\mathcal{F}(p, n-(p+1))$$  
+$$F= \frac{ \frac{\class{alea}{RSS_0 - RSS}}{p} }{\frac{\class{alea}{RSS}}{n-(p+1)}}  \underset{H_0}{\sim}\mathcal{F}(p, n-(p+1))$$  
 
 ---
 template: modcomp
