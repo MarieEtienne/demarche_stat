@@ -4,7 +4,7 @@
     <title>Régression linéaire</title>
     <meta charset="utf-8" />
     <meta name="author" content="Marie-Pierre Etienne" />
-    <script src="libs/header-attrs-2.7/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.11/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
     <link rel="stylesheet" href="mpe_pres.css" type="text/css" />
   </head>
@@ -352,7 +352,7 @@ Les données de pollution
 
 
 ```
-# A tibble: 41 x 3
+# A tibble: 41 × 3
   City            pop   SO2
   &lt;chr&gt;         &lt;int&gt; &lt;int&gt;
 1 Phoenix         582    10
@@ -410,7 +410,7 @@ Plusieurs variables sont potentiellement liées à la pollution en SO2
 
 
 ```
-# A tibble: 41 x 8
+# A tibble: 41 × 8
   City            SO2  temp manuf   pop  wind precip  days
   &lt;chr&gt;         &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;
 1 Phoenix          10  70.3   213   582   6     7.05    36
@@ -530,7 +530,7 @@ Il s'agit donc de résoudre un système.
 
 Si `\(\bf{X^\intercal}\bf{X}\)` est inversible  alors
 
-`$$\bf{\theta} = (X^\intercal X )^{-1} X^\intercal \mathbb{E}(Y).$$`
+`$$\bf{\theta} = (X^\intercal X )^{-1} X^\intercal \mathbb{E}(Y) .$$`
 
 --
 On remplace `\(\mathbb{E}(\bf{Y})\)` par notre meilleure approximation et 
@@ -541,9 +541,11 @@ On remplace `\(\mathbb{E}(\bf{Y})\)` par notre meilleure approximation et
 ---
 
 template: parametre
-### Estimateur de `\(\theta\)`
+###  Estimateur de `\(\theta\)` : `\(T\)`^
 
-`$$T = (X^\intercal X )^{-1} X^\intercal Y.$$`
+`$$T = \begin{pmatrix} B_0 \\ B_1 \\ \vdots \\ B_p \end{pmatrix} = (X^\intercal X )^{-1} X^\intercal Y$$`
+
+`\(B_i\)` représente un estimateur de `\(\beta_i\)`.
 
 --
 
@@ -693,7 +695,8 @@ H_1 &amp; =\left \lbrace \mbox{Au moins 1 variable est liée à la pollution en 
 --
 
 Sous `\(H_0\)`, 
-`$$F= \frac{\frac{RSS_0 - RSS}}{l}}{\frac{RSS}{n-(p+1)}} \underset{H_0}{\sim}\mathcal{F}(l, n-(p+1))$$`  
+
+`$$F= \frac{ \frac{RSS_0 - RSS}{p} }{\frac{RSS}{n-(p+1)}}  \underset{H_0}{\sim}\mathcal{F}(p, n-(p+1))$$`  
 
 ---
 template: modcomp
@@ -768,15 +771,28 @@ Tester la nullité du paramètre `\(\beta_l\)` revient à tester si la variable 
 Ce test est similaire  au test de comparaison entre le modèle complet et le modèle complet privé de la variable `\(x^{l}\)`.
 
 
+`$$\begin{align} 
+H_0 &amp; =\left \lbrace \mbox{Dans le modèle complet la variable } l \mbox{ n'a pas d'influence}\right\rbrace\\
+    &amp; =\left \lbrace  \mbox{Dans le modèle complet la variable } \beta_l \mbox{ n'a pas d'influence}\right\rbrace\\
+    &amp; =\left \lbrace  M_{comp} \mbox{ est équivalent à } M_{-l} \right\rbrace,
+\end{align}$$`
+
+avec 
+`$$M_{-l}: Y_k = \beta_0 + \beta_1 x_{k,1} + \ldots + \beta_{l-1} x_{k,l-1} + \beta_{l+1} x_{k,l+1} + \ldots + \beta_{p} x_{k,p} + E_{k}$$`
+
 ---
 count: false
 template: test_variable
 
 ## Equivalence des tests sur l'exemple de la pollution
+.pull-left[
 
 
 
 
+```r
+summary(Mcomp)$coefficients
+```
 
 ```
                 Estimate  Std. Error   t value     Pr(&gt;|t|)
@@ -787,6 +803,16 @@ manuf         0.06491817  0.01574825  4.122245 0.0002277862
 wind         -3.18136579  1.81501910 -1.752800 0.0886503978
 precip        0.51235896  0.36275507  1.412410 0.1669175999
 days         -0.05205019  0.16201386 -0.321270 0.7499724652
+```
+]
+--
+.pull-right[
+### Lien entre les statistiques  de tests
+
+
+```r
+Mcomp_l &lt;- lm(SO2 ~  temp + manuf +  wind + precip + days, data = usdata) 
+anova(Mcomp_l, Mcomp)
 ```
 
 ```
@@ -800,22 +826,7 @@ Model 2: SO2 ~ pop + temp + manuf + wind + precip + days
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
-
-### Lien entre les statistiques  de tests
-
-
-```r
-res &lt;- summary(Mcomp)$coefficients
-res[,"t value"]^2
-```
-
-```
-(Intercept)         pop        temp       manuf        wind      precip 
-  5.5753634   6.7365251   4.1664282  16.9929075   3.0723084   1.9949026 
-       days 
-  0.1032144 
-```
-
+]
 ---
 template: test_variable
 ## Vigilance sur l'interprétation des tests
@@ -836,118 +847,210 @@ days         -0.05205019  0.16201386 -0.321270 0.7499724652
 --
 &lt;img src="regression_files/figure-html/ggpairs-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
 
+
 ---
-#Diagnostics
+name: ajust
+# Ajustement et choix de modèles
+
+
+
+
+
+
+## Un critère pour mesurer l'ajustement du modèle
+
+--
+
+### Le coefficient de détermination `\(R^2\)`
+
+`$$R^2=\frac{RSS_0-RSS}{RSS_0}= 1 -\frac{RSS}{RSS_0}$$`
+
+--
+### Les limites de `\(R^2\)` pour la sélection
+
+.pull-left[
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Model &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; R2 &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; M0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; M1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4614 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; M2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.8518 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; M3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.8928 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; M4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9130 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; M5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9268 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; M6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9358 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; M7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9374 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; M8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9637 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+--
+
+ .pull-right[
+
+ 
+  &lt;IMG SRC="Ajustement.gif"&gt;
+ 
+ ]
+
+---
+template: ajust
+
+
+### Le coefficient de détermination `\(R^2\)`
+
+`$$R^2=\frac{RSS_0-RSS}{RSS_0}= 1 -\frac{RSS}{RSS_0}$$`
+
+### Le critère Akaike (AIC)
+
+Il utilise la vraisemblance (une fonction qui mesure justement l'ajustement du modèle aux données) et lui ajoute une pénalité pour compenser le nombre de paramètre et éviter le surajustement.
+
+Il est défini de manière générale pour les modèles statistiques mais dans le cas du modèle linéaire, il est donné par 
+
+
+$$ AIC(M) = p +  n \class{orange}{\ln{\frac{RSS}{n-(p+1))}}} + n + 3 + n\ln{2\pi} $$
+
+$$ AIC(M) = p +  n \class{orange}{\ln{\hat{\sigma}_M}}  \class{clair}{ + n + 3 + n\ln{2\pi}} $$
+--
+
+Utilisé en TD pour choisir un modèle avec un bon compromis ajustement et parcimonie (petit nombre de paramètres).
+
+---
+
+name: prediction
+# Prediction
+
+--
+
+Il est fréquent d'utiliser un modèle de régression pour prédire. 
+
+## Cas de la régression simple
+
+### Prédiction de la valeur moyenne pour un `\(x\)` particulier
+
+* Valeur moyenne .rouge[attendue] pour `\(y\)` pour un `\(x\)` donné : `\(\class{rouge}{\beta_0} + \class{rouge}{\beta_1} x.\)`
+
+* Valeur moyenne .orange[prédite] pour `\(y\)` pour un `\(x\)` donné : `\(\class{orange}{\hat{\beta}_0} + \class{orange}{\hat{\beta}_1 x.}\)`
 
 
 ```r
-library(ggfortify)
-autoplot(Mcomp)
+predict(Mpop, newdata=data.frame(pop=333))
 ```
 
-&lt;img src="regression_files/figure-html/diag-1.png" width="70%" height="30%" style="display: block; margin: auto;" /&gt;
+```
+       1 
+24.53284 
+```
 
-
----
-# Levier
-
-## Mathématiquement
-
-Le levier `\(lev_i\)` pour l'observation `\(i\)` est défini par
-`$$H=X (X^\intercal X)^{-1}X^\intercal; \quad lev_{i}= H_{ii},$$`
 --
-### D'où viennt cette matrice `\(H\)` ?
 
-$$ \hat{Y} = H Y$$
---
-### Sur l'exemple de la régression simple 
+### Intervalle de confiance pour la valeur moyenne prédite  pour `\(y\)` pour un `\(x\)` donné : 
+`\(B_0+B_1 x \sim\mathcal{N}(\beta_0 + \beta_1 x, \sigma^2 \class{clair}{Constante} )\)`
 
 
 ```r
-h.us.lm &lt;- hatvalues(Mpop)
-h.us.lm
+predict(Mpop, newdata=data.frame(pop=333), interval = 'confidence')
 ```
 
 ```
-         1          2          3          4          5          6          7 
-0.02444303 0.04132345 0.02524994 0.02504346 0.03952636 0.04521998 0.02603168 
-         8          9         10         11         12         13         14 
-0.02486268 0.02997079 0.02531882 0.59239806 0.02579734 0.03677543 0.03258749 
-        15         16         17         18         19         20         21 
-0.02440841 0.02896059 0.03093873 0.08536149 0.02575668 0.02515988 0.02440361 
-        22         23         24         25         26         27         28 
-0.02949202 0.03430016 0.04247944 0.02597074 0.02619528 0.02590162 0.02474115 
-        29         30         31         32         33         34         35 
-0.15851954 0.02497554 0.03814844 0.02440790 0.02631315 0.02852063 0.05345225 
-        36         37         38         39         40         41 
-0.03834126 0.03112651 0.03153591 0.02483924 0.04593530 0.02526602 
+       fit      lwr      upr
+1 24.53284 17.28453 31.78115
 ```
 
 ---
+template:  prediction
+Il est fréquent d'utiliser un modèle de régression pour prédire. 
 
+## Cas de la régression simple
 
+### Prédiction de la valeur moyenne pour un `\(x\)` particulier et son intervalle de confiance
 
-
-count: false
-
-&lt;img src="regression_files/figure-html/levier1_user_01_output-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
-
----
-count: false
-
-&lt;img src="regression_files/figure-html/levier1_user_02_output-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
-
-&lt;style&gt;
-.panel1-levier1-user {
-  color: black;
-  width: 99%;
-  hight: 32%;
-  float: left;
-  padding-left: 1%;
-  font-size: 80%
-}
-.panel2-levier1-user {
-  color: black;
-  width: NA%;
-  hight: 32%;
-  float: left;
-  padding-left: 1%;
-  font-size: 80%
-}
-.panel3-levier1-user {
-  color: black;
-  width: NA%;
-  hight: 33%;
-  float: left;
-  padding-left: 1%;
-  font-size: 80%
-}
-&lt;/style&gt;
-
+&lt;img src="regression_files/figure-html/conf_plot-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
 
 
 
 ---
-# Construire le modèle d'analyse de la covariance
+template:  prediction
+Il est fréquent d'utiliser un modèle de régression pour prédire. 
 
-## A partir des données chauve souris (bats)
+## Cas de la régression simple
 
-Les différentes espèces de chauve souris ont des tailles de cerveau très variables, ce qui conduit à des volumes variables de la partie auditive.
+### Prédiction d'une .vert[nouvelle valeur }$\class{vert}{Y_{new}]$ pour un `\(x\)` donné
 
-Quel modèle pouvez vous proposer pour étudier l’influence du régime sur la part du cerveau dédiée à l’audition, compte tenu de la taille total du cerveau ? 
+*  `\(\mathbb{E}(Y_{new}) = \beta_0 + \beta_1 x\)`
 
-Quel test pourrait permettre d’étudier cette influence ?
+* La variance de `\(Y_{new}\)` prend en compte l'incerertitude sur les paramètre et la variabilité naturelle des observations ($\sigma^2$)
 
+
+```r
+predict(Mpop, newdata=data.frame(pop=333), interval = 'prediction')
+```
+
+```
+       fit       lwr      upr
+1 24.53284 -17.90225 66.96793
+```
 
 
 
 ---
-# Pause
+template:  prediction
+Il est fréquent d'utiliser un modèle de régression pour prédire. 
 
-&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
-&lt;p style="color:#B40F20;font-size:35px;text-align:center;"&gt;Prenons une petite pause !!!
+## Cas de la régression simple
 
-Correction en TP &lt;/p&gt; 
+### Prédiction d'une nouvelle valeur `\(Y_{new}\)` pour un `\(x\)` donné
+
+&lt;img src="regression_files/figure-html/predic_plot_pred-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
+
+
+---
+template:  prediction
+Il est fréquent d'utiliser un modèle de régression pour prédire. 
+
+## Cas de la régression multiple
+
+### Prédiction de la valeur moyenne pour un `\(x\)` particulier
+
+--
+
+`$$Y_k = \hat{beta_0} +\hat{beta_1} x_{k,1}+ \ldots + \hat{beta_p} x_{k,p}$$`
+
+
+
 
 
 

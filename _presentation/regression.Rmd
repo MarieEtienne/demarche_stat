@@ -491,7 +491,7 @@ $$\bf{X^\intercal}\mathbb{E}(\bf{Y}) = \bf{X^\intercal}\bf{X\theta}$$
 
 Si $\bf{X^\intercal}\bf{X}$ est inversible  alors
 
-$$\bf{\theta} = (X^\intercal X )^{-1} X^\intercal \mathbb{E}(Y).$$
+$$\bf{\theta} = (X^\intercal X )^{-1} X^\intercal \mathbb{E}(Y) .$$
 
 --
 On remplace $\mathbb{E}(\bf{Y})$ par notre meilleure approximation et 
@@ -502,9 +502,11 @@ On remplace $\mathbb{E}(\bf{Y})$ par notre meilleure approximation et
 ---
 
 template: parametre
-### Estimateur de $\theta$
+###  Estimateur de $\theta$ : $T$^
 
-$$T = (X^\intercal X )^{-1} X^\intercal Y.$$
+$$T = \begin{pmatrix} B_0 \\ B_1 \\ \vdots \\ B_p \end{pmatrix} = (X^\intercal X )^{-1} X^\intercal Y$$
+
+$B_i$ représente un estimateur de $\beta_i$.
 
 --
 
@@ -623,7 +625,8 @@ H_1 & =\left \lbrace \mbox{Au moins 1 variable est liée à la pollution en SO2}
 --
 
 Sous $H_0$, 
-$$F= \frac{\frac{RSS_0 - RSS}}{l}}{\frac{RSS}{n-(p+1)}} \underset{H_0}{\sim}\mathcal{F}(l, n-(p+1))$$  
+
+$$F= \frac{ \frac{RSS_0 - RSS}{p} }{\frac{RSS}{n-(p+1)}}  \underset{H_0}{\sim}\mathcal{F}(p, n-(p+1))$$  
 
 ---
 template: modcomp
@@ -668,30 +671,39 @@ Tester la nullité du paramètre $\beta_l$ revient à tester si la variable $x^{
 Ce test est similaire  au test de comparaison entre le modèle complet et le modèle complet privé de la variable $x^{l}$.
 
 
+$$\begin{align} 
+H_0 & =\left \lbrace \mbox{Dans le modèle complet la variable } l \mbox{ n'a pas d'influence}\right\rbrace\\
+    & =\left \lbrace  \mbox{Dans le modèle complet la variable } \beta_l \mbox{ n'a pas d'influence}\right\rbrace\\
+    & =\left \lbrace  M_{comp} \mbox{ est équivalent à } M_{-l} \right\rbrace,
+\end{align}$$
+
+avec 
+$$M_{-l}: Y_k = \beta_0 + \beta_1 x_{k,1} + \ldots + \beta_{l-1} x_{k,l-1} + \beta_{l+1} x_{k,l+1} + \ldots + \beta_{p} x_{k,p} + E_{k}$$
+
 ---
 count: false
 template: test_variable
 
 ## Equivalence des tests sur l'exemple de la pollution
-
+.pull-left[
 
 ```{r car, echo=FALSE, eval=TRUE}
 library(car)
 ```
 
-```{r pol_mult, eval = TRUE}
+```{r pol_mult, eval = TRUE, echo = TRUE}
 summary(Mcomp)$coefficients
-Mcomp_l <- lm(SO2 ~  temp + manuf +  wind + precip + days, data = usdata) 
-anova(Mcomp_l, Mcomp)
 ```
-
+]
+--
+.pull-right[
 ### Lien entre les statistiques  de tests
 
 ```{r stu2, eval = TRUE, echo =TRUE}
-res <- summary(Mcomp)$coefficients
-res[,"t value"]^2
+Mcomp_l <- lm(SO2 ~  temp + manuf +  wind + precip + days, data = usdata) 
+anova(Mcomp_l, Mcomp)
 ```
-
+]
 ---
 template: test_variable
 ## Vigilance sur l'interprétation des tests
@@ -706,71 +718,207 @@ summary(Mcomp)$coefficients
 GGally::ggpairs(usdata, columns = 2:8)
 ```
 
----
-#Diagnostics
 
-```{r diag, eval = TRUE, echo = TRUE, out.width='70%', cache = FALSE}
-library(ggfortify)
-autoplot(Mcomp)
+---
+name: ajust
+# Ajustement et choix de modèles
+
+
+
+```{r surajust_simulation, eval = TRUE, echo = FALSE}
+set.seed(12)
+beta0 <- 100
+beta1 <- 2
+beta2 <- 1
+
+n <- 20
+imax <-9
+x <- round(rnorm(n, mean=0, sd = 4),1)
+y <- rnorm(n, mean= beta0+beta1*x - beta2 * x^2, sd = 10)
+dta <- tibble(x1=x, y=y, x2 =x^2, x3 = x^3, x4 = x^4 , x5 =x^5, x6 =x^6, x7= x^7, x8 = x^8, x9 =x^9, x10= x^10, x11 = x^{11} ) 
+
+new_dta <- tibble(x=seq(min(x), max(x), length.out=1000),x1=x,  x2=x^2, x3 =x^3, x4 =x^4, x5 = x^5, x6 =x^6, x7= x^7, x8 = x^8, x9 =x^9, x10= x^10, x11 = x^{11} ) 
+
+surajust_list <- lapply(1:imax, function(i){
+  if(i==1)
+    f1 <-  as.formula('y ~1')
+  else
+    f1 <-  as.formula(paste0('y ~  ',paste0( paste0('x', 1:(i-1), collapse = ' + '))))
+  M <- lm(f1, data=dta)
+  p <- new_dta%>% 
+  mutate(y=as.numeric(predict(M, newdata=new_dta)))%>% 
+  ggplot() +geom_line(aes(x=x, y=y), col =  "#33658A")+ geom_point(data=dta, aes(x=x, y=y))+
+  ylim(c(-55,150)) + labs(x='', y='') +ggtitle(paste0('Ajustement avec ', i-1, ' variable(s)'))
+  R2 <- summary(M)$r.squared
+  return(list(p=p, R2=R2, AIC = AIC(M), Model=paste0('M',i-1)))
+})
 ```
 
 
----
-# Levier
+## Un critère pour mesurer l'ajustement du modèle
 
-## Mathématiquement
-
-Le levier $lev_i$ pour l'observation $i$ est défini par
-$$H=X (X^\intercal X)^{-1}X^\intercal; \quad lev_{i}= H_{ii},$$
 --
-### D'où viennt cette matrice $H$ ?
 
-$$ \hat{Y} = H Y$$
+### Le coefficient de détermination $R^2$
+
+$$R^2=\frac{RSS_0-RSS}{RSS_0}= 1 -\frac{RSS}{RSS_0}$$
+
 --
-### Sur l'exemple de la régression simple 
+### Les limites de $R^2$ pour la sélection
 
-```{r levier}, eval = TRUE, echo = TRUE}
-h.us.lm <- hatvalues(Mpop)
-h.us.lm
+.pull-left[
+```{r R2_table, echo = FALSE, eval = TRUE}
+tibble(Model = paste0('M', (1:imax)-1), R2= unlist(lapply(surajust_list, function(l){l$R2}))) %>% 
+  kableExtra::kable(digits=4, format = "html", escape = FALSE) 
+  
+```
+]
+
+--
+
+ .pull-right[
+```{r ajust_git, eval = TRUE, message = FALSE}
+  gif <-function(){ 
+      lapply(surajust_list, function(i) {
+        print(i$p)
+      })
+    }
+    library(animation)
+     ok <- saveGIF(gif(), interval = 1, movie.name="Ajustement.gif")
+```
+ 
+  <IMG SRC="Ajustement.gif">
+ 
+ ]
+
+---
+template: ajust
+
+
+### Le coefficient de détermination $R^2$
+
+$$R^2=\frac{RSS_0-RSS}{RSS_0}= 1 -\frac{RSS}{RSS_0}$$
+
+### Le critère Akaike (AIC)
+
+Il utilise la vraisemblance (une fonction qui mesure justement l'ajustement du modèle aux données) et lui ajoute une pénalité pour compenser le nombre de paramètre et éviter le surajustement.
+
+Il est défini de manière générale pour les modèles statistiques mais dans le cas du modèle linéaire, il est donné par 
+
+
+$$ AIC(M) = p +  n \class{orange}{\ln{\frac{RSS}{n-(p+1))}}} + n + 3 + n\ln{2\pi} $$
+
+$$ AIC(M) = p +  n \class{orange}{\ln{\hat{\sigma}_M}}  \class{clair}{ + n + 3 + n\ln{2\pi}} $$
+--
+
+Utilisé en TD pour choisir un modèle avec un bon compromis ajustement et parcimonie (petit nombre de paramètres).
+
+---
+
+name: prediction
+# Prediction
+
+--
+
+Il est fréquent d'utiliser un modèle de régression pour prédire. 
+
+## Cas de la régression simple
+
+### Prédiction de la valeur moyenne pour un $x$ particulier
+
+* Valeur moyenne .rouge[attendue] pour $y$ pour un $x$ donné : $\class{rouge}{\beta_0} + \class{rouge}{\beta_1} x.$
+
+* Valeur moyenne .orange[prédite] pour $y$ pour un $x$ donné : $\class{orange}{\hat{\beta}_0} + \class{orange}{\hat{\beta}_1 x.}$
+
+```{r pred, eval = TRUE, echo = TRUE}
+predict(Mpop, newdata=data.frame(pop=333))
+```
+
+--
+
+### Intervalle de confiance pour la valeur moyenne prédite  pour $y$ pour un $x$ donné : 
+$B_0+B_1 x \sim\mathcal{N}(\beta_0 + \beta_1 x, \sigma^2 \class{clair}{Constante} )$
+
+```{r pred_IC, eval = TRUE, echo = TRUE}
+predict(Mpop, newdata=data.frame(pop=333), interval = 'confidence')
 ```
 
 ---
+template:  prediction
+Il est fréquent d'utiliser un modèle de régression pour prédire. 
 
-```{r levier1}
+## Cas de la régression simple
 
-usdata <- usdata %>% mutate(grand = as.factor(ifelse(pop > 2500, 'g', 'p')))
-usdata_sans_chicago <- usdata %>% filter(pop < 2500)
+### Prédiction de la valeur moyenne pour un $x$ particulier et son intervalle de confiance
 
-usdata %>% ggplot() + aes(x=pop, y=SO2) + geom_point(aes(col = grand)) + theme(legend.position = 'none') + geom_smooth(method= 'lm', se = FALSE,col= "#FF0000") + #BREAK
-  geom_smooth(data=usdata_sans_chicago, aes(x=pop, y=SO2), method= 'lm', se = FALSE,col= "#00A08A")
-
+```{r conf_plot, eval = TRUE}
+ic <- predict(Mpop, newdata=data.frame(pop=333), interval = 'confidence')
+p1 <- ggplot(usdata) + aes(x=pop, y= SO2 ) + geom_point() + geom_smooth(method= 'lm', se = TRUE, col = "#33658A") +
+  geom_point(data=data.frame(pop=333, SO2 = predict(Mpop, newdata=data.frame(pop=333))),
+             aes(x=pop, y = SO2), col = "#F7A913", size = 3) +
+  geom_segment(aes(x=333, xend=333, y = ic[2], yend=ic[3]), col = "#F7A913", size=1.5)
+print(p1)
 ```
 
 
-`r chunk_reveal("levier1", break_type = "user", display_type="output")`
+
+---
+template:  prediction
+Il est fréquent d'utiliser un modèle de régression pour prédire. 
+
+## Cas de la régression simple
+
+### Prédiction d'une .vert[nouvelle valeur }$\class{vert}{Y_{new}]$ pour un $x$ donné
+
+*  $\mathbb{E}(Y_{new}) = \beta_0 + \beta_1 x$
+
+* La variance de $Y_{new}$ prend en compte l'incerertitude sur les paramètre et la variabilité naturelle des observations ($\sigma^2$)
+
+```{r pred_x, eval = TRUE, echo = TRUE}
+predict(Mpop, newdata=data.frame(pop=333), interval = 'prediction')
+```
+
 
 
 ---
-# Construire le modèle d'analyse de la covariance
+template:  prediction
+Il est fréquent d'utiliser un modèle de régression pour prédire. 
 
-## A partir des données chauve souris (bats)
+## Cas de la régression simple
 
-Les différentes espèces de chauve souris ont des tailles de cerveau très variables, ce qui conduit à des volumes variables de la partie auditive.
+### Prédiction d'une nouvelle valeur $Y_{new}$ pour un $x$ donné
 
-Quel modèle pouvez vous proposer pour étudier l’influence du régime sur la part du cerveau dédiée à l’audition, compte tenu de la taille total du cerveau ? 
+```{r predic_plot_pred, eval = TRUE}
+pred_interval <- predict(Mpop,  interval="prediction", level = 0.95)
+pred_interval <- as.data.frame(pred_interval) %>% mutate(pop=usdata$pop) %>% arrange(pop)
 
-Quel test pourrait permettre d’étudier cette influence ?
 
+pred_interval <- predict(Mpop,  interval="prediction", level = 0.95) 
+pred_interval <- as.data.frame(pred_interval) %>% mutate(pop=usdata$pop) %>% arrange(pop)
 
+ic_pred <- predict(Mpop,  newdata=data.frame(pop = 333), interval="prediction", level = 0.95) 
+ggplot(usdata) + geom_point(aes(x=pop, y= SO2 ) )  + 
+  geom_ribbon(data=as.data.frame(pred_interval), aes(x = pop, ymin = lwr, ymax = upr), fill = "#1F908E", alpha = 0.1) + geom_smooth(method= 'lm', se = TRUE, aes(x=pop, y= SO2 ), col = "#33658A" ) +
+  geom_segment(aes(x=333, xend=333, y = ic_pred[2], yend=ic_pred[3]), col = "#1F908E", size=1.2) +
+  geom_segment(aes(x=333, xend=333, y = ic[2], yend=ic[3]), col = "#F7A913", size=1.2) 
+  
+```
 
 
 ---
-# Pause
+template:  prediction
+Il est fréquent d'utiliser un modèle de régression pour prédire. 
 
-<br><br><br><br>
-<p style="color:#B40F20;font-size:35px;text-align:center;">Prenons une petite pause !!!
+## Cas de la régression multiple
 
-Correction en TP </p> 
+### Prédiction de la valeur moyenne pour un $x$ particulier
+
+--
+
+$$Y_k = \hat{beta_0} +\hat{beta_1} x_{k,1}+ \ldots + \hat{beta_p} x_{k,p}$$
+
+
+
 
 
 
