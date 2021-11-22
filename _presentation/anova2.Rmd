@@ -2,12 +2,12 @@
 title: Analyse de la variance
 subtitle: à 2 facteurs
 author: Marie-Pierre Etienne
-date: '2020/09/11 (updated: `r Sys.Date()`)'
-institute: https://github.com/marieetienne
+date: '2021/11/19 (updated: `r Sys.Date()`)'
+institute: marie-pierre.etienne@agrocampus-ouest.fr
 csl: ../courses_tools/resources/apa-no-doi-no-issue.csl
 output:
    xaringan::moon_reader:
-    css: ['metropolis',  'mpe_pres_HDR.css']
+    css: ['metropolis',  'mpe_pres.css']
     lib_dir: libs
     nature:
       ratio: 16:10
@@ -27,7 +27,8 @@ name: intro
 
 ```{r setup, include = FALSE,  eval = TRUE}
 library('RefManageR')
-main_dir <-  '..'
+source("../courses_tools/resources/knitr_setup.R")
+
 common_img_dir <- file.path(main_dir,'courses_tools','resources', 'common_figs')
 course_img_dir <- file.path(main_dir,'resources', 'figs')
 BibOptions(check.entries = FALSE,
@@ -46,26 +47,24 @@ xaringanExtra::use_fit_screen()
 ```
 
 
-name: intro
-# Introduction
-
-
-name: intro
-# Introduction
-
----
-template: intro
-## Notre exemple de fréquence cardiaque
-
-On a mesuré la fréquence cardiaque de 20 femmes et 20 hommes.
-
-
 ```{r datapackage, eval = TRUE, echo = FALSE, warning = FALSE}
-ggplot <- function(...) ggplot2::ggplot(...) + scale_fill_manual(values = wesanderson::wes_palette(name = "Darjeeling1")) + scale_color_manual(values = wesanderson::wes_palette(name = "Darjeeling1")) 
+ggplot <- function(...) ggplot2::ggplot(...) + scale_fill_manual(values = wesanderson::wes_palette(name = "Darjeeling1")) + scale_color_manual(values = wesanderson::wes_palette(name = "Darjeeling1")) +  scale_fill_manual(values = wesanderson::wes_palette(name = "Darjeeling1")) + theme_minimal()
 #remotes::install_github('MarieEtienne/coursesdata', force = TRUE)
 ```
 
-```{r freqdata, eval = TRUE, echo = c(1,2), warning = FALSE}
+
+
+# Introduction
+
+--
+
+## Etude de la féquance cardiaque au repos
+
+On a mesuré la fréquence cardiaque de 20 femmes et 20 hommes ayant des niveaux de pratique sportive différents.
+
+
+
+```{r freqdata, eval=TRUE, echo=c(1,2), warning=FALSE}
 library(coursesdata)
 data(freqdata)
 freqdata %>% ggplot() +  aes(x= Sexe, y = freqC)+  geom_boxplot(aes(fill = Sexe, col = Sexe), alpha = 0.5) + theme(legend.position = 'none')  + 
@@ -77,18 +76,16 @@ freqdata %>% mutate(Sport_Fact = as.factor(Sport)) -> freqdata
 --
 <p class="question"> Les hommes et les femmes ont-ils la même fréquence cardiaque au repos ?</p>
 
-Nous avions vu dans le cours sur l'analyse de la variance à 1 facteur qu'il n'y avait pas de différence entre homme et femmes.
-
 
 ---
 template: intro
-## Notre exemple de fréquence cardiaque
+## Etude de la féquance cardiaque au repos
 
-En plus du sexe, le jeu de données contient des informations sur le niveau de pratique sportive
+En plus du sexe, il est possible que le niveau de pratique sportive influence également la fréquence cardiaque
 
-```{r sport, eval = TRUE}
+```{r sport, eval = TRUE, message=FALSE}
 freqdata %>% mutate(Sport_Fact = as.factor(Sport)) -> freqdata
-freqdata %>% ggplot() + aes(y = freqC, x = Sport_Fact, fill = Sexe) + geom_boxplot() + xlab('Sport')
+freqdata %>% ggplot() + aes(y = freqC, x = Sport_Fact, fill = Sexe) + geom_boxplot() + xlab('Sport') + ylab("Fréquence cardiaque")
 ```
 --
 <p class=question> Y a t il un effet du sexe ou du sport sur la fréquence cardiaque ? </p>
@@ -102,12 +99,14 @@ template: intro
 
 On étudie le lien entre  
 - une variable quantitative notée $Y$ (la fréquence cardiaque),
-- et deux variables facteurs pouvant prendre respectivement $I$ modalités (I=2 pour le Sexe)  et J modalités (J=5 pour le Sport)
+- et deux facteurs (variables qualitatives) pouvant prendre respectivement $I$ modalités (I=2 pour le Sexe)  et J modalités (J=5 pour le Sport)
 
 Les données peuvent être visualisées à l'aide d'un boxplot.
 
 
 --
+On souhaite répondre aux questions suivantes:
+
 <p class="question"> Y a t il un effet de l'un au moins des facteurs ?</p>
 <p class="question"> Y a t il un effet du facteur 1 ?</p>
 <p class="question"> Y a t il un effet du facteur 2 ?</p>
@@ -117,9 +116,7 @@ Les données peuvent être visualisées à l'aide d'un boxplot.
 name: model
 # Le modèle d'analyse de la variance à 2 facteurs
 
----
-template: model
-
+--
 ## Graphiquement 
 
 Une visualisation graphique du modèle d'analyse de la variance.
