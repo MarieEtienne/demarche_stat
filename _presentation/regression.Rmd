@@ -152,19 +152,19 @@ template: model
 .pull-right[
 
 ## Le modèle de régression simple, mathématiquement 
-$$M_{comp}:  \quad Y_{k} = \class{rouge}{\beta_0} +\class{rouge}{\beta_1} x_{k}  +E_{k},\quad E_{k}\overset{ind}{\sim}\mathcal{N}(0, \class{fixe}{\sigma^2}),$$
+$$M_{comp}:  \quad \class{alea}{Y_{k}} = \class{rouge}{\beta_0} +\class{rouge}{\beta_1} x_{k}  + \class{alea}{E_{k}},\quad \class{alea}{E_{k}\}overset{ind}{\sim}\mathcal{N}(0, \class{fixe}{\sigma^2}),$$
 avec 
 - $x_k$ la valeur de la variable explicative pour l'observation $k$, 
 - $k=1,\ldots,n$ le numéro d'individu, $n$ le nombre total d'individus,
 - $\class{rouge}{\beta_0}$ l'ordonnée à l'origine, 
 - $\class{rouge}{\beta_1}$ la pente de la droite, mesure de l'effet de la variable $x$
 
-- $\class{fixe}{\sigma^2}$ la variance.
+- $\class{rouge}{\sigma^2}$ la variance.
 
 ### Nombre de paramètres du modèle
 
 - $2$ paramètres de moyenne  $(\class{rouge}{\beta_0}, \class{rouge}{\beta_1})$; 
-- 1 paramètre de variance $\class{fixe}{\sigma^2}$
+- 1 paramètre de variance $\class{rouge}{\sigma^2}$
 
 ]
 
@@ -211,17 +211,17 @@ template: model
 
 ## Le modèle sans effet de la variable population, mathématiquement
 
-$$M_0: \quad Y_{k} = \class{rouge}{\beta_0}  + E_{k},\quad E_{k}\overset{ind}{\sim}\mathcal{N}(0, \class{fixe}{\sigma^2}),$$
+$$M_0: \quad \class{alea}{Y_{k}} = \class{rouge}{\beta_0}  + \class{alea}{E_{k}},\quad \class{ælea}{E_{k}}\overset{ind}{\sim}\mathcal{N}(0, \class{fixe}{\sigma^2}),$$
 avec 
 - $k=1,\ldots,n$ le numéro d'individu, $n$ le nombre total d'individus,
 - $\class{rouge}{\beta_0}$ l'ordonnée à l'origine, 
 
-- $\class{fixe}{\sigma^2}$ la variance.
+- $\class{rouge}{\sigma^2}$ la variance.
 
 ### Nombre de paramètres du modèle
 
 - $1$ paramètres de moyenne  $\class{rouge}{\beta_0}$; 
-- 1 paramètre de variance $\class{fixe}{\sigma^2}$
+- 1 paramètre de variance $\class{rouge}{\sigma^2}$
 
 ]
 
@@ -269,7 +269,7 @@ avec
 - $\class{rouge}{\beta_0}$ l'ordonnée à l'origine, 
 - $\class{rouge}{\beta_1}$ la pente de la droite, mesure de l'effet de la population sur la pollution.
 
-- $\class{fixe}{\sigma^2}$ la variance.
+- $\class{rouge}{\sigma^2}$ la variance.
 
 ### Nombre de paramètres du modèle
 - 2 paramètres de moyennes
@@ -417,7 +417,7 @@ avec
 ### Nombre de paramètres du modèle
 
 - $p+1$ paramètres de moyenne  $(\class{rouge}{\beta_0}, \class{rouge}{\beta_1}, \ldots, \class{rouge}{\beta_p})$; 
-- 1 paramètre de variance $\class{fixe}{\sigma^2}$
+- 1 paramètre de variance $\class{rouge}{\sigma^2}$
 
 ---
 template: model
@@ -464,11 +464,11 @@ $$\class{alea}{Y}=\begin{pmatrix}
 
 .center[
 .rouge[
+Tous les modèles vus en cours depuis le début peuvent s'écrire sous la forme ]
 
-
-Tous les modèles vus en cours depuis le début peuvent s'écrire sous la forme 
 $${ \bf{\class{alea}{Y} = X\class{rouge}{\theta} + \class{alea}{E}}}$$
 
+.rouge[
 Ce sont tous des modèle slinéaires (d'où la commande `lm` ).
 ]
 ]
@@ -514,7 +514,7 @@ On remplace $\mathbb{E}(\class{alea}{\bf{Y}})$ par notre meilleure approximation
 template: parametre
 ###  Estimateur de $\class{rouge}{\theta}$ : $\class{alea}{T}$
 
-$$\class{alea}{T} = \begin{pmatrix} \class{alea}{B_0} \\ \class{alea}{B_1} \\ \vdots \\ \class{alea}{B_p} \end{pmatrix} = (X^\intercal X )^{-1} X^\intercal Y$$
+$$\class{alea}{T} = \begin{pmatrix} \class{alea}{B_0} \\ \class{alea}{B_1} \\ \vdots \\ \class{alea}{B_p} \end{pmatrix} = (X^\intercal X )^{-1} X^\intercal \class{aea}{Y}$$
 
 $\class{alea}{B_i}$ représente un estimateur de $\class{rouge}{\beta_i}$.
 
@@ -523,14 +523,14 @@ $\class{alea}{B_i}$ représente un estimateur de $\class{rouge}{\beta_i}$.
 ### Loi de l'estimateur de $\class{rouge}{\theta}$
 
 
-$$\class{alea}{T}  \sim \mathcal{N}_{p+1}\left(\class{rouge}{\theta}, \class{fixe}{\sigma^2} (X^\intercal X )^{-1}\right).$$
+$$\class{alea}{T}  \sim \mathcal{N}_{p+1}\left(\class{rouge}{\theta}, \class{rouge}{\sigma^2} (X^\intercal X )^{-1}\right).$$
 
 --
 
 ### Estimation de $\class{rouge}{\theta}$ : $\class{fixe}{\hat{\theta}}$
 
 
-$$\class{fixe}{\hat{\theta}}  = (X^\intercal X )^{-1} X^\intercal Y_{obs} $$
+$$\class{fixe}{\hat{\theta}}  = (X^\intercal X )^{-1} X^\intercal \class{fixe}{Y_{obs}} $$
 
 
 ---
@@ -544,16 +544,16 @@ $$RSS = || \class{alea}{Y}- X \, \class{alea}{T} ||^2 = \sum_{k=1}^{n} (\class{a
 ### Estimateur de la variance 
 
   $$\class{alea}{S^2} =\frac{\class{alea}{RSS}}{DF_{res}} , $$
-est un <a class=care> estimateur sans bias de  $\class{fixe}{\sigma^2}$ </a> .
+est un <a class=care> estimateur sans bias de  $\class{rouge}{\sigma^2}$ </a> .
 
 Dans le cas du modèle de régression simple  $DF_{res}=n-(p+1)$ (n observations et p+1 paramètres de moyennes à estimer, le nombre de composantes dans le vecteur $\class{rouge}{\theta}$)
 
 --
 
-### Estimation de $\class{fixe}{\sigma^2}$
+### Estimation de $\class{rouge}{\sigma^2}$
 
 $$\class{fixe}{\hat{\sigma}}^2 =\frac{1}{n-(p+1)} \class{fixe}{RSS_{obs}},$$
-$$\class{fixe}{RSS_{obs}} = || Y- X \, \class{fixe}{\hat{\theta}}  ||^2 =  \sum_{k=1}^{n} (y_k - \class{fixe}{\hat{\beta}_0} + \class{fixe}{\hat{\beta}_1} x_1 + \ldots + \class{fixe}{\hat{\beta}_p} x_p)^2$$
+$$\class{fixe}{RSS_{obs}} = || \class{fixe}{Y_{obs}}- X \, \class{fixe}{\hat{\theta}}  ||^2 =  \sum_{k=1}^{n} ( \class{fixe}{y_k} - \class{fixe}{\hat{\beta}_0} + \class{fixe}{\hat{\beta}_1} x_1 + \ldots + \class{fixe}{\hat{\beta}_p} x_p)^2$$
 
 
 
@@ -697,7 +697,7 @@ H_0 & =\left \lbrace \mbox{Dans le modèle complet la variable } l \mbox{ n'a pa
 \end{align}$$
 
 avec 
-$$M_{-l}: \class{alea}{Y_k} = \class{rouge}{\beta_0} + \class{rouge}{\beta_1} x_{k,1} + \ldots + \class{rouge}{\beta_{l-1}} x_{k,l-1} + \class{rouge}{\beta_{l+1}} x_{k,l+1} + \ldots + \beta_{p} x_{k,p} + E_{k}$$
+$$M_{-l}: \class{alea}{Y_k} = \class{rouge}{\beta_0} + \class{rouge}{\beta_1} x_{k,1} + \ldots + \class{rouge}{\beta_{l-1}} x_{k,l-1} + \class{rouge}{\beta_{l+1}} x_{k,l+1} + \ldots + \class{rouge}{\beta_{p}} x_{k,p} + \class{alea}{E_{k}}$$
 
 ---
 count: false
@@ -780,8 +780,8 @@ surajust_list <- lapply(1:imax, function(i){
 
 ### Le coefficient de détermination $R^2$ pour un modèle
 
-$$R^2(M)=\frac{RSS_0-RSS_M}{RSS_0}= 1 -\frac{RSS_M}{RSS_0}$$
-
+$$\class{fixe}{R^2(M)}= 1 -\frac{\class{fixe}{RSS_M}}{\class{fixe}{RSS_0}}$$
+représente la proportion de variabilité totale capturée par le modèle.
 --
 ### Les limites de $R^2$ pour la sélection
 
@@ -816,11 +816,12 @@ template: ajust
 
 ### Le coefficient de détermination $R^2$
 
-$$R^2(M)=\frac{RSS_0-RSS_M}{RSS_0}= 1 -\frac{RSS_M}{RSS_0}$$
+$$\class{fixe}{R^2(M)}= 1 -\frac{\class{fixe}{RSS_M}}{\class{fixe}{RSS_0}}$$
+représente la proportion de variabilité totale capturée par le modèle.
 
 ### Le critère Akaike (AIC)
 
-Il utilise la vraisemblance (une fonction qui mesure justement l'ajustement du modèle aux données) et lui ajoute une pénalité pour compenser le nombre de paramètre et éviter le surajustement.
+Il utilise la vraisemblance$^1$  et lui ajoute une pénalité pour compenser le nombre de paramètre et éviter le surajustement.
 
 Il est défini de manière générale pour les modèles statistiques mais dans le cas du modèle linéaire, il est donné par 
 
@@ -830,7 +831,7 @@ $$ AIC(M) = p +  n \class{orange}{\ln{\frac{RSS}{n-(p+1))}}} + n + 3 + n\ln{2\pi
 $$ AIC(M) = p +  n \class{orange}{\ln{\hat{\sigma}_M}}  \class{clair}{ + n + 3 + n\ln{2\pi}} $$
 .care[On va préférer le modèle avec l'AIC le plus petit]
 
-
+.footnote[1: vraisemblance : une fonction qui mesure justement l'ajustement du modèle aux données]
 ---
 
 name: ajust
@@ -838,7 +839,7 @@ name: ajust
 
 ## Comparaison AIC et $R^2$
 
--
+--
 .pull-left[
 ```{r R2_AIC_table, echo = FALSE, eval = TRUE}
 tibble(Model = paste0('M', (1:imax)-1), R2= unlist(lapply(surajust_list, function(l){l$R2})),
@@ -883,7 +884,7 @@ predict(Mpop, newdata=data.frame(pop=333))
 --
 
 ### Intervalle de confiance pour la valeur moyenne prédite  pour $y$ pour un $x$ donné : 
-$\class{alea}{B_0} + \class{alea}{B_1} x \sim\mathcal{N}(\class{rouge}{\beta_0 + \class{rouge}{\beta_1} x, \class{fixe}{\sigma^2} \class{clair}{Constante} )$
+$\class{alea}{B_0} + \class{alea}{B_1} x \sim\mathcal{N}(\class{rouge}{\beta_0} + \class{rouge}{\beta_1} x, \class{fixe}{\sigma^2} \class{clair}{Constante} )$
 
 ```{r pred_IC, eval = TRUE, echo = TRUE}
 predict(Mpop, newdata=data.frame(pop=333), interval = 'confidence')
@@ -916,9 +917,9 @@ Il est fréquent d'utiliser un modèle de régression pour prédire.
 
 ### Prédiction d'une .vert[nouvelle valeur]  $\class{vert}{Y_{new}}$ pour un $x$ donné
 
-*  $\mathbb{E}(Y_{new}) = \class{rouge}{\beta_0 + \class{rouge}{\beta_1} x$
+*  $\mathbb{E}(\class{alea}{Y_{new}}) = \class{rouge}{\beta_0} + \class{rouge}{\beta_1} x_{new}$
 
-* La variance de $Y_{new}$ prend en compte l'incertitude sur les paramètres et la variabilité naturelle des observations ( $\class{fixe}{\sigma^2}$ )
+* La variance de $\class{alea}{Y_{new}}$ prend en compte l'incertitude sur les paramètres et la variabilité naturelle des observations ( $\class{rouge}{\sigma^2}$ )
 
 ```{r pred_x, eval = TRUE, echo = TRUE}
 predict(Mpop, newdata=data.frame(pop=333), interval = 'prediction')
@@ -968,14 +969,14 @@ $$\hat{Y}_k = \class{fixe}{\hat{\beta}_0} +\class{fixe}{\hat{\beta}_1} x_{k,1}+ 
 --
 
 ### Intervalle de confiance pour la valeur moyenne préditepour des variables explicatives  $(x_1, \ldots, x_p)$ particulières :
-$$\class{alea}{B_0}+\class{alea}{B_1} x_1 + \ldots + \class{alea}{B_p} x_p \sim\mathcal{N}( + \class{rouge}{\beta_1} x_1 +\ldots +\class{rouge}{\beta_p} x_p, \class{fixe}{\sigma^2} \class{clair}{Constante} )$$
+$$\class{alea}{B_0}+\class{alea}{B_1} x_1 + \ldots + \class{alea}{B_p} x_p \sim\mathcal{N}( \class{rouge   }{\beta_0} + \class{rouge}{\beta_1} x_1 +\ldots +\class{rouge}{\beta_p} x_p, \class{rouge}{\sigma^2} \class{clair}{Constante} )$$
 
 
 --
 
 .bonus[Bonus :] On connaît la loi de n'importe quelle combinaison linéaire des paramères
 
-$$c \class{alea}{T} \sim\mathcal{N}(c\class{rouge}{\theta} , \class{fixe}{\sigma^2} \class{clair}{Constante_c} )$$
+$$c \class{alea}{T} \sim\mathcal{N}(c\, \class{rouge}{\theta} , \class{rouge}{\sigma^2} \class{clair}{Constante_c} )$$
 
 
 
