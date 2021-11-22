@@ -152,7 +152,7 @@ template: model
 .pull-right[
 
 ## Le modèle de régression simple, mathématiquement 
-$$M_{comp}:  \quad \class{alea}{Y_{k}} = \class{rouge}{\beta_0} +\class{rouge}{\beta_1} x_{k}  + \class{alea}{E_{k}},\quad \class{alea}{E_{k}\}overset{ind}{\sim}\mathcal{N}(0, \class{fixe}{\sigma^2}),$$
+$$M_{comp}:  \quad \class{alea}{Y_{k}} = \class{rouge}{\beta_0} +\class{rouge}{\beta_1} x_{k}  + \class{alea}{E_{k}},\quad \class{alea}{E_{k}}\overset{ind}{\sim}\mathcal{N}(0, \class{fixe}{\sigma^2}),$$
 avec 
 - $x_k$ la valeur de la variable explicative pour l'observation $k$, 
 - $k=1,\ldots,n$ le numéro d'individu, $n$ le nombre total d'individus,
@@ -514,7 +514,7 @@ On remplace $\mathbb{E}(\class{alea}{\bf{Y}})$ par notre meilleure approximation
 template: parametre
 ###  Estimateur de $\class{rouge}{\theta}$ : $\class{alea}{T}$
 
-$$\class{alea}{T} = \begin{pmatrix} \class{alea}{B_0} \\ \class{alea}{B_1} \\ \vdots \\ \class{alea}{B_p} \end{pmatrix} = (X^\intercal X )^{-1} X^\intercal \class{aea}{Y}$$
+$$\class{alea}{T} = \begin{pmatrix} \class{alea}{B_0} \\ \class{alea}{B_1} \\ \vdots \\ \class{alea}{B_p} \end{pmatrix} = (X^\intercal X )^{-1} X^\intercal \class{alea}{Y}$$
 
 $\class{alea}{B_i}$ représente un estimateur de $\class{rouge}{\beta_i}$.
 
@@ -539,12 +539,12 @@ template: parametre
 
 L'estimateur de la somme des carrés résiduels s'écrit sous la forme 
 
-$$RSS = || \class{alea}{Y}- X \, \class{alea}{T} ||^2 = \sum_{k=1}^{n} (\class{alea}{Y_k} - \class{alea}{B_0} + \class{alea}{B_1} x_1 + \ldots + \class{alea}{B_p} x_p)^2$$
+$$RSS = || \class{alea}{Y}- X \, \class{alea}{T} ||^2 = \sum_{k=1}^{n} \left \lbrace \class{alea}{Y_k} - ( \class{alea}{B_0} + \class{alea}{B_1} x_1 + \ldots + \class{alea}{B_p} x_p) \right\rbrace ^2$$
 
 ### Estimateur de la variance 
 
   $$\class{alea}{S^2} =\frac{\class{alea}{RSS}}{DF_{res}} , $$
-est un <a class=care> estimateur sans bias de  $\class{rouge}{\sigma^2}$ </a> .
+est un <a class=care> estimateur sans biais de  $\class{rouge}{\sigma^2}$ </a> .
 
 Dans le cas du modèle de régression simple  $DF_{res}=n-(p+1)$ (n observations et p+1 paramètres de moyennes à estimer, le nombre de composantes dans le vecteur $\class{rouge}{\theta}$)
 
@@ -553,7 +553,7 @@ Dans le cas du modèle de régression simple  $DF_{res}=n-(p+1)$ (n observations
 ### Estimation de $\class{rouge}{\sigma^2}$
 
 $$\class{fixe}{\hat{\sigma}}^2 =\frac{1}{n-(p+1)} \class{fixe}{RSS_{obs}},$$
-$$\class{fixe}{RSS_{obs}} = || \class{fixe}{Y_{obs}}- X \, \class{fixe}{\hat{\theta}}  ||^2 =  \sum_{k=1}^{n} ( \class{fixe}{y_k} - \class{fixe}{\hat{\beta}_0} + \class{fixe}{\hat{\beta}_1} x_1 + \ldots + \class{fixe}{\hat{\beta}_p} x_p)^2$$
+$$\class{fixe}{RSS_{obs}} = || \class{fixe}{Y_{obs}}- X \, \class{fixe}{\hat{\theta}}  ||^2 =  \sum_{k=1}^{n} \left \lbrace  \class{fixe}{y_k} - (\class{fixe}{\hat{\beta}_0} + \class{fixe}{\hat{\beta}_1} x_1 + \ldots + \class{fixe}{\hat{\beta}_p} x_p) \right\rbrace ^2$$
 
 
 
