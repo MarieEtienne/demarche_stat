@@ -1,6 +1,5 @@
 ---
-title: Analyse de la variance
-subtitle: à 2 facteurs
+title: Analyse de la variance à 2 facteurs
 author: Marie-Pierre Etienne
 date: '2021/11/19 (updated: `r Sys.Date()`)'
 institute: marie-pierre.etienne@agrocampus-ouest.fr
@@ -88,11 +87,20 @@ freqdata %>% mutate(Sport_Fact = as.factor(Sport)) -> freqdata
 freqdata %>% ggplot() + aes(y = freqC, x = Sport_Fact, fill = Sexe) + geom_boxplot() + xlab('Sport') + ylab("Fréquence cardiaque")
 ```
 --
-<p class=question> Y a t il un effet du sexe ou du sport sur la fréquence cardiaque ? </p>
-<p class=question> Y a t il un effet du sexe  sur la fréquence cardiaque ? </p>
-<p class=question> Y a t il un effet du sport sur la fréquence cardiaque ? </p>
-<p class=question> L'effet du sport sur la fréquence cardiaque est-il le même pour les hommes et les femmes ? </p>
 
+On souhaite répondre aux questions suivantes:
+
+.pull-left[
+* Y a t il un effet du sexe ou du sport sur la fréquence cardiaque ? 
+
+* Y a t il un effet du sexe  sur la fréquence cardiaque ? 
+]
+
+.pull-right[
+* Y a t il un effet du sport sur la fréquence cardiaque ? 
+
+* L'effet du sport sur la fréquence cardiaque est-il le même pour les hommes et les femmes ? 
+]
 ---
 template: intro
 ## Cadre général du modèle d'analyse de la variance à 2 facteurs
@@ -107,11 +115,17 @@ Les données peuvent être visualisées à l'aide d'un boxplot.
 --
 On souhaite répondre aux questions suivantes:
 
-<p class="question"> Y a t il un effet de l'un au moins des facteurs ?</p>
-<p class="question"> Y a t il un effet du facteur 1 ?</p>
-<p class="question"> Y a t il un effet du facteur 2 ?</p>
+.pull-left[
+*  Y a t il un effet de l'un au moins des facteurs ?
 
+* Y a t il un effet du facteur 1 ?]
 
+.pull-right[
+
+* Y a t il un effet du facteur 2 ?
+
+* Y a t il une interaction entre ces deux facteurs ?
+]
 ---
 name: model
 # Le modèle d'analyse de la variance à 2 facteurs
@@ -131,6 +145,8 @@ Comment imagine-t-on le processus aléatoire qui a conduit à nos données ?
 
 ---
 
+
+
 ```{r anova_versiongraphique, eval = TRUE, echo = FALSE}
 set.seed(222)
 I <- 2
@@ -143,11 +159,23 @@ fake_dta <- tibble( fact1 = rep(rep(1:I, each=J), effectif),
   mutate(group =(fact1-1)*J + fact2,
          m = mu[group],
          y = round(rnorm(n(), mean = m, sd = 2),2) ) %>%
-  mutate(fact1 = as.character(fact1), 
-         fact2 = as.character(fact2), 
+  mutate(Sexe = as.character(fact1), 
+         Sport = as.character(fact2), 
          ord=0)  
 
 names(mu) <- paste('mu', rep(1:I, each=J), rep(1:J,I), sep ='_')
+
+ggplot(data=fake_dta) + 
+  ggtitle('Modèle Mcomp') +
+  labs(x = 'Fréquence cardiaque', y = 'Pratique Sportive') +
+  theme(axis.text=element_blank(),
+        axis.ticks=element_blank(),
+        ) +
+  geom_abline(slope = beta1, intercept = beta0) + #BREAK
+  geom_point(x=x0, y=beta0+beta1*x0, col = 'red', size=2) + #BREAK
+  geom_point(data=norm_dta, aes(y=y, x=x), col = 'red', alpha=0.02) + #BREAK
+  geom_point(aes(x=x, y=y)) 
+
 
 norm_dta <- map_df(.x = mu, .f = function(m){
   dnorm(seq( min(mu) -3*2, max(mu)+ 3* 2, length.out = 100),
