@@ -149,33 +149,41 @@ Comment imagine-t-on le processus aléatoire qui a conduit à nos données ?
 
 ```{r anova_versiongraphique, eval = TRUE, echo = FALSE}
 set.seed(222)
-I <- 2
-J <- 3
+I <- 3
+J <- 2
 mu <- round(4  * rnorm(I*J),2)
+mu_mat<- matrix(mu, ncol = J, nrow = I, byrow = TRUE)
 effectif <- sample(10:30, size =  I*J, replace = TRUE)
 fake_dta <- tibble( fact1 = rep(rep(1:I, each=J), effectif),
                     fact2 = rep(rep(1:J, I), effectif)) %>%
   group_by(fact1, fact2) %>% 
-  mutate(group =(fact1-1)*J + fact2,
-         m = mu[group],
+  mutate(group =(fact2-1)*I + fact1,
+         m = mu_mat[group],
          y = round(rnorm(n(), mean = m, sd = 2),2) ) %>%
-  mutate(Sexe = as.character(fact1), 
-         Sport = as.character(fact2), 
+  mutate(F2 = as.character(fact2), 
+         F1 = as.character(fact1), 
          ord=0)  
 
+fake_dta %>% print(n=50)
 names(mu) <- paste('mu', rep(1:I, each=J), rep(1:J,I), sep ='_')
 
-ggplot(data=fake_dta) + 
-  ggtitle('Modèle Mcomp') +
-  labs(x = 'Fréquence cardiaque', y = 'Pratique Sportive') +
-  theme(axis.text=element_blank(),
-        axis.ticks=element_blank(),
-        ) +
-  geom_abline(slope = beta1, intercept = beta0) + #BREAK
-  geom_point(x=x0, y=beta0+beta1*x0, col = 'red', size=2) + #BREAK
-  geom_point(data=norm_dta, aes(y=y, x=x), col = 'red', alpha=0.02) + #BREAK
-  geom_point(aes(x=x, y=y)) 
+params <- fake_dta %>% 
+  group_by(F1,F2) %>% 
+  summarise(m =mean(m)) %>% 
+  ungroup()
+params_dessin <-  params %>% 
+  mutate(x= c(0.65, 1.02, 1.65, 2.02, 2.65, 3.02),
+         xend =x+ 0.33,
+         y = m,
+         yend= m)
 
+p_comp_1 <- ggplot(data=fake_dta) + 
+  ggtitle('Modèle Mcomp') +
+  labs(x = 'F1', y = 'y') +
+  geom_boxplot(aes(x=F1, y = y, fill = F1, linetype=F2), col = 'gray', alpha = 0.1) +
+  geom_segment(data=params_dessin, aes(x=x, xend = xend, y = y, yend = yend, colour=F1, linetype = F2), lwd = 1.4)
+
+  
 
 norm_dta <- map_df(.x = mu, .f = function(m){
   dnorm(seq( min(mu) -3*2, max(mu)+ 3* 2, length.out = 100),
@@ -183,8 +191,18 @@ norm_dta <- map_df(.x = mu, .f = function(m){
   .id = 'Groupe') %>% 
   mutate(x  = seq( min(mu) -3*2, max(mu)+ 3* 2, length.out = 100))  %>%
   pivot_longer(cols = starts_with("mu"), names_to = 'Groupe', values_to ='density' )%>% 
-  mutate(fact1= str_remove(stringr::str_extract(Groupe, pattern = '[:digit:]_'), pattern = '_'),
-         fact2= str_remove(stringr::str_extract(Groupe, pattern = '_[:digit:]$'), pattern = '_')) 
+  mutate(F1= as.factor(str_remove(stringr::str_extract(Groupe, pattern = '[:digit:]_'), pattern = '_')),
+         F2= as.factor(str_remove(stringr::str_extract(Groupe, pattern = '_[:digit:]$'), pattern = '_'))) %>% 
+  mutate(abc = case_when(F1==1 ~ 0.80, 
+                             F1==2~1.8,
+                             F1==3~2.8),
+         abcisse = ifelse(F2==2 , abc +0.35, abc)
+         ) %>% 
+  select(-abc)
+
+
+p_comp_1 + geom_point(data=norm_dta, aes(x=abcisse+density, y=x, col=F1, shape=F2), size = 0.5) +
+  geom_point(data=fake_dta, aes(x=as.numeric(F1)+ifelse(F2==1, -0.15, +0.15), col = F1, shape = F2, y = y))
 ```
 
 
