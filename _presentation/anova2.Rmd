@@ -1140,7 +1140,8 @@ penguins %>%
   geom_smooth(method = 'lm', aes(x=bill_length_mm, y = bill_depth_mm, col = species), se = FALSE)
 ```
 
---- 
+---
+
 template: ancova
 ## Le modèle
 
@@ -1162,8 +1163,8 @@ avec
 
 
 
+---
 
---- 
 template: ancova
 ## Comment tester
 
@@ -1175,11 +1176,10 @@ template: ancova
 
 
 ---
+
 template: ancova
 
-Que teste t on en faisant ?
-
-1. 
+* Que teste t on avec la commande suivante?
 
 ```{r penguins_lm1, echo = TRUE, eval = TRUE}
 Mcomp <- lm(bill_depth_mm ~ species + bill_length_mm + species:bill_length_mm, data =penguins)
@@ -1187,8 +1187,7 @@ M0 <- lm(bill_depth_mm ~ 1, data =penguins)
 anova(M0, Mcomp)
 ```
 
-2. 
-
+* avec celle-ci  ?
 
 ```{r penguins_lm2, echo = TRUE, eval = TRUE}
 Mcomp <- lm(bill_depth_mm ~ species + bill_length_mm + species:bill_length_mm, data =penguins)
@@ -1198,11 +1197,8 @@ anova(M12, Mcomp)
 
 
 --- 
-template: ancova
 
-Que teste t on en faisant ?
-
-3.
+* Que teste t on maintenant ?
 
 
 ```{r penguins_lm3, echo = TRUE, eval = TRUE}
@@ -1212,6 +1208,7 @@ Anova(Mcomp)
 
 
 ---
+
 # Ce qu'il faut absolument savoir pour les TDs
 
 - savoir reconnaître une situtation d'e régression multiple
