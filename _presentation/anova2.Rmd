@@ -1190,7 +1190,6 @@ anova(M0, Mcomp)
 * avec celle-ci  ?
 
 ```{r penguins_lm2, echo = TRUE, eval = TRUE}
-Mcomp <- lm(bill_depth_mm ~ species + bill_length_mm + species:bill_length_mm, data =penguins)
 M12 <- lm(bill_depth_mm ~ species + bill_length_mm , data =penguins)
 anova(M12, Mcomp)
 ```
