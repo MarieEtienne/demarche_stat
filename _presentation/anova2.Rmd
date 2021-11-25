@@ -512,13 +512,14 @@ $$\mu +\alpha_1 +\beta_1 + \gamma_{11} = \mu.$$
 * Quelle est la fréquence moyennes des hommes nageurs ?
 
 --
+
 Les hommes nageurs forment le groupe  $(1,2)$ : En moyenne leur fréquence cardiaque dans le modèle est 
-$$\mu + \alpha_1 + \beta_2 +\gamma_{12} = \mu + \beta_2.    $$
+$$\mu + \alpha_1 + \beta_2 +\gamma_{12} = \mu + \beta_2.$$
 $\beta_2$ est donc l'effet différentiel du sexe $2$ (les hommes)   par rapport au sexe de référence $1$ (les femmes)   <a class=care> pour la natation</a>.
 
 --
 
-* Quelle est la fréquence moyennes des femmes pratiquant la pétanque ?
+* Quelle est la fréquence cardiaque moyenne des femmes pratiquant la pétanque ?
 
 --
 
@@ -526,7 +527,7 @@ Les femmes pratiquant la pétanque  forment le groupe  $(3,1)$ : En moyenne leur
 
 $$\mu + \alpha_3 + \beta_1 +\gamma_{31} = \mu + \alpha_3.$$
 
-$\alpha_3$ est donc l'effet différentiel de l'actiité 3 (la pétanque) par rapport à l'activité de référence 1 (la natation) pour le sexe 1 (les femmes)..
+$\alpha_3$ est donc l'effet différentiel de l'activité 3 (la pétanque) par rapport à l'activité de référence 1 (la natation) pour le sexe 1 (les femmes).
 
 --
 
@@ -535,7 +536,7 @@ Les valeurs des termes  $\gamma_{ij}$ sont difficiles à interpréter directemen
 
 ---
 template: model
-## Version contrainte  du modèle du modèle Mcomp
+## Version contrainte du modèle Mcomp
 
 $$\class{alea}{Y_{ijk}} = \class{rouge}{\mu} + \class{rouge}{\alpha_i} + \class{rouge}{\beta_j} + \class{rouge}{\gamma_{ij}} +\class{alea}{E_{ijk}},\quad \class{alea}{E_{ijk}}\overset{ind}{\sim}\mathcal{N}(0, \class{rouge}{\sigma^2}),$$
 avec 
@@ -577,10 +578,9 @@ Y_{ijk}\\
 \vdots\\
 Y_{IJn_{IJ}}\end{pmatrix},
  \quad
-{\bf{X}} =\overset{\color{gray}{\begin{matrix}\mu & \alpha_{2} &  \ldots & \alpha_{I} & $\beta_2 & \ldots &\beta_{J} & \gamma_{22} & \gamma{23} & \ldots  &\gamma_{IJ}\end{matrix}}}{\begin{pmatrix}
+{\bf{X}} =\overset{\color{gray}{\begin{matrix}\mu & \alpha_{2} &  \ldots & \alpha_{I} & $\beta_2 & \ldots &\beta_{J} & \gamma_{22} & \gamma_{23} & \ldots  &\gamma_{IJ}\end{matrix}}}{\begin{pmatrix}
 1 & 0 & \ldots & 0 & 0 & \ldots 0 & 0 & 0 & \ldots 0\\
 1 & 0 & \ldots & 0 & 0 & \ldots 0 & 0 & 0 & \ldots 0\\
-1 & 0 & 0 & \ldots 0\\
 \vdots\\
 1 & 0 & \ldots & 0 & 0 & \ldots 0 & 0 & 0 & \ldots 0\\
 1 & 0 & \ldots & 0 & 1 & \ldots 0 & 0 & 0 & \ldots 0\\
@@ -643,12 +643,24 @@ model.matrix(Mcomp)[1:10, ]
 template: model
 
 ## sur l'exemple de la fréquence cardiaque
-*Attention, il manque une colonne*
+
+*Reamrque, pas de colonne pour $\alpha_1, \beta_1, \gamma_{11}, \gamma_{12}, \gamma_{21}$ *
 
 ```{r m_comp, eval = TRUE, echo = TRUE}
 Mcomp <- lm(freqC ~ Sexe + Activite_Fact + Sexe:Activite_Fact, data = freqdata)
 model.matrix(Mcomp)
 ```
+
+---
+class: inverse
+name: pause
+#  Une petit pause ?
+--
+
+<br><br><br><br>
+<p style="color:#33658a;font-size:35px;text-align:center;">Ok, prenons une petite pause !!!</p> 
+
+
 
 ---
 name: parametre
@@ -658,7 +670,7 @@ name: parametre
 .pull-left[
 ###  Estimateur de $\class{rouge}{\theta}$ : $\class{alea}{T}$
 
-$$\class{alea}{T} = \begin{pmatrix} \class{alea}{M} \\ \class{alea}{A_2} \\ \vdots  \\  \class{alea}{A_I} \\ B_2 \\ \vdots\\ \class{alea}{B_J} \\ \class{alea}{G_{22}} \\ \vdots \\ \class{alea}{G_{IJ}}\\ \end{pmatrix} = (X^\intercal X )^{-1} X^\intercal \class{alea}{Y}$$
+$$\class{alea}{T} = \begin{pmatrix} \class{alea}{M} \\ \class{alea}{A_2} \\ \vdots  \\  \class{alea}{A_I} \\ \class{alea}{B_2} \\ \vdots\\ \class{alea}{B_J} \\ \class{alea}{G_{22}} \\ \vdots \\ \class{alea}{G_{IJ}}\\ \end{pmatrix} = (X^\intercal X )^{-1} X^\intercal \class{alea}{Y}$$
 
 ]
 
@@ -709,12 +721,12 @@ $$\class{fixe}{RSS_{obs}} = || \class{fixe}{Y_{obs}}- X \, \class{fixe}{\hat{\th
 
 
 ---
-class: inverse
-name: pause
-# Pause
+
+template: pause
+
 
 <br><br><br><br>
-<p style="color:#B40F20;font-size:35px;text-align:center;">Prenons une petite pause !!!</p> 
+<p style="color:#33658a;font-size:35px;text-align:center;">Ok, prenons une petite pause !!!</p> 
 
 ---
 name: modcomp
@@ -801,9 +813,18 @@ ggplot(data  = chi_dta) + xlab('y') + ylab('density') + geom_line(aes(x=x, y=y))
 
 `r chunk_reveal("pvalue_graphique", break_type = "user", display_type="output")`
 
+
+---
+template: pause
+
+--
+<br><br><br><br>
+<p style="color:#33658a;font-size:35px;text-align:center;">Pas encore, non !!!</p> 
+
+
 ---
 name: variance_decomposition
-# Decomposition de SSM
+# Test des effets de chacun des facteurs : décomposition de SSM
 
 ---
 template: variance_decomposition
@@ -811,7 +832,7 @@ template: variance_decomposition
 
 <br>
 
-- $RSS_0$ est schématisée par le retangle  ci dessous.
+- $RSS_0$ est schématisée par le rectangle  ci dessous.
 - La partie rouge correspond à $RSS$, la partie blanche à $RSS_0 -RSS$, ce que l'on gagne à utilise rle modèle complet
 
 
@@ -829,7 +850,7 @@ template: variance_decomposition
 
 <br>
 
-- $RSS_0$ est schématisée par le retangle  ci dessous.
+- $RSS_0$ est schématisée par le rectangle  ci dessous.
 - La partie rouge correspond à $RSS$, la différence en blanc  à $RSS_0 -RSS$, ce que l'on gagne à utilise rle modèle complet
 
 <br>
@@ -845,7 +866,7 @@ template: variance_decomposition
 
 <br>
 
-- $RSS_0$ est schématisée par le retangle  ci dessous.
+- $RSS_0$ est schématisée par le rectangle  ci dessous.
 
 - La partie  beige  $SSM= RSS_0 -RSS$, ce que l'on gagne à utiliser le modèle complet plutôt que $M_0$. 
 
@@ -856,18 +877,50 @@ On souhaite décomposer cette variabilité
 knitr::include_graphics('./RSS3.png')
 ```
 
+
 ---
-count:false
 template: variance_decomposition
-## Visualisation graphique de la décomposition de la variance
+## Comment mesurer la variabilité capturée par chaque facteur ?
 
-<br>
+On veut décomposer la variabilité attribuée au modèle selon les différentes sources.
 
-- $RSS_0$ est schématisée par le retangle  ci dessous.
+Considérons les différents modèles possibles
 
-- La partie rouge correspond à $RSS$, la partie blanche à $RSS_0 -RSS$, ce que l'on gagne à utilise rle modèle complet
+$$\begin{align}
+M_0\ :\ Y_{ijk} &= \mu + E_{ijk}\\
+M_{1}\ :\ Y_{ijk} &= \mu + \alpha_i + E_{ijk}\\
+M_{2}\ :\ Y_{ijk} &= \mu + \beta_j + E_{ijk}\\
+M_{12}\ :\ Y_{ijk} &= \mu + \alpha_i + \beta_j + E_{ijk}\\
+M_{comp}\ :\ Y_{ijk} &= \mu + \alpha_i + \beta_j +\gamma_{ij} + E_{ijk}\\
+\end{align}$$
 
-Il faut faire un choix pour les parties confondues
+
+--
+
+
+* $RSS_2 - RSS_{12}$ mesure ce que l'on gagne à utiliser le modèle $M_{12}$ plutôt que $M_2$, c'est l'effet du facteur 2 après s'être ajusté au facteur 1
+
+* $RSS_1 - RSS_{12}$ mesure ce que l'on gagne à utiliser le modèle $M_{12}$ plutôt que $M_1$, c'est l'effet du facteur 2 après s'être ajusté au facteur 2
+
+* $RSS_{12} - RSS_{comp}$ mesure ce que l'on gagne à utiliser le modèle $M_{comp}$ plutôt que $M_{12}$, c'est l'effet de l'interaction, les effets principaux étant pris en compte.
+
+
+---
+template: variance_decomposition
+## Comment mesurer la variabilité capturée par chaque facteur ?
+
+### Réduction de variabilité
+
+$$\begin{align}
+SSM & = RSS_0 - RSS_{comp}\\
+SSM & = \underbrace{RSS_0 - RSS_{1}}_{R(\alpha\vert \mu )} + \underbrace{{RSS_1 - RSS_{12}}}_{R(\beta\vert \mu, \alpha )} + \underbrace{RSS_{12} - RSS_{comp}}_{R(\gamma\vert \mu, \alpha,\beta )} \\
+SSM & = \underbrace{RSS_0 - RSS_{2}}_{R(\beta\vert \mu )} + \underbrace{{RSS_2 - RSS_{12}}}_{R(\alpha\vert \mu, \beta )} + \underbrace{RSS_{12} - RSS_{comp}}_{R(\gamma\vert \mu, \alpha,\beta )} \\
+\end{align}$$
+
+
+--
+
+On a fait un choix pour les parties confondues
 
 ```{r var_5, eval =TRUE, out.width = "55%"}
 knitr::include_graphics('./RSS5.png')
@@ -897,21 +950,6 @@ M_{comp}\ :\ Y_{ijk} &= \mu + \alpha_i + \beta_j +\gamma_{ij} + E_{ijk}\\
 --
 
 Mesurer la réduction de variabilité liée à la prise en compte d'un facteur.
-
----
-template: variance_decomposition
-## Réduction de variabilité
-
-$$\begin{align}
-SSM & = RSS_0 - RSS_{comp}\\
-SSM & = \underbrace{RSS_0 - RSS_{1}}_{R(\alpha\vert \mu )} + {RSS_1 - RSS_{12}} +{RSS_{12} - RSS_{comp}} \\
-\end{align}$$
---
-
-
-```{r var_ralpha, eval =TRUE, out.width = "55%"}
-knitr::include_graphics('./RSS4_Ralpha.png')
-```
 
 
 ---
@@ -1004,7 +1042,7 @@ template: variance_decomposition
 
 ---
 template: variance_decomposition
-## L'exemple des fréquence cardiaque
+## L'exemple des fréquences cardiaque
 
 Il s'agit du cas particulier $n_{ij}$ sont tous égaux. Le plan d'expérience est dit **équilibré**, pas de variabilité confondue.
 
@@ -1015,14 +1053,19 @@ knitr::include_graphics('./RSS3_eq.png')
 ```
 
 
---
-### Type 2
+---
+template: variance_decomposition
+## L'exemple des fréquences cardiaque
+
+On examine d'abord l'interaction 
 
 ```{r freq_comp2, eval = TRUE, echo =TRUE}
 library(car)
 Anova(Mcomp, type = 2)
 ```
 
+--
+ Si l'interaction n'avait pas été significative, on aurait ajuster à nouveau le modèle sans interaction et tester l'effet de chacun des facteurs principaux.
 
 ---
 name: comp_moyenne
@@ -1036,7 +1079,6 @@ $$\tilde{\mu}_{i.} = \mu + \alpha_i + \frac{1}{J}\sum_{j=1}^J (\beta_j +\gamma_{
 $$\tilde{\mu}_{.j} = \mu + \beta_j + \frac{1}{I}\sum_{i=1}^I (\alpha_i +\gamma_{ij}).$$
 
 
-*On redresse artificiellement le plan d'expérience*
 --
 
 $$\tilde{\mu}_{1.}-\tilde{\mu}_{2.} =  \alpha_1  -\alpha_{2}+ \frac{1}{J}\sum_{j=1}^J (\gamma_{1j} -\gamma_{2j}).$$
@@ -1057,7 +1099,7 @@ plot(m_ajust_sexe)
 ---
 
 template: comp_moyenne
-## Moyennes ajustées pour le Activite
+## Moyennes ajustées pour l'activité
 
 ```{r moy_ajustees_Activite, eval= TRUE, echo =TRUE}
 m_ajust_Activite <- emmeans(Mcomp, "Activite_Fact")
@@ -1067,18 +1109,139 @@ summary(pairs(m_ajust_Activite))
 ---
 
 template: comp_moyenne
-## Moyennes ajustées pour le Activite
+## Moyennes ajustées pour l'activité
 
 ```{r ajuste_Activite_graph, eval = TRUE}
 plot(m_ajust_Activite)
 ```
+---
+template: pause
+
+--
+<br><br><br><br>
+<p style="color:#33658a;font-size:35px;text-align:center;">Ok, prenons une petite pause !!!</p> 
+
+
+---
+name: ancova
+# Comparaison de droite de régression : modèle d'analyse de la covariance
+
+--
+## Cadre général
+C'est la situation où 
+* la variable à expliquer $Y$ est quantitative
+* Les variables explicatives sont qualitatives et quantitatives
+
+```{r load_penguins, echo = FALSE, eval = TRUE}
+library(palmerpenguins)
+data("penguins")
+penguins %>% 
+  ggplot() + geom_point(aes(x=bill_length_mm, y = bill_depth_mm, col = species))+
+  geom_smooth(method = 'lm', aes(x=bill_length_mm, y = bill_depth_mm, col = species), se = FALSE)
+```
+
+--- 
+template: ancova
+## Le modèle
+
+$$\class{alea}{Y_{ik}} = \class{rouge}{\mu} + \class{rouge}{\alpha_i} + \class{rouge}{\beta}x_{ik} +\class{rouge}{\gamma_i} x_{ik} + \class{alea}{E_{ik}},\quad \class{alea}{E_{ik}}\overset{ind}{\sim}\mathcal{N}(0, \class{rouge}{\sigma^2}),$$
+avec 
+- $i=1,\ldots,I$ le niveau du facteur 1,
+- $x_{ik}$ la mesure de la variable quantitative $x$ sur l'individu $k$ du groupe $i$, 
+- $\class{rouge}{\mu}$ l'ordonnée à l'origine de référence,
+- $\class{rouge}{\alpha_i}$ l'effet différentiel de l'espèce $i$ sur l'ordonnée à l'origine, 
+- $\class{rouge}{\beta}$ l'effet de la variable $x$ pour le groupe de référence,   
+- $\class{rouge}{\gamma_i}$ l'effet différentiel de la variable $x$ pour le groupe $i$ par rapport au groupe de référence,  
+- $\class{rouge}{\sigma^2}$ la variance commune à tous les groupes.
+
+
+### Nombre de paramètres du modèle
+
+- $2I$ paramètres de moyenne  $(\class{rouge}{(\mu, \alpha_2, \ldots, \alpha_I, \beta, \gamma_2, \ldots, \gamma_I)}$; 
+- 1 paramètre de variance $\class{rouge}{\sigma^2}$
 
 
 
+
+--- 
+template: ancova
+## Comment tester
+
+* L'égalité de toutes les pentes  ?
+
+* Comment mesurer l'effet de l'espèce ?
+
+* Comment mesurer l'effet de la longueur du bec ?
+
+
+---
+template: ancova
+
+Que teste t on en faisant ?
+
+1. 
+
+```{r penguins_lm1, echo = TRUE, eval = TRUE}
+Mcomp <- lm(bill_depth_mm ~ species + bill_length_mm + species:bill_length_mm, data =penguins)
+M0 <- lm(bill_depth_mm ~ 1, data =penguins)
+anova(M0, Mcomp)
+```
+
+2. 
+
+
+```{r penguins_lm2, echo = TRUE, eval = TRUE}
+Mcomp <- lm(bill_depth_mm ~ species + bill_length_mm + species:bill_length_mm, data =penguins)
+M12 <- lm(bill_depth_mm ~ species + bill_length_mm , data =penguins)
+anova(M12, Mcomp)
+```
+
+
+--- 
+template: ancova
+
+Que teste t on en faisant ?
+
+3.
+
+
+```{r penguins_lm3, echo = TRUE, eval = TRUE}
+Anova(Mcomp)
+```
+
+
+
+---
+# Ce qu'il faut absolument savoir pour les TDs
+
+- savoir reconnaître une situtation d'e régression multiple
+'analyse de la variance à deux facteurs
+
+--
+  * On cherche à comprendre le lien entre une variable d'intérêt $Y$ et deux variables explicatives qualitatives.
+  
+--
+
+- savoir écrire le modèle d'analyse de la variance à deux facteurs
+
+--
+- Tester l'existence de l'effet d'au moins un des facteurs 
+
+--
+- Tester l'existence de l'effet d'un facteur en particulier
+
+--
+
+- Reconnaître une situation d'analyse de la covariance
+
+--
+
+- Savoir adapter ce qu'on a fait en analyse de la variance au cas de l'analyse de la covariance
 
 
 ```{r ggplot_back, echo = FALSE, eval = TRUE}
 ggplot <- function(...) ggplot2::ggplot(...) 
 ```
+
 
 
