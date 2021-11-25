@@ -113,8 +113,8 @@ a, a > code {
 
 
 .inverse {
-  background-color: #1A292C;
-  color: #0e8192;
+  background-color: #F1D763;
+  color: #33658a;
   text-shadow: 0 0 20px #333;
 }
 
@@ -151,7 +151,8 @@ a, a > code {
 }
 
 .inverse h1, .inverse h2, .inverse h3 {
-  color: #DCFFC5;
+  color: #33658a;
+  text-shadow: none;
 }
 
 
@@ -243,11 +244,11 @@ th, td { padding: 2px; }
 
 .inverse {
   background-color: #FAFAFA;
-  border-top: 60px solid #DCFFC5;
+  border-top: 60px solid #F7A913;
   font-size: 17px;
   font-weight: 300;
   line-height: 1.5;
-  padding: 3% 2em 1em 2em;
+  padding: 1% 2em 1em 2em
   text-shadow: none;
 }
 
@@ -374,7 +375,7 @@ hr, .mline h1::after {
 
 .inverse .remark-slide-number {
   font-size: 11pt;
-  color: #FAFAFA;
+  color: #33658a;
   opacity: 1;
 }
 
