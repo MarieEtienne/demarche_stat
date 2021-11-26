@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # Analyse de la variance à 2 facteurs
 ### Marie-Pierre Etienne
 ### <a href="mailto:marie-pierre.etienne@agrocampus-ouest.fr" class="email">marie-pierre.etienne@agrocampus-ouest.fr</a>
-### 2021/11/19 (updated: 2021-11-25)
+### 2021/11/19 (updated: 2021-11-26)
 
 ---
 
@@ -43,7 +43,7 @@ name: intro
 
 ## Etude de la fréquence cardiaque au repos
 
-On a mesuré la fréquence cardiaque de 20 femmes et 20 hommes ayantactivités de loisirs différentes.
+On a mesuré la fréquence cardiaque de 12 femmes et 12 hommes ayantactivités de loisirs différentes.
 
 
 
@@ -90,7 +90,6 @@ template: intro
 
 On étudie le lien entre  
 - une variable quantitative notée `\(Y\)` (la fréquence cardiaque),
-- et deux facteurs (variables qualitatives) pouvant prendre respectivement `\(I\)` modalités (I=2 pour le Sexe)  et J modalités (J=5 pour le Activite)
 
 Les données peuvent être visualisées à l'aide d'un boxplot.
 
@@ -302,7 +301,7 @@ avec
 `\(I=3, J= 2\)` 
 
 ### Nombre de paramètres
-- 10 paramètres de moyenne
+- 6 paramètres de moyenne
 - 1 paramètre de variance
 
 ---
@@ -410,7 +409,7 @@ template: model
   &lt;tr&gt;
     &lt;td&gt;1&lt;/td&gt;
     &lt;td&gt; `\(\mu_{11}\)` &lt;/td&gt;
-    &lt;td&gt; $\mu $ &lt;/td&gt;
+    &lt;td&gt; `\(\mu\)` &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
     &lt;td&gt;2&lt;/td&gt;
@@ -497,7 +496,7 @@ avec
 
 ### Nombre de paramètres du modèle
 
-- `\(I*J\)` paramètres de moyenne  
+- `\(I*J\)` paramètres de moyenne  non contraints
 - 1 paramètre de variance `\(\class{rouge}{\sigma^2}\)`
 
 
@@ -523,7 +522,7 @@ Y_{ijk}\\
 \vdots\\
 Y_{IJn_{IJ}}\end{pmatrix},
  \quad
-{\bf{X}} =\overset{\color{gray}{\begin{matrix}\mu &amp; \alpha_{2} &amp;  \ldots &amp; \alpha_{I} &amp; $\beta_2 &amp; \ldots &amp;\beta_{J} &amp; \gamma_{22} &amp; \gamma_{23} &amp; \ldots  &amp;\gamma_{IJ}\end{matrix}}}{\begin{pmatrix}
+{\bf{X}} =\overset{\color{gray}{\begin{matrix}\mu &amp; \alpha_{2} &amp;  \ldots &amp; \alpha_{I} &amp; \beta_2 &amp; \ldots &amp;\beta_{J} &amp; \gamma_{22} &amp; \gamma_{23} &amp; \ldots  &amp;\gamma_{IJ}\end{matrix}}}{\begin{pmatrix}
 1 &amp; 0 &amp; \ldots &amp; 0 &amp; 0 &amp; \ldots 0 &amp; 0 &amp; 0 &amp; \ldots 0\\
 1 &amp; 0 &amp; \ldots &amp; 0 &amp; 0 &amp; \ldots 0 &amp; 0 &amp; 0 &amp; \ldots 0\\
 \vdots\\
@@ -593,23 +592,23 @@ Ecrire la matrice `\(X\)`.
 .pull-righ[
 
 ```r
-Mcomp &lt;- lm(freqC ~ Sexe + Activite + Sexe:Activite, data = freqdata)
+Mcomp &lt;- lm(freqC ~ Activite + Sexe + Sexe:Activite, data = freqdata)
 model.matrix(Mcomp)[1:10, ]
 ```
 
 ```
-   (Intercept) SexeM ActivitePilates ActivitePétanque SexeM:ActivitePilates
-1            1     0               0                0                     0
-2            1     0               0                0                     0
-3            1     0               0                0                     0
-4            1     0               0                0                     0
-5            1     1               0                0                     0
-6            1     1               0                0                     0
-7            1     1               0                0                     0
-8            1     1               0                0                     0
-9            1     0               1                0                     0
-10           1     0               1                0                     0
-   SexeM:ActivitePétanque
+   (Intercept) ActivitePilates ActivitePétanque SexeM ActivitePilates:SexeM
+1            1               0                0     0                     0
+2            1               0                0     0                     0
+3            1               0                0     0                     0
+4            1               0                0     0                     0
+5            1               0                0     1                     0
+6            1               0                0     1                     0
+7            1               0                0     1                     0
+8            1               0                0     1                     0
+9            1               1                0     0                     0
+10           1               1                0     0                     0
+   ActivitePétanque:SexeM
 1                       0
 2                       0
 3                       0
@@ -791,7 +790,7 @@ On a mesuré la fréquence cardiaque de 12 femmes et 12 hommes pratiquant des ac
 
 
 --
-&lt;p class="question"&gt; Le sexe ou le type d'activité  sont ils liés à la fréquence carsdiaque au repos ?&lt;/p&gt;
+&lt;p class="question"&gt; Le sexe ou le type d'activité  sont ils liés à la fréquence cardiaque au repos ?&lt;/p&gt;
 
 
 ---
@@ -989,79 +988,17 @@ SSM &amp; = \underbrace{RSS_0 - RSS_{2}}_{R(\beta\vert \mu )} + \underbrace{{RSS
 
 --
 
-On a fait un choix pour les parties confondues
+On fait un choix pour les parties confondues
 
 &lt;img src="./RSS5.png" width="55%" height="30%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 template: variance_decomposition
-## Mathématiquement
-
-On veut décomposer la variabilité attribuée au modèle selon les différentes sources.
-
-Considérons les différents modèles possibles
-
-`$$\begin{align}
-M_0\ :\ Y_{ijk} &amp;= \mu + E_{ijk}\\
-M_{1}\ :\ Y_{ijk} &amp;= \mu + \alpha_i + E_{ijk}\\
-M_{2}\ :\ Y_{ijk} &amp;= \mu + \beta_j + E_{ijk}\\
-M_{12}\ :\ Y_{ijk} &amp;= \mu + \alpha_i + \beta_j + E_{ijk}\\
-M_{comp}\ :\ Y_{ijk} &amp;= \mu + \alpha_i + \beta_j +\gamma_{ij} + E_{ijk}\\
-\end{align}$$`
-
---
-
-&lt;a class = question&gt; Comment mesurer l'effet des différents facteurs&lt;/a&gt; 
-
---
-
-Mesurer la réduction de variabilité liée à la prise en compte d'un facteur.
-
-
----
-count: false
-template: variance_decomposition
-## Réduction de variabilité
-
-`$$\begin{align}
-SSM &amp; = RSS_0 - RSS_{comp}\\
-SSM &amp; = \underbrace{RSS_0 - RSS_{1}}_{R(\alpha\vert \mu )} + \underbrace{RSS_1 - RSS_{12}}_{R(\beta\vert\alpha,\mu)} + {RSS_{12} - RSS_{comp}} \\
-\end{align}$$`
-
-
-
-&lt;img src="./RSS4_Rbeta.png" width="55%" height="30%" style="display: block; margin: auto;" /&gt;
-
-
-
----
-count: false
-template: variance_decomposition
-## Réduction de variabilité
-
-`$$\begin{align}
-SSM &amp; = RSS_0 - RSS_{comp}\\
-SSM &amp; = \underbrace{RSS_0 - RSS_{1}}_{R(\alpha\vert \mu )} + \underbrace{RSS_1 - RSS_{12}}_{R(\beta\vert\alpha,\mu)} + \underbrace{RSS_{12} - RSS_{comp}}_{R(\gamma\vert \beta, \alpha, \mu)} \\
-\end{align}$$`
-
-
-
-&lt;img src="./RSS4.png" width="55%" height="30%" style="display: block; margin: auto;" /&gt;
-
-
-
----
-template: variance_decomposition
-## Décomposition de type 1
-
-Rôle asymétrique des facteurs (l'ordre des facteurs importe).
-
---
 
 ## Décomposition de type 2
 
-But : symétriser le rôle des différents facteurs
+But : Symétriser le rôle des différents facteurs
 
 &lt;img src="./RSS5.png" width="45%" height="30%" style="display: block; margin: auto;" /&gt;
 
@@ -1143,7 +1080,9 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ---
 name: comp_moyenne
 # Comparaison des différents groupes
+
 --
+
 ## Moyennes ajustées
 
 C'est la moyenne qu'on observerait dans un plan d'expérience équilibré
@@ -1239,9 +1178,9 @@ avec
 - `\(i=1,\ldots,I\)` le niveau du facteur 1,
 - `\(x_{ik}\)` la mesure de la variable quantitative `\(x\)` sur l'individu `\(k\)` du groupe `\(i\)`, 
 - `\(\class{rouge}{\mu}\)` l'ordonnée à l'origine de référence,
-- `\(\class{rouge}{\alpha_i}\)` l'effet différentiel de l'espèce `\(i\)` sur l'ordonnée à l'origine, 
+- `\(\class{rouge}{\alpha_i}\)` l'effet différentiel de l'espèce `\(i\)` sur l'ordonnée à l'origine, ( `\(\alpha_1=0\)` )
 - `\(\class{rouge}{\beta}\)` l'effet de la variable `\(x\)` pour le groupe de référence,   
-- `\(\class{rouge}{\gamma_i}\)` l'effet différentiel de la variable `\(x\)` pour le groupe `\(i\)` par rapport au groupe de référence,  
+- `\(\class{rouge}{\gamma_i}\)` l'effet différentiel de la variable `\(x\)` pour le groupe `\(i\)` par rapport au groupe de référence ( `\(\gamma_1=0\)` ),  
 - `\(\class{rouge}{\sigma^2}\)` la variance commune à tous les groupes.
 
 
@@ -1308,7 +1247,9 @@ Model 2: bill_depth_mm ~ species + bill_length_mm + species:bill_length_mm
 ```
 
 
---- 
+---
+
+template: ancova
 
 * Que teste t on maintenant ?
 
@@ -1337,8 +1278,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 # Ce qu'il faut absolument savoir pour les TDs
 
-- savoir reconnaître une situtation d'e régression multiple
-'analyse de la variance à deux facteurs
+- savoir reconnaître une situtation d'analyse de la variance à deux facteurs
 
 --
   * On cherche à comprendre le lien entre une variable d'intérêt `\(Y\)` et deux variables explicatives qualitatives.
