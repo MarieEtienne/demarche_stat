@@ -59,7 +59,7 @@ ggplot <- function(...) ggplot2::ggplot(...) + scale_fill_manual(values = wesand
 
 ## Etude de la fréquence cardiaque au repos
 
-On a mesuré la fréquence cardiaque de 20 femmes et 20 hommes ayantactivités de loisirs différentes.
+On a mesuré la fréquence cardiaque de 12 femmes et 12 hommes ayantactivités de loisirs différentes.
 
 
 
@@ -107,7 +107,6 @@ template: intro
 
 On étudie le lien entre  
 - une variable quantitative notée $Y$ (la fréquence cardiaque),
-- et deux facteurs (variables qualitatives) pouvant prendre respectivement $I$ modalités (I=2 pour le Sexe)  et J modalités (J=5 pour le Activite)
 
 Les données peuvent être visualisées à l'aide d'un boxplot.
 
@@ -357,7 +356,7 @@ avec
 $I=3, J= 2$ 
 
 ### Nombre de paramètres
-- 10 paramètres de moyenne
+- 6 paramètres de moyenne
 - 1 paramètre de variance
 
 ---
@@ -465,7 +464,7 @@ template: model
   <tr>
     <td>1</td>
     <td> $\mu_{11}$ </td>
-    <td> $\mu $ </td>
+    <td> $\mu$ </td>
   </tr>
   <tr>
     <td>2</td>
@@ -552,7 +551,7 @@ avec
 
 ### Nombre de paramètres du modèle
 
-- $I*J$ paramètres de moyenne  
+- $I*J$ paramètres de moyenne  non contraints
 - 1 paramètre de variance $\class{rouge}{\sigma^2}$
 
 
@@ -578,7 +577,7 @@ Y_{ijk}\\
 \vdots\\
 Y_{IJn_{IJ}}\end{pmatrix},
  \quad
-{\bf{X}} =\overset{\color{gray}{\begin{matrix}\mu & \alpha_{2} &  \ldots & \alpha_{I} & $\beta_2 & \ldots &\beta_{J} & \gamma_{22} & \gamma_{23} & \ldots  &\gamma_{IJ}\end{matrix}}}{\begin{pmatrix}
+{\bf{X}} =\overset{\color{gray}{\begin{matrix}\mu & \alpha_{2} &  \ldots & \alpha_{I} & \beta_2 & \ldots &\beta_{J} & \gamma_{22} & \gamma_{23} & \ldots  &\gamma_{IJ}\end{matrix}}}{\begin{pmatrix}
 1 & 0 & \ldots & 0 & 0 & \ldots 0 & 0 & 0 & \ldots 0\\
 1 & 0 & \ldots & 0 & 0 & \ldots 0 & 0 & 0 & \ldots 0\\
 \vdots\\
@@ -633,7 +632,7 @@ Ecrire la matrice $X$.
 --
 .pull-righ[
 ```{r m_comp_false, eval = TRUE, echo = TRUE, out.width="100%"}
-Mcomp <- lm(freqC ~ Sexe + Activite + Sexe:Activite, data = freqdata)
+Mcomp <- lm(freqC ~ Activite + Sexe + Sexe:Activite, data = freqdata)
 model.matrix(Mcomp)[1:10, ]
 ```
 ]
@@ -745,7 +744,7 @@ On a mesuré la fréquence cardiaque de 12 femmes et 12 hommes pratiquant des ac
 
 
 --
-<p class="question"> Le sexe ou le type d'activité  sont ils liés à la fréquence carsdiaque au repos ?</p>
+<p class="question"> Le sexe ou le type d'activité  sont ils liés à la fréquence cardiaque au repos ?</p>
 
 
 ---
@@ -920,7 +919,7 @@ SSM & = \underbrace{RSS_0 - RSS_{2}}_{R(\beta\vert \mu )} + \underbrace{{RSS_2 -
 
 --
 
-On a fait un choix pour les parties confondues
+On fait un choix pour les parties confondues
 
 ```{r var_5, eval =TRUE, out.width = "55%"}
 knitr::include_graphics('./RSS5.png')
@@ -929,76 +928,10 @@ knitr::include_graphics('./RSS5.png')
 
 ---
 template: variance_decomposition
-## Mathématiquement
-
-On veut décomposer la variabilité attribuée au modèle selon les différentes sources.
-
-Considérons les différents modèles possibles
-
-$$\begin{align}
-M_0\ :\ Y_{ijk} &= \mu + E_{ijk}\\
-M_{1}\ :\ Y_{ijk} &= \mu + \alpha_i + E_{ijk}\\
-M_{2}\ :\ Y_{ijk} &= \mu + \beta_j + E_{ijk}\\
-M_{12}\ :\ Y_{ijk} &= \mu + \alpha_i + \beta_j + E_{ijk}\\
-M_{comp}\ :\ Y_{ijk} &= \mu + \alpha_i + \beta_j +\gamma_{ij} + E_{ijk}\\
-\end{align}$$
-
---
-
-<a class = question> Comment mesurer l'effet des différents facteurs</a> 
-
---
-
-Mesurer la réduction de variabilité liée à la prise en compte d'un facteur.
-
-
----
-count: false
-template: variance_decomposition
-## Réduction de variabilité
-
-$$\begin{align}
-SSM & = RSS_0 - RSS_{comp}\\
-SSM & = \underbrace{RSS_0 - RSS_{1}}_{R(\alpha\vert \mu )} + \underbrace{RSS_1 - RSS_{12}}_{R(\beta\vert\alpha,\mu)} + {RSS_{12} - RSS_{comp}} \\
-\end{align}$$
-
-
-
-```{r var_beta, eval =TRUE, out.width = "55%"}
-knitr::include_graphics('./RSS4_Rbeta.png')
-```
-
-
-
----
-count: false
-template: variance_decomposition
-## Réduction de variabilité
-
-$$\begin{align}
-SSM & = RSS_0 - RSS_{comp}\\
-SSM & = \underbrace{RSS_0 - RSS_{1}}_{R(\alpha\vert \mu )} + \underbrace{RSS_1 - RSS_{12}}_{R(\beta\vert\alpha,\mu)} + \underbrace{RSS_{12} - RSS_{comp}}_{R(\gamma\vert \beta, \alpha, \mu)} \\
-\end{align}$$
-
-
-
-```{r var_tot, eval =TRUE, out.width = "55%"}
-knitr::include_graphics('./RSS4.png')
-```
-
-
-
----
-template: variance_decomposition
-## Décomposition de type 1
-
-Rôle asymétrique des facteurs (l'ordre des facteurs importe).
-
---
 
 ## Décomposition de type 2
 
-But : symétriser le rôle des différents facteurs
+But : Symétriser le rôle des différents facteurs
 
 ```{r var_tot_2, eval =TRUE, out.width = "45%"}
 knitr::include_graphics('./RSS5.png')
@@ -1070,7 +1003,9 @@ Anova(Mcomp, type = 2)
 ---
 name: comp_moyenne
 # Comparaison des différents groupes
+
 --
+
 ## Moyennes ajustées
 
 C'est la moyenne qu'on observerait dans un plan d'expérience équilibré
@@ -1150,9 +1085,9 @@ avec
 - $i=1,\ldots,I$ le niveau du facteur 1,
 - $x_{ik}$ la mesure de la variable quantitative $x$ sur l'individu $k$ du groupe $i$, 
 - $\class{rouge}{\mu}$ l'ordonnée à l'origine de référence,
-- $\class{rouge}{\alpha_i}$ l'effet différentiel de l'espèce $i$ sur l'ordonnée à l'origine, 
+- $\class{rouge}{\alpha_i}$ l'effet différentiel de l'espèce $i$ sur l'ordonnée à l'origine, ( $\alpha_1=0$ )
 - $\class{rouge}{\beta}$ l'effet de la variable $x$ pour le groupe de référence,   
-- $\class{rouge}{\gamma_i}$ l'effet différentiel de la variable $x$ pour le groupe $i$ par rapport au groupe de référence,  
+- $\class{rouge}{\gamma_i}$ l'effet différentiel de la variable $x$ pour le groupe $i$ par rapport au groupe de référence ( $\gamma_1=0$ ),  
 - $\class{rouge}{\sigma^2}$ la variance commune à tous les groupes.
 
 
@@ -1195,7 +1130,9 @@ anova(M12, Mcomp)
 ```
 
 
---- 
+---
+
+template: ancova
 
 * Que teste t on maintenant ?
 
@@ -1210,8 +1147,7 @@ Anova(Mcomp)
 
 # Ce qu'il faut absolument savoir pour les TDs
 
-- savoir reconnaître une situtation d'e régression multiple
-'analyse de la variance à deux facteurs
+- savoir reconnaître une situtation d'analyse de la variance à deux facteurs
 
 --
   * On cherche à comprendre le lien entre une variable d'intérêt $Y$ et deux variables explicatives qualitatives.
