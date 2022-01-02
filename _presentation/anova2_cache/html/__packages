@@ -18,6 +18,8 @@ xaringan
 flipbookr
 xaringanExtra
 cowplot
+plotly
+FactoMineR
 carData
 car
 emmeans

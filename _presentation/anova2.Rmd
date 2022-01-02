@@ -84,9 +84,9 @@ En plus du sexe, il est possible que le type d'activité  influence également l
 
 ```{r Activite, eval = TRUE, message=FALSE}
 freqdata %>% mutate(Activite_Fact = as.factor(Activite)) -> freqdata
-freqdata %>% ggplot() + aes(y = freqC, x = Activite_Fact, fill = Sexe) + geom_boxplot() + xlab('Activite') + ylab("Fréquence cardiaque")
+freqdata %>% ggplot() + aes(y = freqC, x = Activite_Fact, fill = Sexe, col = Sexe) + geom_boxplot(alpha = 0.5) + xlab('Activite') + ylab("Fréquence cardiaque")
 ```
---
+
 
 On souhaite répondre aux questions suivantes:
 
@@ -897,7 +897,7 @@ M_{comp}\ :\ Y_{ijk} &= \mu + \alpha_i + \beta_j +\gamma_{ij} + E_{ijk}\\
 --
 
 
-* $RSS_2 - RSS_{12}$ mesure ce que l'on gagne à utiliser le modèle $M_{12}$ plutôt que $M_2$, c'est l'effet du facteur 2 après s'être ajusté au facteur 1
+* $RSS_2 - RSS_{12}$ mesure ce que l'on gagne à utiliser le modèle $M_{12}$ plutôt que $M_2$, c'est l'effet du facteur 1 après s'être ajusté au facteur 1
 
 * $RSS_1 - RSS_{12}$ mesure ce que l'on gagne à utiliser le modèle $M_{12}$ plutôt que $M_1$, c'est l'effet du facteur 2 après s'être ajusté au facteur 2
 
