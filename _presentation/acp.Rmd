@@ -467,14 +467,14 @@ name: interprétation
 ## Qualité de la représentation des individus
 
 
-.pull-left[
+.pull-lefts[
 ```{r quali_rep, eval =TRUE, out.width = "40%"}
 knitr::include_graphics('./cos2_ind.png')
 ```
 ]
 
 --
-.pull-right[
+.pull-rightb[
 
 * Le cosinus (au carré pour éviter les questions de signe) de l'angle entre la composante principale est le vecteur $\vec{Ox_{i}}$ nous informe de la qualité de la représentation de l'individu.
 
@@ -536,7 +536,7 @@ template: interprétation
 
 ## Visualisation conjointe individus et variables sur le premier plan principal  1-2
 
-```{r conjoint, eval =TRUE}
+```{r conjoint, eval =TRUE, out.width = "90%"}
 p1 <- plot(penguins.PCA)
 p2 <- plot(penguins.PCA, choix = "var")
 
@@ -551,7 +551,7 @@ template: interprétation
 
 ## Visualisation conjointe individus et variables sur le premier plan principal 3-4
 
-```{r conjoint_bis, eval =TRUE}
+```{r conjoint_bis, eval =TRUE, out.width = "90%"}
 p1 <- plot(penguins.PCA, axes = c(3,4))
 p2 <- plot(penguins.PCA, choix = "var", axes = c(3,4))
 
