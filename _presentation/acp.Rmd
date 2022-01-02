@@ -350,7 +350,6 @@ name: construction
 ## L'intuition 
 
 ### Situation simplifiée à 2 variables
-.left-column[
 
 ```{r intuition, eval = TRUE, out.width = "60%"}
 eig_res <- eigen(cor(penguins_centre[, c(4,3)]))
@@ -364,10 +363,8 @@ penguins_centre %>% ggplot() + geom_point(aes(x  =  body_mass_g, y = flipper_len
   geom_segment(aes(x= - 4*pc1[1], xend = 4*pc1[1], y = -4*pc1[2], yend = 4*pc1[2]),  col = "#1F908E")
 ```
 
-]
 --
 
-.right-column[
 
 
 ```{r inertia, eval = TRUE}
@@ -386,7 +383,6 @@ $$\class{jaune}{I_{\Delta} =  1}$$
 
 $$\class{vert}{I_{\Delta} =  1.89}$$
 
-]
 
 ---
 
