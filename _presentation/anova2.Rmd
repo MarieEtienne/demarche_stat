@@ -84,7 +84,7 @@ En plus du sexe, il est possible que le type d'activité  influence également l
 
 ```{r Activite, eval = TRUE, message=FALSE}
 freqdata %>% mutate(Activite_Fact = as.factor(Activite)) -> freqdata
-freqdata %>% ggplot() + aes(y = freqC, x = Activite_Fact, fill = Sexe, col = Se) + geom_boxplot(alpha = 0.5) + xlab('Activite') + ylab("Fréquence cardiaque")
+freqdata %>% ggplot() + aes(y = freqC, x = Activite_Fact, fill = Sexe, col = Sexe) + geom_boxplot(alpha = 0.5) + xlab('Activite') + ylab("Fréquence cardiaque")
 ```
 
 
