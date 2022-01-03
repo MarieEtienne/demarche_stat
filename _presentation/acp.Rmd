@@ -113,7 +113,7 @@ On a mesuré les caractéristiques morphologiques de divers manchots :
 
 .pull-right[
 
-* bill_length_mm ! la longueur du bec,
+* bill_length_mm : la longueur du bec,
 
 * bill_depth_mm : l'épaisseur du bec, 
 
@@ -158,15 +158,15 @@ et
 ---
 template: intro
 
-## Même question dans des domaines strès variés
+## Même question dans des domaines très variés
 
-• Analyse sensorielle : note du descripteur $k$ pour le produit $i$
+* Analyse sensorielle : note du descripteur $k$ pour le produit $i$
 
-• Economie : valeur de l’indicateur $k$ pour l’année $i$
+* Economie : valeur de l’indicateur $k$ pour l’année $i$
 
-• Génomique : expression du gène $k$ pour l'e patient'échantilon  $i$
+* Génomique : expression du gène $k$ pour l'e patient'échantilon  $i$
 
-• Marketing : valeur d’indice de satisfaction $k$ pour la marque $i$
+* Marketing : valeur d’indice de satisfaction $k$ pour la marque $i$
 
 etc ...
 
@@ -241,13 +241,13 @@ template: intro
 
 .rouge[Précautions :] 
 
-* pour rendre comparable des variables d'unité différentes, on les centre et on les réduit
+* pour rendre comparable des variables exprimées dans des unités différentes, on les centre et on les réduit
 
 on définit les mesures centrées réduites 
 
 $$x_{ik}' = \frac{x_{ik} - x_{\bullet k}}{s_k}$$
 
-dans la suite, on ommet le $\prime$ pour faciliter l'écriture.
+dans la suite, on omet le $ ^\prime$ pour faciliter l'écriture.
 
 
 ---
