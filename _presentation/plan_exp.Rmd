@@ -7,7 +7,7 @@ institute: https://github.com/marieetienne
 csl: ../courses_tools/resources/apa-no-doi-no-issue.csl
 output:
    xaringan::moon_reader:
-    css: ['metropolis',  'mpe_pres_HDR.css']
+    css: ['metropolis',  'mpe_pres.css']
     lib_dir: libs
     nature:
       ratio: 16:10
@@ -16,6 +16,7 @@ output:
       countIncrementalSlides: false
       beforeInit: '../courses_tools/resources/collapseoutput.js'
 ---
+
 name: intro
 
 <!-- F1D763 -->
@@ -27,6 +28,7 @@ name: intro
 
 ```{r setup, include = FALSE,  eval = TRUE}
 library('RefManageR')
+library('tidyverse')
 main_dir <-  '..'
 common_img_dir <- file.path(main_dir,'courses_tools','resources', 'common_figs')
 course_img_dir <- file.path(main_dir,'resources', 'figs')
@@ -46,6 +48,473 @@ xaringanExtra::use_fit_screen()
 ```
 
 
-name: intro
-# Introduction
+# Introduction : Importance du design expérimental 
+
+--
+## Retour sur un exemple : le gras du cochon !
+
+.pull-left[
+```{r gras, echo = FALSE, eval = TRUE}
+dta <-  read.table("https://dcauseur.netlify.app/teaching/data/pig.txt",header=TRUE,stringsAsFactors=TRUE) %>% 
+  as_tibble() %>% 
+  dplyr::select(BFAT, GENET) %>% 
+  filter(GENET %in% c("P25", "P0")) %>% 
+  mutate(GENET = droplevels(GENET))
+dta %>% summary()
+```
+]
+
+
+--
+
+.pull-right[
+
+* Ces données sont modélisées par $$Y_{ik} = \mu_i + E_{ik}$$ 
+
+* Intérêt pour $\delta = \mu_1-\mu_2$ 
+
+  - Estimation de $\delta$ par $\hat{\delta}$
+  - Loi de l'estimateur $D$ de $\delta$ : $\mathcal{N}\left (\delta, \sigma^2 \left(\frac{1}{n_2}+\frac{1}{n_1}\right)\right)$
+  
+* Dans l'exemple $n_1=15$, $n_2=23$, donc  $\frac{1}{n_1}+\frac{1}{n_2}= 0.110$
+
+* Si $n_1=19$  et $n_2=19$,  $\frac{1}{n_1}+\frac{1}{n_2}= 0.105$
+]
+
+--
+
+$$IC_{1-\alpha}(\delta)= \left[ \hat{\delta} - q_{1-\alpha/2} \hat{\sigma} \class{vert}{\sqrt{\frac{1}{n_1} +\frac{1}{n_2}}} ; 
+\hat{\delta} + q_{1-\alpha/2} \hat{\sigma} \class{vert}{\sqrt{\frac{1}{n_1} +\frac{1}{n_2}}} \right]$$
+
+--
+
+.rouge[ Gain en précision avec un design experimental bien choisi]
+
+---
+template: intro
+
+## Retour sur la fréquence cardiaque et l'activité sportive
+
+.pull-left[
+
+```{r freqdata, eval=TRUE,  warning=FALSE, message = FALSE, echo = FALSE }
+freqdata <- read.csv('https://marieetienne.github.io/datasets/activite_FC.csv', stringsAsFactors = TRUE) %>% 
+  dplyr::select(freqC, Activite, Sexe) %>% 
+  mutate(Activite = factor(Activite, levels = c('Natation', 'Pilates', 'Pétanque'))) %>% arrange(Activite, Sexe) %>% 
+  dplyr::filter(Activite %in% c("Pilates", "Natation"))  %>% mutate(Activite = droplevels(Activite))
+freqdata %>% group_by(Activite, Sexe) %>% summarise(nobs = n())
+```
+]
+
+--
+
+.pull-right[
+
+* Ces données sont modélisées par $$Y_{ik} = \mu + \alpha_i + \beta_j + \gamma_{ij}+ E_{ik},$$  
+cas particulier de $$Y=X\theta +E.$$
+
+* Loi d l'estimateur $T$ de $\theta$:  $\mathcal{N}\left(\theta, \sigma^2 (X^{\intercal} X)^{-1}\right)$
+
+]
+
+--
+
+* $n_{ij}=4$, pour tout $i,j$. Plan d'expérience **équilibré** :séparation complète de l'effet du Sexe et de l'Activité.
+
+
+```{r var_eq, eval =TRUE, echo = FALSE,  out.width = "40%"}
+knitr::include_graphics('./RSS3_eq.png')
+```
+
+---
+
+template: intro
+
+## Retour sur la fréquence cardiaque et l'activité sportive
+
+
+
+.pull-left[
+
+* Que se passe-t-il si, dans notre expérience, on a le design suivant ?
+
+
+```{r freqdata_2, eval=TRUE,  warning=FALSE, message = FALSE, echo = FALSE }
+freqdata %>% group_by(Activite, Sexe) %>% summarise(nobs = n()) %>% ungroup() %>% mutate(nobs= c(8,0,0,8))
+```
+
+
+
+
+```{r var_counfound, eval =TRUE, echo = FALSE,  out.width = "80%"}
+knitr::include_graphics('./Rss_counfound.png')
+```
+
+et $X^{\intercal} X$ n'est pas inversible (ereur dans les sorties R *aliased coefficient*)
+
+]
+--
+
+.pull-right[
+
+* Cas général : quand les effets ne sont ni complètement confondus ni tout à fait séparés.
+
+```{r var_qqc, eval =TRUE, echo = FALSE,  out.width = "80%"}
+knitr::include_graphics('./RSS3.png')
+```
+
+]
+
+
+--
+
+.rouge[Le design expérimental est essentiel et doit être réfléchi en amont]
+
+
+---
+template: intro
+
+## Retour sur la fréquence cardiaque et l'activité sportive
+
+Plan d'expérience : 
+```{r freqdata, eval=TRUE,  warning=FALSE, message = FALSE, echo = FALSE }
+```
+
+* Combien de paramètres à estimer dans le modèle suivant ?  $$Y_{ik} = \mu + \alpha_i + \beta_j + \gamma_{ij}+ E_{ik},$$  
+
+--
+
+* $$DDL_{Res} =  ,$$ 
+
+--
+
+* Que se passerait-il si on avait exactement 4 observations ?
+
+--
+
+Si on veut inclure dans notre étude un statut enfant versus adulte, combien faut-il au minimum d'expériences ?
+
+
+---
+name: plan_fractionnaire
+
+# Plans fractionnaires 
+--
+
+## Exemple de problème de design expérimental  : La Galette !
+
+.vert[Objectif :] Réduire le nombre de galettes déchirées lorsqu'on les déplie
+
+
+.pull-left[
+
+Plusieurs aspects clés dans la recette :
+
+  * Quantité d'eau (45%, 55%)
+  * Température de cuisson (180, 220)
+  * Etalement de la pâte (automatique, manuel)
+  * Quantité de pâte déposée (55g, 65g)
+  * Farine (bio, traditionnelle)
+  * Pliage (à chaud, à froid)
+  * Température de stockage (6 ou 15 degrés)
+
+]
+
+.pull-right[  
+.vert[7 facteurs à deux modalités]
+]
+--
+
+.center[
+Combien de combinaisons possibles    
+  
+  * si on veut étudier .rouge[2] facteurs : 
+  * si on veut étudier .rouge[3] facteurs : 
+  * si on veut étudier .rouge[4] facteurs  :
+]
+
+---
+template: plan_fractionnaire
+
+## Exemple de problème de design expérimental  : La Galette !
+
+.vert[Objectif :] Réduire le nombre de galettes déchirées lorsqu'on les déplie
+
+.pull-left[
+
+Plusieurs aspects clés dans la recette :
+
+  * Quantité d'eau (45%, 55%)
+  * Température de cuisson (180, 220)
+  * Etalement de la pâte (automatique, manuel)
+  * Quantité de pâte déposée (55g, 65g)
+  * Farine (bio, traditionnelle)
+  * Pliage (à chaud, à froid)
+  * Température de stockage (6 ou 15 degrés)
+
+]
+
+.pull-right[  
+.vert[7 facteurs à deux modalités]
+]
+
+
+
+.center[
+Combien de combinaisons possibles    
+  
+  * si on veut étudier .rouge[2] facteurs : $2^{\class{rouge}{2}}$
+  * si on veut étudier .rouge[3] facteurs : $2^{\class{rouge}{3}}$
+  * si on veut étudier .rouge[4] facteurs  : $2^{\class{rouge}{4}}$
+  * si on veut étudier .rouge[7] facteurs  : $2^{\class{rouge}{7}}$
+]
+
+
+
+
+
+---
+
+template: plan_fractionnaire
+
+.care[Dans toute la suite, on va considérer desfacteurs à 2 niveaux seulement.]
+
+## Les plans complets : $2^p$
+
+
+### Cas de 2 facteurs : plan $2^2$
+
+On note $A$ le facteur 1 et $B$ le facteur 2. Les modalités sont notées $1$ et $-1$.
+
+
+#### Matrice des essais
+
+.pull-left[
+$$\begin{pmatrix} 
++1 & +1 \\
++1 & -1 \\
+-1 & +1 \\
+-1 & -1 \\
+\end{pmatrix}$$
+
+] 
+
+--
+
+.pull-right[
+
+A : Quantité d'eau, B : Pliage
+
+* Essai 1 : 45% d'eau , pliage à chaud
+* Essai 2 : 45% d'eau , pliage à froid
+* Essai 3 : 55% d'eau , pliage à chaud
+* Essai 4 : 55% d'eau , pliage à froid
+
+]
+
+
+
+
+---
+
+template: plan_fractionnaire
+
+.care[Dans toute la suite, on va considérer des facteurs à 2 niveaux seulement.]
+
+## Les plans complets : $2^p$
+
+
+### Cas de 2 facteurs : plan $2^2$
+
+On note $A$ le facteur 1 et $B$ le facteur 2. Les modalités sont notées $1$ et $-1$.
+
+
+#### Matrice de design, matrice des effets
+
+C'est la matrice $X$ dans le modèle qui est utilisé : $$Y = X\theta + E$$
+
+.pull-left[
+
+Modèle d'analyse de la variance à 2 facteurs avec interaction et les contraintes classiques de R 
+
+
+$$Y_{ij} = \mu + \alpha_i +\beta_j + \gamma_{ij} + E_{ij},$$
+et $\alpha_1=\beta_1=\gamma_{11}=\gamma_{12}=\gamma_{21}=0.$ ]
+
+.pull-right[
+
+$$X = \overset{\color{gray}{\begin{matrix}\mu & \alpha_{2} & \beta_2 & \gamma_{22}\end{matrix}}}{\begin{pmatrix}
+1 & 0 & 0 & 0\\
+1 & 0 & 1 & 0\\
+1 & 1 & 0 & 0\\
+1 & 1 & 1 & 1\\
+ \end{pmatrix}},\quad \theta =\begin{pmatrix}\mu \\ \alpha_2 \\ \beta_2 \\ \gamma_{22} \end{pmatrix}$$
+
+] 
+
+--
+
+C'est trop facile !
+
+.rouge[En acceptant de changer de système de contraintes, on pourra travailler plus facilement avec les plans !]
+
+
+
+---
+
+template: plan_fractionnaire
+
+
+## Un petit retour sur l'analyse de la variance à 2 facteurs et au-delà
+
+
+$$Y_{ij} = \mu + \alpha_i +\beta_j + \gamma_{ij} + E_{ij},$$ 
+   système de contraintes pour s'assurer que le modèle ne contient pas de paramètres inutiles
+
+.pull-left[
+.orange[Les contraintes classiques]
+
+.font80[
+et $\alpha_1=\beta_1=\gamma_{11}=\gamma_{12}=\gamma_{21}=0.$ 
+
+$$X = \overset{\color{gray}{\begin{matrix}\mu & \alpha_{2} & \beta_2 & \gamma_{22}\end{matrix}}}{\begin{pmatrix}
+1 & 0 & 0 & 0\\
+1 & 0 & 1 & 0\\
+1 & 1 & 0 & 0\\
+1 & 1 & 1 & 1\\
+ \end{pmatrix}},\quad \theta =\begin{pmatrix}\mu \\ \alpha_2 \\ \beta_2 \\ \gamma_{22} \end{pmatrix}$$
+]
+]
+
+--
+
+
+.pull-right[
+.orange[Système alternatif commode pour  plans d'expérience]
+
+.font80[ $\alpha_1+\alpha_2=0; \beta_1+\beta_2=0, \gamma_{11}+\gamma_{12}=0; \gamma_{21}+\gamma_{22}=0;$
+
+$\gamma_{11}+\gamma_{21}=0; \gamma_{12}+\gamma_{22}=0.$ 
+
+
+$$X = \overset{\color{gray}{\begin{matrix}\ \mu & \ \alpha_{1} & \ \beta_1 & \ \gamma_{11}\end{matrix}}}{\begin{pmatrix}
+\ 1 & \ 1 & 1 & 1\\
+\ 1 & \ 1 & -1 & -1\\
+\ 1 & -1 & 1 & -1\\
+\ 1 & -1 & -1 & 1\\
+ \end{pmatrix}},\quad \theta =\begin{pmatrix}\mu \\ \alpha_1 \\ \beta_1 \\ \gamma_{11} \end{pmatrix}$$
+]
+
+] 
+
+.rouge[Les deux systèmes conduisents aux mêmes prédictions, aux mêmes tests sur les effets. L'interprétation des paramètre change]
+
+
+---
+
+template: plan_fractionnaire
+
+
+## Pourquoi c'est plus simple ?
+
+--
+
+### Cas de 2 facteurs : plan $2^2$
+
+On note $\class{jaune}{A}$ le facteur 1 et $\class{bleu}{B}$ le facteur 2. Les modalités sont notées $1$ et $-1$.
+
+
+
+
+.pull-left[
+#### Matrice des essais
+.font80[
+
+$$\begin{pmatrix} 
+\class{jaune}{+1} & \class{bleu}{+1} \\
+\class{jaune}{+1} & \class{bleu}{-1} \\
+\class{jaune}{-1} & \class{bleu}{+1} \\
+\class{jaune}{-1} & \class{bleu}{-1} \\
+\end{pmatrix}$$
+]
+
+] 
+--
+
+.pull-right[
+
+#### Matrice des effets du modèle d'anova à 2 facteurs
+
+
+.font80[ 
+
+$$X = {\begin{pmatrix}
+\class{rouge}{1} & \class{jaune}{1} & \class{bleu}{1} & \class{vert}{1}\\
+\class{rouge}{1} & \class{jaune}{1} & \class{bleu}{-1} & \class{vert}{-1}\\
+\class{rouge}{1} & \class{jaune}{-1} & \class{bleu}{1} & \class{vert}{-1}\\
+\class{rouge}{1} & \class{jaune}{-1} & \class{bleu}{-1} & \class{vert}{1}\\
+ \end{pmatrix}}$$
+]
+
+] 
+
+
+---
+
+template: plan_fractionnaire
+
+
+## Soyons fous : plan complet pour 3 facteurs 
+
+--
+
+### Cas de 2 facteurs : plan $2^2$
+
+On note $\class{jaune}{A}$ le facteur 1,  $\class{bleu}{B}$ le facteur 2,  $\class{orange}{B}$ le facteur 3. Les modalités sont notées $1$ et $-1$.
+
+Combien de combinaisons possibles ?
+
+--
+
+
+
+.pull-left[
+#### Matrice des essais
+.font80[
+
+$$\overset{\color{gray}{\begin{matrix} A\hspace{.5cm}& B\hspace{.5cm} & C\hspace{.5cm} & AB\hspace{.1cm} & AC\hspace{.1cm} & BC\hspace{.1cm} & ABC \end{matrix}}}{\begin{pmatrix} 
+ \class{jaune}{+1}& \class{bleu}{+1} & \class{orange}{+1} & \class{vert}{+1}& \class{jauneb}{+1}& \class{bleuf}{+1} & +1\\
+\class{jaune}{+1}& \class{bleu}{+1} & \class{orange}{-1} & \class{vert}{+1}& \class{jauneb}{-1}& \class{bleuf}{-1} & -1\\
+ \class{jaune}{+1}& \class{bleu}{-1} & \class{orange}{+1} & \class{vert}{-1}& \class{jauneb}{+1}& \class{bleuf}{-1} & -1\\
+ \class{jaune}{+1}& \class{bleu}{-1} & \class{orange}{-1} & \class{vert}{-1}& \class{jauneb}{-1}& \class{bleuf}{+1} & +1\\
+\class{jaune}{-1}& \class{bleu}{+1} & \class{orange}{+1} & \class{vert}{+1}& \class{jauneb}{-1}& \class{bleuf}{+1}& -1\\
+ \class{jaune}{-1}& \class{bleu}{+1} & \class{orange}{-1} & \class{vert}{+1}& \class{jauneb}{+1}& \class{bleuf}{-1} & +1\\
+ \class{jaune}{-1}& \class{bleu}{-1} & \class{orange}{+1} & \class{vert}{-1}& \class{jauneb}{-1}& \class{bleuf}{-1} & +1\\
+ \class{jaune}{-1}& \class{bleu}{-1} & \class{orange}{-1} & \class{vert}{-1}& \class{jauneb}{+1}& \class{bleuf}{+1}& -1\\
+\end{pmatrix}}$$
+]
+
+] 
+--
+
+.pull-right[
+
+#### Matrice des effets du modèle d'anova à 2 facteurs
+
+
+.font80[ 
+
+$$X = {\begin{pmatrix}
+\class{rouge}{1} & \class{jaune}{1}& \class{bleu}{1} & \class{orange}{1} & \class{vert}{1}& \class{jauneb}{1}& \class{bleuf}{1} & 1\\
+\class{rouge}{1} & \class{jaune}{1}& \class{bleu}{1} & \class{orange}{-1} & \class{vert}{1}& \class{jauneb}{-1}& \class{bleuf}{-1} & -1\\
+\class{rouge}{1} & \class{jaune}{1}& \class{bleu}{-1} & \class{orange}{1} & \class{vert}{-1}& \class{jauneb}{1}& \class{bleuf}{-1} & -1\\
+\class{rouge}{1} & \class{jaune}{1}& \class{bleu}{-1} & \class{orange}{-1} & \class{vert}{-1}& \class{jauneb}{-1}& \class{bleuf}{1} & 1\\
+\class{rouge}{1} & \class{jaune}{-1}& \class{bleu}{1} & \class{orange}{1} & \class{vert}{1}& \class{jauneb}{-1}& \class{bleuf}{1}& -1\\
+\class{rouge}{1} & \class{jaune}{-1}& \class{bleu}{1} & \class{orange}{-1} & \class{vert}{1}& \class{jauneb}{1}& \class{bleuf}{-1} & 1\\
+\class{rouge}{1} & \class{jaune}{-1}& \class{bleu}{-1} & \class{orange}{1} & \class{vert}{-1}& \class{jauneb}{-1}& \class{bleuf}{-1} & 1\\
+\class{rouge}{1} & \class{jaune}{-1}& \class{bleu}{-1} & \class{orange}{-1} & \class{vert}{-1}& \class{jauneb}{1}& \class{bleuf}{1}& -1\\
+ \end{pmatrix}}$$
+]
+
+] 
 

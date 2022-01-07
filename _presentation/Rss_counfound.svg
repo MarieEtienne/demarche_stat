@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="769"
+   height="370"
+   viewBox="0 0 203.46459 97.895835"
+   version="1.1"
+   id="svg830"
+   inkscape:version="1.1.1 (1:1.1+202109281949+c3084ef5ed)"
+   sodipodi:docname="Rss_counfound.svg"
+   inkscape:export-filename="/home/metienne/git/demarche_stat_partie2/_presentation/Rss_counfound.png"
+   inkscape:export-xdpi="192"
+   inkscape:export-ydpi="192"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview832"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="0.9789084"
+     inkscape:cx="382.56899"
+     inkscape:cy="317.19005"
+     inkscape:window-width="1854"
+     inkscape:window-height="1016"
+     inkscape:window-x="66"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     units="px" />
+  <defs
+     id="defs827" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-73.7048,-63.759586)">
+    <rect
+       style="opacity:0.97;fill:#ffeaeb;stroke-width:0.264999;fill-opacity:0.33062774"
+       id="rect15230"
+       width="203.45398"
+       height="98.689293"
+       x="74.065178"
+       y="63.518559" />
+    <ellipse
+       style="opacity:0.97;fill:#999963;fill-opacity:1;stroke:none;stroke-width:0.315655"
+       id="path913"
+       cx="169.76271"
+       cy="110.5393"
+       rx="46.793331"
+       ry="33.947769" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:5.04256px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.31516"
+       x="133.04913"
+       y="107.12872"
+       id="text7587"
+       transform="scale(1.0056771,0.99435495)"><tspan
+         sodipodi:role="line"
+         id="tspan7585"
+         style="stroke-width:0.31516"
+         x="133.04913"
+         y="107.12872">Fact 1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="123.01506"
+       y="97.925644"
+       id="text8515"><tspan
+         sodipodi:role="line"
+         id="tspan8513"
+         style="stroke-width:0.264583"
+         x="123.01506"
+         y="97.925644" /></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:5.04256px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.31516"
+       x="142.63692"
+       y="115.80145"
+       id="text10983"
+       transform="scale(1.0056771,0.99435495)"><tspan
+         sodipodi:role="line"
+         id="tspan10981"
+         style="stroke-width:0.31516"
+         x="142.63692"
+         y="115.80145">Fact2</tspan><tspan
+         sodipodi:role="line"
+         style="stroke-width:0.31516"
+         x="142.63692"
+         y="122.10465"
+         id="tspan10985" /></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:5.04256px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.31516"
+       x="154.74095"
+       y="123.29931"
+       id="text11957"
+       inkscape:export-filename="/home/metienne/git/demarche_stat_partie2/_presentation/text11957.png"
+       inkscape:export-xdpi="192"
+       inkscape:export-ydpi="192"
+       transform="scale(1.0056771,0.99435495)"><tspan
+         sodipodi:role="line"
+         id="tspan11955"
+         style="stroke-width:0.31516"
+         x="154.74095"
+         y="123.29931">Int</tspan></text>
+  </g>
+</svg>
