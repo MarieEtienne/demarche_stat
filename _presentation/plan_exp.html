@@ -17,7 +17,7 @@ class: center, middle, inverse, title-slide
 ## pour tirer un maximum de profits d’une expérimentation
 ### Marie-Pierre Etienne
 ### <a href="https://github.com/marieetienne" class="uri">https://github.com/marieetienne</a>
-### 2020/09/11 (updated: 2022-01-07)
+### 2020/09/11 (updated: 2022-01-09)
 
 ---
 
@@ -65,8 +65,12 @@ name: intro
 
   - Estimation de `\(\delta\)` par `\(\hat{\delta}\)`
   - Loi de l'estimateur `\(D\)` de `\(\delta\)` : `\(\mathcal{N}\left (\delta, \sigma^2 \left(\frac{1}{n_2}+\frac{1}{n_1}\right)\right)\)`
-  
+
 * Dans l'exemple `\(n_1=15\)`, `\(n_2=23\)`, donc  `\(\frac{1}{n_1}+\frac{1}{n_2}= 0.110\)`
+]
+
+--
+.pull-right[
 
 * Si `\(n_1=19\)`  et `\(n_2=19\)`,  `\(\frac{1}{n_1}+\frac{1}{n_2}= 0.105\)`
 ]
@@ -113,7 +117,7 @@ cas particulier de `$$Y=X\theta +E.$$`
 
 --
 
-* `\(n_{ij}=4\)`, pour tout `\(i,j\)`. Plan d'expérience **équilibré** :séparation complète de l'effet du Sexe et de l'Activité.
+* `\(n_{ij}=4\)`, pour tout `\(i,j\)`. Plan d'expérience **équilibré** :séparation complète de la variabilité associée à l'effet du Sexe et de l'Activité.
 
 
 &lt;img src="./RSS3_eq.png" width="40%" /&gt;
@@ -195,15 +199,12 @@ Plan d'expérience :
 * Que se passerait-il si on avait exactement 4 observations ?
 
 --
+.rouge[Le modèle qui contient autant de paramètres que d'observations est appelé  modèle] .care[saturé].
 
-Si on veut inclure dans notre étude un statut enfant versus adulte, combien faut-il au minimum d'expériences ?
 
 
 ---
-name: plan_fractionnaire
-
-# Plans fractionnaires 
---
+template: intro
 
 ## Exemple de problème de design expérimental  : La Galette !
 
@@ -238,7 +239,7 @@ Combien de combinaisons possibles
 ]
 
 ---
-template: plan_fractionnaire
+template: intro
 
 ## Exemple de problème de design expérimental  : La Galette !
 
@@ -275,23 +276,24 @@ Combien de combinaisons possibles
 
 
 
+.care[Dans toute la suite, on va considérer des facteurs à 2 niveaux seulement.]
+
+
 
 
 ---
+name: plan_complet
+# Les plans factoriels complets `\(2^p\)`
 
-template: plan_fractionnaire
+--
 
-.care[Dans toute la suite, on va considérer desfacteurs à 2 niveaux seulement.]
+## Cas de 2 facteurs : plan `\(2^2\)`
 
-## Les plans complets : `\(2^p\)`
+On note `\(A\)` le facteur 1 et `\(B\)` le facteur 2. Les modalités sont notées `\(1\)` et `\(-1\)`. 
 
+On a `\(2^2\)` expériences différentes possibles:
 
-### Cas de 2 facteurs : plan `\(2^2\)`
-
-On note `\(A\)` le facteur 1 et `\(B\)` le facteur 2. Les modalités sont notées `\(1\)` et `\(-1\)`.
-
-
-#### Matrice des essais
+### Matrice des essais
 
 .pull-left[
 `$$\begin{pmatrix} 
@@ -321,29 +323,27 @@ A : Quantité d'eau, B : Pliage
 
 ---
 
-template: plan_fractionnaire
+template: plan_complet
 
-.care[Dans toute la suite, on va considérer des facteurs à 2 niveaux seulement.]
+## Cas de 2 facteurs : plan `\(2^2\)`
 
-## Les plans complets : `\(2^p\)`
+On note `\(A\)` le facteur 1 et `\(B\)` le facteur 2. Les modalités sont notées `\(1\)` et `\(-1\)`. 
 
-
-### Cas de 2 facteurs : plan `\(2^2\)`
-
-On note `\(A\)` le facteur 1 et `\(B\)` le facteur 2. Les modalités sont notées `\(1\)` et `\(-1\)`.
+On a `\(2^2\)` expériences différentes possibles: on peut estimer `\(2^2\)` paramètres.
+--
 
 
+Modèle d'analyse de la variance à 2 facteurs avec interaction  
+
+
+`$$Y_{ij} = \mu + \alpha_i +\beta_j + \gamma_{ij} + E_{ij},$$`
 #### Matrice de design, matrice des effets
 
 C'est la matrice `\(X\)` dans le modèle qui est utilisé : `$$Y = X\theta + E$$`
 
 .pull-left[
 
-Modèle d'analyse de la variance à 2 facteurs avec interaction et les contraintes classiques de R 
-
-
-`$$Y_{ij} = \mu + \alpha_i +\beta_j + \gamma_{ij} + E_{ij},$$`
-et `\(\alpha_1=\beta_1=\gamma_{11}=\gamma_{12}=\gamma_{21}=0.\)` ]
+avec  les contraintes classiques de R : `\(\alpha_1=\beta_1=\gamma_{11}=\gamma_{12}=\gamma_{21}=0.\)` ]
 
 .pull-right[
 
@@ -358,15 +358,14 @@ et `\(\alpha_1=\beta_1=\gamma_{11}=\gamma_{12}=\gamma_{21}=0.\)` ]
 
 --
 
-C'est trop facile !
+Mais peu pratique dans le cadre des plans d'expérience.
 
 .rouge[En acceptant de changer de système de contraintes, on pourra travailler plus facilement avec les plans !]
 
 
-
 ---
 
-template: plan_fractionnaire
+template: plan_complet
 
 
 ## Un petit retour sur l'analyse de la variance à 2 facteurs et au-delà
@@ -396,12 +395,9 @@ et `\(\alpha_1=\beta_1=\gamma_{11}=\gamma_{12}=\gamma_{21}=0.\)`
 .pull-right[
 .orange[Système alternatif commode pour  plans d'expérience]
 
-.font80[ `\(\alpha_1+\alpha_2=0; \beta_1+\beta_2=0, \gamma_{11}+\gamma_{12}=0; \gamma_{21}+\gamma_{22}=0;\)`
+.font80[ `\(\alpha_1 = -\alpha_2; \beta_1 = -\beta_2, \gamma_{11}=\gamma_{22}=-\gamma_{12}=-\gamma_{21};\)`
 
-`\(\gamma_{11}+\gamma_{21}=0; \gamma_{12}+\gamma_{22}=0.\)` 
-
-
-`$$X = \overset{\color{gray}{\begin{matrix}\ \mu &amp; \ \alpha_{1} &amp; \ \beta_1 &amp; \ \gamma_{11}\end{matrix}}}{\begin{pmatrix}
+`$$X = \overset{\color{gray}{\begin{matrix}\ \mu \hspace{.3cm}&amp; \ \alpha_{1} \hspace{.3cm}&amp; \ \beta_1 \hspace{.3cm}&amp; \ \gamma_{11}\hspace{.3cm}\end{matrix}}}{\begin{pmatrix}
 \ 1 &amp; \ 1 &amp; 1 &amp; 1\\
 \ 1 &amp; \ 1 &amp; -1 &amp; -1\\
 \ 1 &amp; -1 &amp; 1 &amp; -1\\
@@ -411,12 +407,12 @@ et `\(\alpha_1=\beta_1=\gamma_{11}=\gamma_{12}=\gamma_{21}=0.\)`
 
 ] 
 
-.rouge[Les deux systèmes conduisents aux mêmes prédictions, aux mêmes tests sur les effets. L'interprétation des paramètre change]
+.rouge[Les deux systèmes conduisents aux mêmes prédictions, aux mêmes tests sur les effets. L'interprétation des paramètres change.]
 
 
 ---
 
-template: plan_fractionnaire
+template: plan_complet
 
 
 ## Pourquoi c'est plus simple ?
@@ -434,12 +430,12 @@ On note `\(\class{jaune}{A}\)` le facteur 1 et `\(\class{bleu}{B}\)` le facteur 
 #### Matrice des essais
 .font80[
 
-`$$\begin{pmatrix} 
-\class{jaune}{+1} &amp; \class{bleu}{+1} \\
-\class{jaune}{+1} &amp; \class{bleu}{-1} \\
-\class{jaune}{-1} &amp; \class{bleu}{+1} \\
-\class{jaune}{-1} &amp; \class{bleu}{-1} \\
-\end{pmatrix}$$`
+`$$\overset{\color{gray}{\begin{matrix} A\hspace{.3cm}&amp; B\hspace{.3cm} &amp; AB \end{matrix}}}{\begin{pmatrix} 
+\class{jaune}{+1} &amp; \class{bleu}{+1}  &amp; \class{vert}{+1}\\
+\class{jaune}{+1} &amp; \class{bleu}{-1}  &amp; \class{vert}{-1}\\
+\class{jaune}{-1} &amp; \class{bleu}{+1}  &amp; \class{vert}{-1}\\
+\class{jaune}{-1} &amp; \class{bleu}{-1}  &amp; \class{vert}{+1}\\
+\end{pmatrix}}$$`
 ]
 
 ] 
@@ -452,7 +448,7 @@ On note `\(\class{jaune}{A}\)` le facteur 1 et `\(\class{bleu}{B}\)` le facteur 
 
 .font80[ 
 
-`$$X = {\begin{pmatrix}
+`$$X = \overset{\color{gray}{\begin{matrix} \mu\hspace{.3cm}&amp; \alpha_{1} \hspace{.3cm} &amp; \beta_1 \hspace{.3cm} &amp; \gamma_{11} \end{matrix}}}{\begin{pmatrix}
 \class{rouge}{1} &amp; \class{jaune}{1} &amp; \class{bleu}{1} &amp; \class{vert}{1}\\
 \class{rouge}{1} &amp; \class{jaune}{1} &amp; \class{bleu}{-1} &amp; \class{vert}{-1}\\
 \class{rouge}{1} &amp; \class{jaune}{-1} &amp; \class{bleu}{1} &amp; \class{vert}{-1}\\
@@ -465,14 +461,10 @@ On note `\(\class{jaune}{A}\)` le facteur 1 et `\(\class{bleu}{B}\)` le facteur 
 
 ---
 
-template: plan_fractionnaire
+template: plan_complet
 
 
-## Soyons fous : plan complet pour 3 facteurs 
-
---
-
-### Cas de 2 facteurs : plan `\(2^2\)`
+## Soyons fous : plan complet pour 3 facteurs : plan `\(2^3\)`
 
 On note `\(\class{jaune}{A}\)` le facteur 1,  `\(\class{bleu}{B}\)` le facteur 2,  `\(\class{orange}{B}\)` le facteur 3. Les modalités sont notées `\(1\)` et `\(-1\)`.
 
@@ -521,6 +513,378 @@ Combien de combinaisons possibles ?
 ]
 
 ] 
+
+
+---
+
+template: plan_complet
+
+
+## Conclusion sur les plans complets fractionnaires
+
+- permet de considérer toutes les combinaisons de facteurs possibles
+
+- on peut estimer jusque `\(2^p\)` paramètres : le modèle .rouge[saturé] correspondant est le  modèle d'analyse de la variance à p facteurs tenant en compte toutes les interactions d'ordre `\(2, 3, \ldots, p\)`.
+--
+
+## Remarques 
+
+- le nombre d'expériences augmentent très vite : 
+`$$\begin{align*}
+2^2 &amp; = 4; \quad 2^3= 8 \\
+2^4 &amp; = 16; \quad 2^5= 32 \\
+2^6 &amp; = 64; \quad 2^7= 128 \\
+\end{align*}$$`
+
+
+- Toutes les interactions ne sont peut être pas utiles.
+
+- Peut on gagner un peu sur le nombre d'expériences ?
+
+
+---
+name: plan_fractionnaire
+# Plan fractionnaire `\(2^{p-k}\)`
+
+--
+
+## Plan à .rouge[3] facteurs en 4 essais : `\(2^{\class{rouge}{3}-\class{jaune}{1}}\)`
+
+.pull-left[
+
+* Chaque niveau du facteur apparaît le même nombre de fois,
+* Chaque combinaison de deux facteurs apparaît le même nombre de fois
+
+
+]
+
+
+.pull-right[
+#### Matrice des essais
+.font80[
+
+`$$\overset{\color{gray}{\begin{matrix} A\hspace{.5cm}&amp; B\hspace{.5cm} &amp; C\hspace{.5cm} \end{matrix}}}{\begin{pmatrix} 
+ \class{jaune}{+1}&amp; \class{bleu}{+1} &amp; \class{orange}{+1}\\
+\class{jaune}{+1}&amp; \class{bleu}{+1} &amp; \class{orange}{-1} \\
+ \class{jaune}{+1}&amp; \class{bleu}{-1} &amp; \class{orange}{+1}\\
+ \class{jaune}{+1}&amp; \class{bleu}{-1} &amp; \class{orange}{-1}\\
+\class{jaune}{-1}&amp; \class{bleu}{+1} &amp; \class{orange}{+1}\\
+ \class{jaune}{-1}&amp; \class{bleu}{+1} &amp; \class{orange}{-1}\\
+ \class{jaune}{-1}&amp; \class{bleu}{-1} &amp; \class{orange}{+1}\\
+ \class{jaune}{-1}&amp; \class{bleu}{-1} &amp; \class{orange}{-1}\\
+\end{pmatrix}}$$`
+]
+]
+
+--
+
+.rouge[Pas si simple]
+
+
+---
+template: plan_fractionnaire
+
+
+## Mécanique de construction `\(2^{\class{rouge}{p}-\class{jaune}{k}}\)`
+
+1. Choisir un plan de base : plan complet à `\(2^{\class{rouge}{p}-\class{jaune}{k}}\)`
+--
+
+2. Construire la matrice des effets du modèle saturé pour ce plan de base 
+
+--
+
+3. Identifier des interactions que l'on peut confondre avec des effets principaux
+
+--
+
+4. Détermination des confusions induites
+
+
+
+---
+template: plan_fractionnaire
+
+## Retour sur le plan à 4 essais : `\(2^{\class{rouge}{3}-\class{jaune}{1}}\)`
+
+--
+
+
+*1.* Choisir un plan de base en `\(2^2\)` essais
+
+--
+.pull-left[
+*2.* Matrice des effets du modèle saturé correspondant 
+
+.font80[
+
+`$$X = \overset{\color{gray}{\begin{matrix} I\hspace{.3cm}&amp; A \hspace{.3cm} &amp; B \hspace{.3cm} &amp; AB \end{matrix}}}{\begin{pmatrix}
+\class{rouge}{1} &amp; \class{jaune}{1} &amp; \class{bleu}{1} &amp; \class{vert}{1}\\
+\class{rouge}{1} &amp; \class{jaune}{1} &amp; \class{bleu}{-1} &amp; \class{vert}{-1}\\
+\class{rouge}{1} &amp; \class{jaune}{-1} &amp; \class{bleu}{1} &amp; \class{vert}{-1}\\
+\class{rouge}{1} &amp; \class{jaune}{-1} &amp; \class{bleu}{-1} &amp; \class{vert}{1}\\
+ \end{pmatrix}}$$`
+]
+]
+
+--
+
+.pull-right[
+
+*3.* On confond C avec AB
+
+.font80[
+
+`$$X = \overset{\color{gray}{\begin{matrix} I\hspace{.3cm}&amp; A \hspace{.3cm} &amp; B \hspace{.3cm} &amp; \begin{matrix} \class{barre}{AB} \\ \class{vert} C \end{matrix} \end{matrix}}}{\begin{pmatrix}
+\class{rouge}{1} &amp; \class{jaune}{1} &amp; \class{bleu}{1} &amp; \class{vert}{1}\\
+\class{rouge}{1} &amp; \class{jaune}{1} &amp; \class{bleu}{-1} &amp; \class{vert}{-1}\\
+\class{rouge}{1} &amp; \class{jaune}{-1} &amp; \class{bleu}{1} &amp; \class{vert}{-1}\\
+\class{rouge}{1} &amp; \class{jaune}{-1} &amp; \class{bleu}{-1} &amp; \class{vert}{1}\\
+ \end{pmatrix}}$$`
+]
+]
+ 
+--
+
+*4.* Identification des confusions induites 
+
+C est  confondu avec AB, on écrit  
+`\(C = AB\)` 
+
+
+
+---
+template: plan_fractionnaire
+
+## Retour sur le plan à 4 essais : `\(2^{\class{rouge}{3}-\class{jaune}{1}}\)`
+
+on a donc `\(C= AB\)` donc `\(CC = C(AB)= ABC\)` donc `\(I= ABC\)`.
+
+
+Ceci induit d'autres confusions:
+.pull-left[
+
+* `\(A(I) = A(ABC)\)` donc `\(A = (AA)BC\)` donc `\(A = BC\)`
+]
+
+.pull-right[
+* `\(B(I) = B(ABC)\)` donc `\(B = AC\)`
+]
+
+--
+.font80[
+
+`$$X = \overset{\color{gray}{\begin{matrix} \begin{matrix} \class{rouge}{I} \\ \class{rouge}{ABC} \end{matrix} &amp;\begin{matrix} \class{jaune}{A} \\ \class{jaune}{BC} \end{matrix}  &amp; \begin{matrix} \class{bleu}{B} \\ \class{bleu}{AC} \end{matrix}  &amp; \begin{matrix} \class{vert}{AB} \\ \class{vert} C \end{matrix} \end{matrix}}}{\begin{pmatrix}
+\class{rouge}{1} &amp; \class{jaune}{1} &amp; \class{bleu}{1} &amp; \class{vert}{1}\\
+\class{rouge}{1} &amp; \class{jaune}{1} &amp; \class{bleu}{-1} &amp; \class{vert}{-1}\\
+\class{rouge}{1} &amp; \class{jaune}{-1} &amp; \class{bleu}{1} &amp; \class{vert}{-1}\\
+\class{rouge}{1} &amp; \class{jaune}{-1} &amp; \class{bleu}{-1} &amp; \class{vert}{1}\\
+ \end{pmatrix}}$$`
+]
+
+--
+
+.rouge[Générateur d'alias]: `\(ABC= I\)`, ABC est un générateur d'alias
+
+.font80[
+
+`$$X = \overset{\color{gray}{\begin{matrix} \begin{matrix} \class{rouge}{I}\end{matrix} \hspace{.1cm}&amp;\begin{matrix} \class{jaune}{A} \end{matrix} \hspace{.2cm} &amp; \begin{matrix} \class{bleu}{B} \end{matrix}  \hspace{.2cm}&amp; \begin{matrix}  \class{vert} C \end{matrix}\hspace{.2cm} &amp; \begin{matrix} \class{vert}{AB}  \end{matrix} \hspace{.1cm}&amp; \begin{matrix}  \class{bleu}{AC} \end{matrix} \hspace{.1cm}&amp; \begin{matrix}  \class{jaune}{BC} \end{matrix} \hspace{.1cm}\begin{matrix} \class{rouge}{ABC}\end{matrix} \end{matrix}}}{\begin{pmatrix}
+\class{rouge}{1} &amp; \class{jaune}{1} &amp; \class{bleu}{1} &amp; \class{vert}{1}&amp; \class{vert}{1}&amp; \class{bleu}{1}&amp; \class{jaune}{1} &amp; \class{rouge}{1}\\
+\class{rouge}{1} &amp; \class{jaune}{1} &amp; \class{bleu}{-1} &amp; \class{vert}{-1}&amp; \class{vert}{-1}&amp; \class{bleu}{1}&amp; \class{jaune}{1} &amp; \class{rouge}{1}\\
+\class{rouge}{1} &amp; \class{jaune}{-1} &amp; \class{bleu}{1} &amp; \class{vert}{-1}&amp; \class{vert}{-1}&amp; \class{bleu}{-1}&amp; \class{jaune}{-1} &amp; \class{rouge}{1}\\
+\class{rouge}{1} &amp; \class{jaune}{-1} &amp; \class{bleu}{-1} &amp; \class{vert}{1}&amp; \class{vert}{1}&amp; \class{bleu}{1}&amp; \class{jaune}{-1} &amp; \class{rouge}{1}\\
+ \end{pmatrix}}$$`
+]
+
+
+
+---
+template: plan_fractionnaire
+
+## Plan fractionnaire `\(2^{\class{rouge}{4}-\class{jaune}{1}}\)`
+
+4 facteurs en 8 essais 
+
+--
+
+*1.* Choisir un plan de base en `\(2^3\)` essais
+
+--
+.pull-left[
+*2.* Matrice des effets du modèle saturé correspondant 
+
+.font80[ 
+
+`$$X = \overset{\color{gray}{\begin{matrix} \begin{matrix} \class{rouge}{I}  \end{matrix}\hspace{.2cm}  &amp;\begin{matrix} \class{jaune}{A} \end{matrix} \hspace{.2cm}  &amp; \begin{matrix} \class{bleu}{B} \end{matrix} \hspace{.2cm} &amp; \begin{matrix} \class{orange}{C} \end{matrix} \hspace{.2cm} &amp;  &amp; \begin{matrix} \class{vert}{AB} \end{matrix} \hspace{.1cm} &amp;   \begin{matrix} \class{jaune}{AC} \end{matrix} \hspace{.1cm} &amp; \begin{matrix} \class{bleuf}{BC} \end{matrix} \hspace{.1cm} &amp;  \begin{matrix} {ABC} \end{matrix}   \end{matrix}}}{\begin{pmatrix}
+\class{rouge}{1} &amp; \class{jaune}{1}&amp; \class{bleu}{1} &amp; \class{orange}{1} &amp; \class{vert}{1}&amp; \class{jauneb}{1}&amp; \class{bleuf}{1} &amp; 1\\
+\class{rouge}{1} &amp; \class{jaune}{1}&amp; \class{bleu}{1} &amp; \class{orange}{-1} &amp; \class{vert}{1}&amp; \class{jauneb}{-1}&amp; \class{bleuf}{-1} &amp; -1\\
+\class{rouge}{1} &amp; \class{jaune}{1}&amp; \class{bleu}{-1} &amp; \class{orange}{1} &amp; \class{vert}{-1}&amp; \class{jauneb}{1}&amp; \class{bleuf}{-1} &amp; -1\\
+\class{rouge}{1} &amp; \class{jaune}{1}&amp; \class{bleu}{-1} &amp; \class{orange}{-1} &amp; \class{vert}{-1}&amp; \class{jauneb}{-1}&amp; \class{bleuf}{1} &amp; 1\\
+\class{rouge}{1} &amp; \class{jaune}{-1}&amp; \class{bleu}{1} &amp; \class{orange}{1} &amp; \class{vert}{1}&amp; \class{jauneb}{-1}&amp; \class{bleuf}{1}&amp; -1\\
+\class{rouge}{1} &amp; \class{jaune}{-1}&amp; \class{bleu}{1} &amp; \class{orange}{-1} &amp; \class{vert}{1}&amp; \class{jauneb}{1}&amp; \class{bleuf}{-1} &amp; 1\\
+\class{rouge}{1} &amp; \class{jaune}{-1}&amp; \class{bleu}{-1} &amp; \class{orange}{1} &amp; \class{vert}{-1}&amp; \class{jauneb}{-1}&amp; \class{bleuf}{-1} &amp; 1\\
+\class{rouge}{1} &amp; \class{jaune}{-1}&amp; \class{bleu}{-1} &amp; \class{orange}{-1} &amp; \class{vert}{-1}&amp; \class{jauneb}{1}&amp; \class{bleuf}{1}&amp; -1\\
+ \end{pmatrix}}$$`
+]
+]
+
+
+---
+count: false
+template: plan_fractionnaire
+
+## Plan fractionnaire `\(2^{\class{rouge}{4}-\class{jaune}{1}}\)`
+
+4 facteurs en 8 essais 
+
+
+*1.* Choisir un plan de base en `\(2^3\)` essais
+
+
+.pull-left[
+*2.* Matrice des effets du modèle saturé correspondant 
+
+.font70[ 
+
+`$$X = \overset{\color{gray}{\begin{matrix} \begin{matrix} \class{rouge}{I}  \end{matrix}\hspace{.2cm}  &amp;\begin{matrix} \class{jaune}{A} \end{matrix} \hspace{.2cm}  &amp; \begin{matrix} \class{bleu}{B} \end{matrix} \hspace{.2cm} &amp; \begin{matrix} \class{orange}{C} \end{matrix} \hspace{.2cm} &amp;  &amp; \begin{matrix} \class{vert}{AB} \end{matrix} \hspace{.1cm} &amp;   \begin{matrix} \class{jaune}{AC} \end{matrix} \hspace{.1cm} &amp; \begin{matrix} \class{bleuf}{BC} \end{matrix} \hspace{.1cm} &amp;  \begin{matrix} {ABC} \end{matrix}   \end{matrix}}}{\begin{pmatrix}
+\class{rouge}{1} &amp; \class{jaune}{1}&amp; \class{bleu}{1} &amp; \class{orange}{1} &amp; \class{vert}{1}&amp; \class{jauneb}{1}&amp; \class{bleuf}{1} &amp; 1\\
+\class{rouge}{1} &amp; \class{jaune}{1}&amp; \class{bleu}{1} &amp; \class{orange}{-1} &amp; \class{vert}{1}&amp; \class{jauneb}{-1}&amp; \class{bleuf}{-1} &amp; -1\\
+\class{rouge}{1} &amp; \class{jaune}{1}&amp; \class{bleu}{-1} &amp; \class{orange}{1} &amp; \class{vert}{-1}&amp; \class{jauneb}{1}&amp; \class{bleuf}{-1} &amp; -1\\
+\class{rouge}{1} &amp; \class{jaune}{1}&amp; \class{bleu}{-1} &amp; \class{orange}{-1} &amp; \class{vert}{-1}&amp; \class{jauneb}{-1}&amp; \class{bleuf}{1} &amp; 1\\
+\class{rouge}{1} &amp; \class{jaune}{-1}&amp; \class{bleu}{1} &amp; \class{orange}{1} &amp; \class{vert}{1}&amp; \class{jauneb}{-1}&amp; \class{bleuf}{1}&amp; -1\\
+\class{rouge}{1} &amp; \class{jaune}{-1}&amp; \class{bleu}{1} &amp; \class{orange}{-1} &amp; \class{vert}{1}&amp; \class{jauneb}{1}&amp; \class{bleuf}{-1} &amp; 1\\
+\class{rouge}{1} &amp; \class{jaune}{-1}&amp; \class{bleu}{-1} &amp; \class{orange}{1} &amp; \class{vert}{-1}&amp; \class{jauneb}{-1}&amp; \class{bleuf}{-1} &amp; 1\\
+\class{rouge}{1} &amp; \class{jaune}{-1}&amp; \class{bleu}{-1} &amp; \class{orange}{-1} &amp; \class{vert}{-1}&amp; \class{jauneb}{1}&amp; \class{bleuf}{1}&amp; -1\\
+ \end{pmatrix}}$$`
+]
+]
+
+.pull-right[
+*3.* On confond D et ABC 
+
+.font80[ 
+
+`$$X = \overset{\color{gray}{\begin{matrix} \begin{matrix} \class{rouge}{I}  \end{matrix}\hspace{.2cm}  &amp;\begin{matrix} \class{jaune}{A} \end{matrix} \hspace{.2cm}  &amp; \begin{matrix} \class{bleu}{B} \end{matrix} \hspace{.2cm} &amp; \begin{matrix} \class{orange}{C} \end{matrix} \hspace{.2cm} &amp;  &amp; \begin{matrix} \class{vert}{AB} \end{matrix} \hspace{.1cm} &amp;   \begin{matrix} \class{jaune}{AC} \end{matrix} \hspace{.1cm} &amp; \begin{matrix} \class{bleuf}{BC} \end{matrix} \hspace{.1cm} &amp;  \begin{matrix} {ABC} \\ D \end{matrix}   \end{matrix}}}{\begin{pmatrix}
+\class{rouge}{1} &amp; \class{jaune}{1}&amp; \class{bleu}{1} &amp; \class{orange}{1} &amp; \class{vert}{1}&amp; \class{jauneb}{1}&amp; \class{bleuf}{1} &amp; 1\\
+\class{rouge}{1} &amp; \class{jaune}{1}&amp; \class{bleu}{1} &amp; \class{orange}{-1} &amp; \class{vert}{1}&amp; \class{jauneb}{-1}&amp; \class{bleuf}{-1} &amp; -1\\
+\class{rouge}{1} &amp; \class{jaune}{1}&amp; \class{bleu}{-1} &amp; \class{orange}{1} &amp; \class{vert}{-1}&amp; \class{jauneb}{1}&amp; \class{bleuf}{-1} &amp; -1\\ 
+\class{rouge}{1} &amp; \class{jaune}{1}&amp; \class{bleu}{-1} &amp; \class{orange}{-1} &amp; \class{vert}{-1}&amp; \class{jauneb}{-1}&amp; \class{bleuf}{1} &amp; 1\\
+\class{rouge}{1} &amp; \class{jaune}{-1}&amp; \class{bleu}{1} &amp; \class{orange}{1} &amp; \class{vert}{1}&amp; \class{jauneb}{-1}&amp; \class{bleuf}{1}&amp; -1\\
+\class{rouge}{1} &amp; \class{jaune}{-1}&amp; \class{bleu}{1} &amp; \class{orange}{-1} &amp; \class{vert}{1}&amp; \class{jauneb}{1}&amp; \class{bleuf}{-1} &amp; 1\\
+\class{rouge}{1} &amp; \class{jaune}{-1}&amp; \class{bleu}{-1} &amp; \class{orange}{1} &amp; \class{vert}{-1}&amp; \class{jauneb}{-1}&amp; \class{bleuf}{-1} &amp; 1\\
+\class{rouge}{1} &amp; \class{jaune}{-1}&amp; \class{bleu}{-1} &amp; \class{orange}{-1} &amp; \class{vert}{-1}&amp; \class{jauneb}{1}&amp; \class{bleuf}{1}&amp; -1\\
+ \end{pmatrix}}$$`
+]
+]
+
+
+---
+template: plan_fractionnaire
+
+## Plan fractionnaire `\(2^{\class{rouge}{4}-\class{jaune}{1}}\)`
+
+### Confusion d'effet (alias) et générateur d'alias 
+
+*4.* Confusions induites 
+
+* `\(D = ABC\)` donc `\(DD = ABCD\)` donc `\(I=ABCD\)`
+
+`\(ABCD\)` est un .rouge[générateur d'alias]
+
+--
+
+.pull-right[
+* `\(AI = AABCD\)` donc `\(A = BCD\)`
+
+* `\(BI = BABCD\)` donc `\(B = ACD\)`
+
+* `\(CI = CABCD\)` donc `\(C = ABD\)` ]
+
+.pull-left[
+
+* `\(AD= AABC\)` donc `\(AD=BC\)`
+
+* `\(BD= BABC\)` donc `\(BD=AC\)`
+
+* `\(CD= CABC\)` donc `\(CD=AB\)`
+
+]
+
+--
+
+Les effets principaux sont confondus avec des interactions d'ordre 3 
+
+les interactions d'ordre 2 sont confondues avec d'autres interactions d'ordre 2
+
+
+---
+template: plan_fractionnaire
+
+## Nombre de facteurs et nombre d'essais
+
+Un plan est caractérisée par sa résolution :
+
+.rouge[La résolution d'un plan est la longueur du plus petit générateur d'alias]
+
+--
+
+### Des repères pour ne rien oublier 
+
+* Nombre de générateurs : `\(2^{facteurs\ additionnels}-1\)`
+* Plan Résolution III : les effets principaux sont confondus avec les interactions d’ordre 2 ou plus
+* Plan Résolution IV : les effets principaux sont confondus avec les interactions d’ordre 3 ou plus
+* Plan Résolution V : les effets principaux sont confondus avec les interactions d’ordre 4 ou plus
+
+--
+
+.center[Parle à ta main]
+
+
+
+
+
+
+---
+template: plan_fractionnaire
+
+## Soyons fous : plan fractionnaire `\(2^{\class{rouge}{5}-\class{jaune}{2}}\)`
+
+---
+template: plan_fractionnaire
+
+## Soyons fous : plan fractionnaire `\(2^{\class{rouge}{5}-\class{jaune}{2}}\)`
+
+
+---
+
+# Dans une démarche expérimentale 
+
+1. On formalise la question, on identifie les facteurs potentiellement intéessants
+
+--
+
+2. On met en place le plan d'expérience
+
+--
+
+3. On réalise les manips
+
+--
+
+4. On analyse les résultats
+
+
+
+---
+
+# Ce qu'il faut absolument savoir pour les TDs
+
+
+* Ecrire la matrice des essais et matrice des effets
+
+* Déterminer les confusion d'effets et de générateurs d'alias
+
+* La notion de résolution d'un plan
 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>

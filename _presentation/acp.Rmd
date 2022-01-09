@@ -64,7 +64,7 @@ penguins <- penguins %>% na.omit()
 
 --
 
-## L'exemple des caractéristuqes du Doubs 
+## L'exemple des caractéristiques du Doubs 
 
 On a mesuré les caractéristiques physico chimiques sur 30  sites différents le long de la rivière Doubs. 
 
@@ -98,7 +98,7 @@ doubs.env %>% print(n=6)
 ---
 template: intro
 
-## L'exemple des caractéristuqes du Doubs 
+## L'exemple de la morphologie des manchots
 
 On a mesuré les caractéristiques morphologiques de divers manchots :
 
@@ -247,7 +247,7 @@ on définit les mesures centrées réduites
 
 $$x_{ik}' = \frac{x_{ik} - x_{\bullet k}}{s_k}$$
 
-dans la suite, on omet le $ ^\prime$ pour alléger l'écriture.
+dans la suite, on omet le $\prime$ pour alléger l'écriture.
 
 
 ---
@@ -308,7 +308,8 @@ penguins_centre <- penguins %>%
 penguins_centre %>% ggplot() + geom_point(aes(x  =  body_mass_g, y = flipper_length_mm))  + 
   geom_point(data=data.frame(x=0, y=0), aes(x=x,y=y), col = "red", size = 4) + 
   geom_segment(aes(x=-3*pc1[1], y=-3*pc1[2],  xend=3*pc1[1], yend=3*pc1[2]) , col = "red") + 
-  annotate("text", x = 2, y = 1.8, label = "(Delta)", color = "red", parse = TRUE)
+  annotate("text", x = 2, y = 1.8, label = "(Delta)", color = "red", parse = TRUE) +
+  coord_fixed()
 
 ```
 
@@ -337,7 +338,7 @@ penguins_simple %>% mutate(yproj = 0) %>% rowid_to_column() %>%
     annotate("text", x = 2, y = 1.8, label = "(Delta)", color = "red", parse = TRUE) +
   geom_point( aes(x  =  V1, y = V2), col= "red", alpha= 0.5) +
   geom_segment(aes(x = body_mass_g, xend=V1, y = flipper_length_mm, yend= V2), linetype = "dashed") +
-  geom_text(aes(x=body_mass_g, y = flipper_length_mm+0.2,  label=paste0("x[", rowid, "]")), parse= TRUE)
+  geom_text(aes(x=body_mass_g, y = flipper_length_mm+0.2,  label=paste0("x[", rowid, "]")), parse= TRUE) + coord_fixed()
   
 ```
 
@@ -581,7 +582,7 @@ name: exemple
 ## La projection sur le premier plan principal 
 
 ```{r doubs_PCA, echo = TRUE, eval = TRUE}
-doubs.PCA <- PCA(doubs.env, graph = FALSE)
+doubs.PCA <- PCA(doubs.env, graph = FALSE, ncp = 10)
 p1 <- plot(doubs.PCA, axes = c(1,2))
 p2 <- plot(doubs.PCA, choix = "var", axes = c(1, 2) )
 ggpubr::ggarrange(nrow = 1, plotlist = list(p1,p2), ncol = 2)
@@ -600,7 +601,7 @@ template: exemple
 ```{r eigen_values, eval=TRUE}
 doubs.PCA$eig %>% as.data.frame() %>% rownames_to_column() %>% mutate(rowname = factor(rowname, levels = paste0("comp ", 1:nrow(doubs.PCA$var$coord)))) %>%   ggplot() + geom_line(aes(x=rowname, y=eigenvalue, group=1)) + geom_point(aes(x=rowname, y=eigenvalue, group=1)) + xlab("Composante")
 ```
-
+  
 
 ---
 name: fin
