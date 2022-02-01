@@ -59,7 +59,7 @@ ggplot <- function(...) ggplot2::ggplot(...) + scale_fill_manual(values = wesand
 
 ## Etude de la fréquence cardiaque au repos
 
-On a mesuré la fréquence cardiaque de 12 femmes et 12 hommes ayantactivités de loisirs différentes.
+On a mesuré la fréquence cardiaque de 12 femmes et 12 hommes ayant des activités de loisirs différentes.
 
 
 
