@@ -403,7 +403,7 @@ $$X = \overset{\color{gray}{\begin{matrix}\ \mu \hspace{.3cm}& \ \alpha_{1} \hsp
 
 ] 
 
-.rouge[Les deux systèmes conduisents aux mêmes prédictions, aux mêmes tests sur les effets. L'interprétation des paramètres change.]
+.rouge[Les deux systèmes conduisent aux mêmes prédictions, aux mêmes tests sur les effets. L'interprétation des paramètres change.]
 
 
 ---
