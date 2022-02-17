@@ -462,7 +462,7 @@ template: plan_complet
 
 ## Soyons fous : plan complet pour 3 facteurs : plan $2^3$
 
-On note $\class{jaune}{A}$ le facteur 1,  $\class{bleu}{B}$ le facteur 2,  $\class{orange}{B}$ le facteur 3. Les modalités sont notées $1$ et $-1$.
+On note $\class{jaune}{A}$ le facteur 1,  $\class{bleu}{B}$ le facteur 2,  $\class{orange}{C}$ le facteur 3. Les modalités sont notées $1$ et $-1$.
 
 Combien de combinaisons possibles ?
 
