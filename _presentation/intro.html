@@ -144,11 +144,85 @@ template: description
 * Comment résumer une variable quantitative ?
 
 -- 
-  - la moyenne
+  - la moyenne de la variable `\(p\)` :
+  `$$x_{\bullet, p} = \frac{1}{n} \sum_{i=1}^n x_{ip} = \frac{x_{1,p} + x_{2,p} + \ldots x_{n,p} }{n}$$` 
+
+
+-- 
+  - la variance de la variable `\(p\)` : 
+  `$$s^2_{x_p} = \frac{1}{n} \sum_{i=1}^n (x_{ip}-x_{\bullet, p})^2$$`
+
+La variance représente la dispersion autor de la valeur moyenne
 
 
 ---
-# Ce qu'il faut absolument savoir pour les TDs
+template: description
+
+## Résumé des variables 
+
+* Comment résumer la variable `Note`
+
+  - la moyenne de la variable  `Note` 
+  
+
+```r
+dta  %&gt;% 
+  summarise(moyenne_note = mean(Note))
+```
+
+
+  - la variance  `Note` 
+  
+
+```r
+dta  %&gt;% 
+  summarise(moyenne_note = var(Note))
+```
+
+
+
+---
+template: description
+## Résumé des variables 
+
+* Comment résumer une variable qualitative ?
+
+-- 
+  - lister ses modalités
+  - donner les effectifs par modalité
+
+
+---
+template: description
+
+## Résumé des variables 
+
+* Comment résumer la variable `Variété`
+
+  - lister les modalités et donner les effectifs
+  
+  
+
+```r
+dta  %&gt;% 
+  group_by(Variete) %&gt;% 
+  summarise(Effectif = n())
+```
+  
+---
+# Intérêt d'utiliser R
+
+Faire une analyse descriptive des variables 
+
+* Poids
+* Condition de culture
+* Age
+
+---
+
+# Ce qu'il faut absolument pour la suite
+
+- Avoir une installation fonctionnelle de R et RStudio
 
 - Savoir organiser des données
 
