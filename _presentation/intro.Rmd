@@ -68,7 +68,7 @@ permettrait d’envisager de fabriquer des chocolats peu sucrés sans être trop
 
 
 <figure>
-  <img src="Cacaoyer_variete_Guiana.jpg" alt="Guiana plant" style="width:90%" class = "centerimg" />
+  <img src="Cacaoyer_variete_Guiana.jpg" alt="Guiana plant" style="width:60%" class = "centerimg" />
 </figure>
 
 
