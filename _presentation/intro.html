@@ -38,6 +38,10 @@ name: intro
 
 
 # Un exemple pour débuter 
+--
+
+
+## Le Guiana
 
 * Le guiana est un cacaoyer spontané de Guyane française (Theobroma cacao L. forma group guiana) 
 
@@ -48,17 +52,109 @@ permettrait d’envisager de fabriquer des chocolats peu sucrés sans être trop
 
 
 &lt;figure&gt;
-  &lt;img src="resources/Cacaoyer_variete_Guiana.jpg" alt="Guiana plant" style="width:90%" class = "centerimg" /&gt;
+  &lt;img src="../resources/Cacaoyer_variete_Guiana.jpg" alt="Guiana plant" style="width:90%" class = "centerimg" /&gt;
 &lt;/figure&gt;
 
 
----
 
+---
+template: intro
+
+## Une expérimentation sue le Guiana
+
+Pour identifier le potentiel de ce cacao, des chercheurs du CIRAD ont mesuré pour différents plants de cacaco
+* le nombre de cabosses
+* La note moyenne obtenue sur la dégustation du cacao issu des cabosses récoltées
+* l'age de plant
+* la variété
+* La condition de culture
+* le poids moyen d'une cabosse
+* le poids de feve
+* la présence de traces de ravageur
+
+
+---
+template: intro
+
+## Travailler sur les données de Guiana
+
+--
+
+
+```r
+library(tidyverse)
+dta &lt;- read_delim('https://marieetienne.github.io/datasets/cafe_guyana.csv')
+
+dta %&gt;% 
+  print(n = 4)
+```
+
+C'est l'occasion de découvrir le langage R et son interface RStudio.
+
+
+---
+template: intro
+
+## Remarque essetnielle
+
+
+ * une ligne = un individu : un indice `\(i\)` de 1 au nombre total de ligne est utile pour différencier les individus (lignes) 
+ * une colonne = une variable : un indice `\(p\)` variant de 1 au nombre de variables est utile pour différencier les variables
+
+--
+
+Ainsi `\(x_{ip}\)` désigne la valeur prise par variable `\(p\)` sur le i$^{\mtext{ème}}$ individu statistique.
+ 
+-- 
+
+Que valent `\(x_{12}, x_{21}, x_{5,4}\)` ?
+ 
+ 
+---
+name: description
+# Analyse descriptive des données
+--
+
+## Généralités 
+
+* Nombre d'observations 
+
+
+```r
+nrow(dta)
+```
+
+* Nombre de variables 
+
+
+```r
+ncol(dta)
+```
+
+
+* Nature des variables :
+Quelles sont les variables quantitatives ?
+Quelles sont les variables qualitatives ?
+
+---
+template: description
+
+## Résumé des variables 
+
+* Comment résumer une variable quantitative ?
+
+-- 
+  - la moyenne
+
+
+---
 # Ce qu'il faut absolument savoir pour les TDs
 
 - Savoir organiser des données
 
 - Reconnaître la nature des variables
+
+- Les commandes de base de R vues dans le cours
 
 
 
