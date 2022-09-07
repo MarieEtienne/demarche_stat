@@ -18,6 +18,9 @@ body {
 .fixe{color: #33658a}
 
 
+/* strikeout for equations */
+
+.barre{ text-decoration: line-through;}
 
 .addspace {
   padding-top: 1em;
