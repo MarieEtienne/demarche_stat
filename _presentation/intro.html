@@ -60,17 +60,17 @@ permettrait d’envisager de fabriquer des chocolats peu sucrés sans être trop
 ---
 template: intro
 
-## Une expérimentation sue le Guiana
+## Une expérimentation sur le Guiana
 
 Pour identifier le potentiel de ce cacao, des chercheurs du CIRAD ont mesuré pour différents plants de cacaco
 * le nombre de cabosses
 * La note moyenne obtenue sur la dégustation du cacao issu des cabosses récoltées
-* l'age de plant
+* l'âge du plant
 * la variété
 * La condition de culture
 * le poids moyen d'une cabosse
-* le poids de feve
-* la présence de traces de ravageur
+* le poids de fêves récoltées
+* la présence de traces de ravageurs
 
 
 ---
@@ -103,7 +103,7 @@ template: intro
 
 --
 
-Ainsi `\(x_{ip}\)` désigne la valeur prise par variable `\(p\)` sur le i `\(^{\mtext{ème}}\)` individu statistique.
+Ainsi `\(x_{ip}\)` désigne la valeur prise par variable `\(p\)` sur le i `\(^{\textrm{ème}}\)` individu statistique.
  
 --
 
@@ -149,11 +149,10 @@ template: description
   `$$x_{\bullet, p} = \frac{1}{n} \sum_{i=1}^n x_{ip} = \frac{x_{1,p} + x_{2,p} + \ldots x_{n,p} }{n}$$` 
 
 
--- 
   - la variance de la variable `\(p\)` : 
   `$$s^2_{x_p} = \frac{1}{n} \sum_{i=1}^n (x_{ip}-x_{\bullet, p})^2$$`
 
-La variance représente la dispersion autor de la valeur moyenne
+La variance représente la dispersion autour de la valeur moyenne.
 
 
 ---
@@ -170,7 +169,6 @@ template: description
 dta  %&gt;% 
   summarise(moyenne_note = mean(Note))
 ```
-
 
   - la variance  `Note` 
   
