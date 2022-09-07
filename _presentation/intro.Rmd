@@ -54,6 +54,10 @@ ggplot <- function(...) ggplot2::ggplot(...) + scale_fill_manual(values = wesand
 
 
 # Un exemple pour débuter 
+--
+
+
+## Le Guiana
 
 * Le guiana est un cacaoyer spontané de Guyane française (Theobroma cacao L. forma group guiana) 
 
@@ -64,17 +68,176 @@ permettrait d’envisager de fabriquer des chocolats peu sucrés sans être trop
 
 
 <figure>
-  <img src="resources/Cacaoyer_variete_Guiana.jpg" alt="Guiana plant" style="width:90%" class = "centerimg" />
+  <img src="Cacaoyer_variete_Guiana.jpg" alt="Guiana plant" style="width:60%" class = "centerimg" />
 </figure>
 
 
+
+---
+template: intro
+
+## Une expérimentation sur le Guiana
+
+Pour identifier le potentiel de ce cacao, des chercheurs du CIRAD ont mesuré pour différents plants de cacaco
+* le nombre de cabosses
+* La note moyenne obtenue sur la dégustation du cacao issu des cabosses récoltées
+* l'âge du plant
+* la variété
+* La condition de culture
+* le poids moyen d'une cabosse
+* le poids de fêves récoltées
+* la présence de traces de ravageurs
+
+
+---
+template: intro
+
+## Travailler sur les données de Guiana
+
+--
+
+```{r import_cacao, echo = TRUE}
+library(tidyverse)
+dta <- read_delim('https://marieetienne.github.io/datasets/cafe_guyana.csv')
+
+dta %>% 
+  print(n = 4)
+```
+
+C'est l'occasion de découvrir le langage R et son interface RStudio.
+
+
+---
+template: intro
+
+## Remarque essetnielle
+
+
+ * une ligne = un individu : un indice $i$ de 1 au nombre total de ligne est utile pour différencier les individus (lignes) 
+ * une colonne = une variable : un indice $p$ variant de 1 au nombre de variables est utile pour différencier les variables
+
+--
+
+Ainsi $x_{ip}$ désigne la valeur prise par variable $p$ sur le i $^{\textrm{ème}}$ individu statistique.
+ 
+--
+
+Que valent $x_{12}, x_{21}, x_{5,4}$ ?
+ 
+ 
+---
+name: description
+# Analyse descriptive des données
+--
+
+## Généralités 
+
+* Nombre d'observations 
+
+```{r desc1, echo = TRUE}
+nrow(dta)
+```
+
+* Nombre de variables 
+
+```{r desc2, echo = TRUE}
+ncol(dta)
+```
+
+
+* Nature des variables :
+
+  - Quelles sont les variables quantitatives ?
+  - Quelles sont les variables qualitatives ?
+
+---
+template: description
+
+## Résumé des variables 
+
+* Comment résumer une variable quantitative ?
+
+--
+  - la moyenne de la variable $p$ :
+  $$x_{\bullet, p} = \frac{1}{n} \sum_{i=1}^n x_{ip} = \frac{x_{1,p} + x_{2,p} + \ldots x_{n,p} }{n}$$ 
+
+
+  - la variance de la variable $p$ : 
+  $$s^2_{x_p} = \frac{1}{n} \sum_{i=1}^n (x_{ip}-x_{\bullet, p})^2$$
+
+La variance représente la dispersion autour de la valeur moyenne.
+
+
+---
+template: description
+
+## Résumé des variables 
+
+* Comment résumer la variable `Note`
+
+  - la moyenne de la variable  `Note` 
+  
+```{r note_moy, echo= TRUE}
+dta  %>% 
+  summarise(moyenne_note = mean(Note))
+```
+
+  - la variance  `Note` 
+  
+```{r note_var, echo= TRUE}
+dta  %>% 
+  summarise(moyenne_note = var(Note))
+```  
+
+
+
+---
+template: description
+## Résumé des variables 
+
+* Comment résumer une variable qualitative ?
+
+--
+  - lister ses modalités
+  - donner les effectifs par modalité
+
+
+---
+template: description
+
+## Résumé des variables 
+
+* Comment résumer la variable `Variété`
+
+  - lister les modalités et donner les effectifs
+  
+  
+```{r variete_effectif, echo= TRUE}
+dta  %>% 
+  group_by(Variete) %>% 
+  summarise(Effectif = n())
+```  
+  
+---
+# Intérêt d'utiliser R
+
+Faire une analyse descriptive des variables 
+
+* Poids
+* Condition de culture
+* Age
+
 ---
 
-# Ce qu'il faut absolument savoir pour les TDs
+# Ce qu'il faut absolument pour la suite
+
+- Avoir une installation fonctionnelle de R et RStudio
 
 - Savoir organiser des données
 
 - Reconnaître la nature des variables
+
+- Les commandes de base de R vues dans le cours
 
 ```{r ggplot_back, echo = FALSE, eval = TRUE}
 ggplot <- function(...) ggplot2::ggplot(...) 
