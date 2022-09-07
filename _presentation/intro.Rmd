@@ -1,0 +1,84 @@
+---
+title: Inroduction à l'analyse de données
+author: Marie-Pierre Etienne
+date: '2021/11/19 (updated: `r Sys.Date()`)'
+institute: marie-pierre.etienne@agrocampus-ouest.fr
+csl: ../courses_tools/resources/apa-no-doi-no-issue.csl
+output:
+   xaringan::moon_reader:
+    css: ['metropolis',  'mpe_pres.css']
+    lib_dir: libs
+    nature:
+      ratio: 16:10
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      beforeInit: '../courses_tools/resources/collapseoutput.js'
+---
+name: intro
+
+<!-- F1D763 -->
+<!-- F7A913 -->
+<!-- C94326 -->
+<!-- 1F908E -->
+<!-- 33658A -->
+
+
+```{r setup, include = FALSE,  eval = TRUE}
+library('RefManageR')
+source("../courses_tools/resources/knitr_setup.R")
+
+common_img_dir <- file.path(main_dir,'courses_tools','resources', 'common_figs')
+course_img_dir <- file.path(main_dir,'resources', 'figs')
+BibOptions(check.entries = FALSE,
+           bib.style = "authoryear",
+           cite.style = "authoryear",
+           style = "markdown",
+           hyperlink = TRUE,
+           max.names = 3,
+           longnamesfirst= FALSE, 
+           dashed = TRUE)
+#myBib <- ReadBib('biblio_soutenance.bib', check = FALSE)
+```
+
+```{r xaringan-fit-screen, echo=FALSE}
+xaringanExtra::use_fit_screen()
+```
+
+
+```{r datapackage, eval = TRUE, echo = FALSE, warning = FALSE}
+ggplot <- function(...) ggplot2::ggplot(...) + scale_fill_manual(values = wesanderson::wes_palette(name = "Darjeeling1")) + scale_color_manual(values = wesanderson::wes_palette(name = "Darjeeling1")) +  scale_fill_manual(values = wesanderson::wes_palette(name = "Darjeeling1")) + theme_minimal()
+#remotes::install_github('MarieEtienne/coursesdata', force = TRUE)
+```
+
+
+
+# Un exemple pour débuter 
+
+* Le guiana est un cacaoyer spontané de Guyane française (Theobroma cacao L. forma group guiana) 
+
+* Il est l'une des dix variétés de cacaoyers  identifiées dans l’étude Motomayor de 2008.
+
+* Ce cacao est réputé pour ses qualités organoleptiques particulièrement intéressantes : sa faible amertume
+permettrait d’envisager de fabriquer des chocolats peu sucrés sans être trop amers.
+
+
+<figure>
+  <img src="resources/Cacaoyer_variete_Guiana.jpg" alt="Guiana plant" style="width:90%" class = "centerimg" />
+</figure>
+
+
+---
+
+# Ce qu'il faut absolument savoir pour les TDs
+
+- Savoir organiser des données
+
+- Reconnaître la nature des variables
+
+```{r ggplot_back, echo = FALSE, eval = TRUE}
+ggplot <- function(...) ggplot2::ggplot(...) 
+```
+
+
+
