@@ -1,5 +1,5 @@
 ---
-title: Inroduction à l'analyse de données
+title: Analyse descriptive des données
 author: Marie-Pierre Etienne
 date: '2021/11/19 (updated: `r Sys.Date()`)'
 institute: marie-pierre.etienne@agrocampus-ouest.fr
@@ -27,7 +27,7 @@ name: intro
 ```{r setup, include = FALSE,  eval = TRUE}
 library('RefManageR')
 source("../courses_tools/resources/knitr_setup.R")
-
+main_dir <-  ''
 common_img_dir <- file.path(main_dir,'courses_tools','resources', 'common_figs')
 course_img_dir <- file.path(main_dir,'resources', 'figs')
 BibOptions(check.entries = FALSE,
@@ -124,10 +124,20 @@ Ainsi $x_{ip}$ désigne la valeur prise par variable $p$ sur le i $^{\textrm{èm
 
 Que valent $x_{12}, x_{21}, x_{5,4}$ ?
  
- 
+---
+
+# Plan du cours
+
+## Description univariée
+
+## Description bivariée
+
+## Description multivariée
+
+
 ---
 name: description
-# Analyse descriptive des données
+# Description univariée des données
 --
 
 ## Généralités 
