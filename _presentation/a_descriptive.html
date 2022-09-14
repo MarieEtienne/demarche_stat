@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # Analyse descriptive des données
 ### Marie-Pierre Etienne
 ### <a href="mailto:marie-pierre.etienne@agrocampus-ouest.fr" class="email">marie-pierre.etienne@agrocampus-ouest.fr</a>
-### 2021/11/19 (updated: 2022-09-08)
+### 2021/11/19 (updated: 2022-09-14)
 
 ---
 
@@ -83,7 +83,7 @@ template: intro
 
 ```r
 library(tidyverse)
-dta &lt;- read_delim('https://marieetienne.github.io/datasets/cafe_guyana.csv')
+dta &lt;- read_delim('https://marieetienne.github.io/datasets/cafe_guyana.csv', delim = ",")
 
 dta %&gt;% 
   print(n = 4)
@@ -228,6 +228,42 @@ Faire une analyse descriptive des variables
 * Age
 
 ---
+name: bivarie
+# Description bivariée
+
+-- 
+
+## Mesurer le lien entre deux variables : la covariance
+
+Exemple des manchots de Palmers
+
+
+--
+
+Les deux variables sont-elles liées ?
+
+Comment quantifier ce lien ?
+
+---
+template: bivarie
+## La covariance
+On s'intéresse à deux variables `\(x_{,i}\)` et `\(x_{,j}\)`, le lien est mesuré par 
+
+`$$Cov(x_i, x_j) = \frac{1}{n} \sum_{k=1}^n (x_{k,i} - x_{\bullet,i}) (x_{k,j} - x_{\bullet,j})$$`
+-- 
+
+Ce lien dépend des unités (cf illustration R)
+--
+
+## La corrélation
+
+`$$Cor(x_i, x_j) = \frac{1}{n} \sum_{k=1}^n \frac{(x_{k,i} - x_{\bullet,i})}{s_{x_i}}\frac{(x_{k,j} - x_{\bullet,j})}{s_{x_j}}$$`
+
+Les variables `\((x_{k,i} - x_{\bullet, i})/s_{x_i}\)` sont dites centrées réduites. (cf exemple R)
+
+
+--
+
 
 # Ce qu'il faut absolument pour la suite
 
