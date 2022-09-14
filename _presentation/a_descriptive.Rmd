@@ -49,6 +49,8 @@ xaringanExtra::use_fit_screen()
 ```{r datapackage, eval = TRUE, echo = FALSE, warning = FALSE}
 ggplot <- function(...) ggplot2::ggplot(...) + scale_fill_manual(values = wesanderson::wes_palette(name = "Darjeeling1")) + scale_color_manual(values = wesanderson::wes_palette(name = "Darjeeling1")) +  scale_fill_manual(values = wesanderson::wes_palette(name = "Darjeeling1")) + theme_minimal()
 #remotes::install_github('MarieEtienne/coursesdata', force = TRUE)
+library(palmerpenguins)
+data("penguins")
 ```
 
 
@@ -98,7 +100,7 @@ template: intro
 
 ```{r import_cacao, echo = TRUE}
 library(tidyverse)
-dta <- read_delim('https://marieetienne.github.io/datasets/cafe_guyana.csv')
+dta <- read_delim('https://marieetienne.github.io/datasets/cafe_guyana.csv', delim = ",")
 
 dta %>% 
   print(n = 4)
@@ -238,6 +240,44 @@ Faire une analyse descriptive des variables
 * Age
 
 ---
+name: bivarie
+# Description bivariée
+
+-- 
+
+## Mesurer le lien entre deux variables : la covariance
+
+Exemple des manchots de Palmers
+
+```{r graph_bivar}
+penguins %>% ggplot() + aes(y= bill_length_mm, x = body_mass_g ) + geom_point()
+```
+--
+
+Les deux variables sont-elles liées ?
+
+Comment quantifier ce lien ?
+
+---
+template: bivarie
+## La covariance
+On s'intéresse à deux variables $x_{,i}$ et $x_{,j}$, le lien est mesuré par 
+
+$$Cov(x_i, x_j) = \frac{1}{n} \sum_{k=1}^n (x_{k,i} - x_{\bullet,i}) (x_{k,j} - x_{\bullet,j})$$
+-- 
+
+Ce lien dépend des unités (cf illustration R)
+--
+
+## La corrélation
+
+$$Cor(x_i, x_j) = \frac{1}{n} \sum_{k=1}^n \frac{(x_{k,i} - x_{\bullet,i})}{s_{x_i}}\frac{(x_{k,j} - x_{\bullet,j})}{s_{x_j}}$$
+
+Les variables $(x_{k,i} - x_{\bullet, i})/s_{x_i}$ sont dites centrées réduites. (cf exemple R)
+
+
+--
+
 
 # Ce qu'il faut absolument pour la suite
 
