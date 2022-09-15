@@ -364,6 +364,9 @@ name: construction
 
 ### Situation simplifiée à 2 variables
 
+.pull-left[
+
+
 ```{r intuition, eval = TRUE, out.width = "60%"}
 eig_res <- eigen(cor(penguins_centre[, c(4,3)]))
 pc1 <- eig_res$vectors[, 1]
@@ -376,7 +379,6 @@ penguins_centre %>% ggplot() + geom_point(aes(x  =  body_mass_g, y = flipper_len
   geom_segment(aes(x= - 4*pc1[1], xend = 4*pc1[1], y = -4*pc1[2], yend = 4*pc1[2]),  col = "#1F908E")
 ```
 
---
 
 
 
@@ -386,8 +388,11 @@ I2 <- sum(penguins_centre$flipper_length_mm^2)/nrow(penguins_centre)
 I3 <- eig_res$values[1]
 
 ```
-.pull-left[
 
+]
+--
+
+.pull-right[
 $$\class{rouge}{I_{\Delta} =  1}$$
 
 
@@ -395,8 +400,8 @@ $$\class{jaune}{I_{\Delta} =  1}$$
 
 
 $$\class{vert}{I_{\Delta} =  1.89}$$
+
 ]
-.pull-right[
 L'inertie mesure la quatité d'information contenue dans les données
 
 * Si on ne s'intéresse qu'à la variable poids du corps, on a 1 d'inertie.
@@ -405,14 +410,13 @@ L'inertie mesure la quatité d'information contenue dans les données
 
 * Si on s'intéresse à la nouvelle variable (compromis entre le poids du corps et la longueur des ailes), on a 1.89. AVec une seule variable bien choisie, on représente presque toute l'information du jeu de données
 
-]
+
 
 ---
 
 template: construction
 
 
---
 ```{r acp_toy, eval = TRUE, echo  = FALSE, results='hide'}
 small_dta <- penguins %>% select(body_mass_g, flipper_length_mm) %>% as.data.frame()
 library(FactoMineR)
@@ -420,7 +424,7 @@ res_pca <- PCA(small_dta)
 ```
 
  
-```{r concret, eval = TRUE, out.width = "50%"}
+```{r concret, eval = TRUE, out.width = "70%"}
 penguins_centre %>% ggplot() + geom_point(aes(x  =  body_mass_g, y = flipper_length_mm), alpha = 0.2)  + 
   coord_fixed() + 
   geom_point(data=data.frame(x=0, y=0), aes(x=x,y=y), col = "red", size = 4) + 
