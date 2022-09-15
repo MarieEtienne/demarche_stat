@@ -413,7 +413,7 @@ template: construction
 
 
 --
-```{r acp_toy, echo  = FALSE, results='hide'}
+```{r acp_toy, eval = TRUE, echo  = FALSE, results='hide'}
 small_dta <- penguins %>% select(body_mass_g, flipper_length_mm) %>% as.data.frame()
 library(FactoMineR)
 res_pca <- PCA(small_dta)
@@ -460,8 +460,6 @@ ok %>% ggplot() + geom_point(aes(x  =  coord1, y = coord2), alpha = 0.2)  +
 
 --
 
-Mathématiquement ces vecteurs correspondent aux .vert[vecteurs propres de la matrice de corrélation des différentes variables].  .orange[L'inertie portée par chaque axe] correspondant, est .orange[la valeur propre associée au vecteur propre].
-
 Les .rouge[composantes principales] sont des combinaisons linéaires des variables initiales
 
 
@@ -469,10 +467,9 @@ Les .rouge[composantes principales] sont des combinaisons linéaires des variabl
 
 template: construction
 
+Bien sûr ça n'a pas d'intérêt dans le cas de deux variables 
 
-## Et ensuite ?
-
-Sur l'exemple complet des manchots 
+## ACP sur l'exemple des manchots 
 
 
 ```{r penguins_as_df, echo = FALSE, eval = TRUE}
@@ -481,7 +478,7 @@ penguins_centre <- penguins_centre %>% as.data.frame()
 
 ```{r PCA_manchots, eval = TRUE, echo = TRUE}
 library(FactoMineR)
-penguins.PCA <- PCA(X = penguins_centre, graph = FALSE)
+penguins.PCA <- PCA(X = penguins, graph = FALSE)
 penguins.PCA$eig
 ```
 
