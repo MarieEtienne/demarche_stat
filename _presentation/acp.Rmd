@@ -462,41 +462,39 @@ ok %>% ggplot() + geom_point(aes(x  =  coord1, y = coord2), alpha = 0.2)  +
 
 Les .rouge[composantes principales] sont des combinaisons linéaires des variables initiales
 
+Bien sûr ça n'a pas d'intérêt dans le cas de deux variables 
 
 ---
 
 template: construction
 
-Bien sûr ça n'a pas d'intérêt dans le cas de deux variables 
-
 ## ACP sur l'exemple des manchots 
 
 
-```{r penguins_as_df, echo = FALSE, eval = TRUE}
-penguins_centre <- penguins_centre %>% as.data.frame()
-```
 
 ```{r PCA_manchots, eval = TRUE, echo = TRUE}
 library(FactoMineR)
-penguins.PCA <- PCA(X = penguins, graph = FALSE)
+dta <- penguins %>% select(bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g) 
+penguins.PCA <- PCA(X = dta, ncp = 4, graph = FALSE)
 penguins.PCA$eig
 ```
 
---
+---
 
-.left-column[
+
+template: construction
+
+## ACP sur l'exemple des manchots 
+
 ```{r PCA_manchots_plot, eval = TRUE}
 plot(penguins.PCA)
 ```
-]
 
-.right-column[
 Il s'agit de la représentation en 2 dimensions qui déforment le moins possible le nuage global des points
 
 
  A l'aide de 2 dimensions seulement, on représente `r penguins.PCA$eig[1,2]` + `r penguins.PCA$eig[2,2]` de l'inertie totale.
 
-]
 
 
 ---
