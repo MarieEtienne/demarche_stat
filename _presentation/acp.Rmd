@@ -538,7 +538,7 @@ penguins.PCA$var$cos2 %>% as.data.frame() %>%
 
 --
 
-Une représantation graphique : Le cercle des corrélations 
+Une représentation graphique : Le cercle des corrélations 
 ```{r var_proj_quality, echo = TRUE, eval = TRUE, out.height = "40%"}
 plot(penguins.PCA, choix = "var")
 ```
@@ -655,11 +655,11 @@ PCAshiny(penguins)
 
 ---
 
-# Ce qu'il faut absolument savoir pour les TDs
+# Ce qu'il faut retenir du cours
 
 * L'inertie mesure la quantité d'information.
 
-* La valeur propre associée à une composante principale est l'inertie préservée par projection sur cette composante.
+* La valeur propre associée à une composante principale est l'inertie du nuage de points limités à cet axe (nuage projeté sur l'axe).
 
 * L'ACP est un changement de repère pour projeter de façon pertinente donc les composantes principales sont des combinaisons linéaires des variables d'origine.
 
