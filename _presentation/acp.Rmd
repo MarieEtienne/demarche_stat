@@ -580,15 +580,6 @@ penguins.PCA$ind$coord %>% as_tibble() %>% rowid_to_column  %>%
 ```
 
 
-
-
----
-
-template: interprétation
-
-
-## Qualité de la représentation des variables 
-
 ---
 template: interprétation
 
@@ -621,7 +612,7 @@ ggpubr::ggarrange(nrow = 1, plotlist = list(p1,p2), ncol = 2)
 ---
 name: exemple
 
-# L'exemple des caractéristiques du Doubs
+# Une analyse complète : les caractéristiques du Doubs
 
 --
 
