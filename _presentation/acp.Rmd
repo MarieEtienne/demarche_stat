@@ -386,7 +386,7 @@ I2 <- sum(penguins_centre$flipper_length_mm^2)/nrow(penguins_centre)
 I3 <- eig_res$values[1]
 
 ```
-
+.pull-left[
 
 $$\class{rouge}{I_{\Delta} =  1}$$
 
@@ -395,22 +395,29 @@ $$\class{jaune}{I_{\Delta} =  1}$$
 
 
 $$\class{vert}{I_{\Delta} =  1.89}$$
+]
+.pull-right[
+L'inertie mesure la quatité d'information contenue dans les données
 
+* Si on ne s'intéresse qu'à la variable poids du corps, on a 1 d'inertie.
+
+* Si on ne s'intéresse qu'à la variable longueur des ailes, on a 1 d'inertie.
+
+* Si on s'intéresse à la nouvelle variable (compromis entre le poids du corps et la longueur des ailes), on a 1.89. AVec une seule variable bien choisie, on représente presque toute l'information du jeu de données
+
+]
 
 ---
 
 template: construction
 
 
-## Concrètement 
-
-1. Chercher  .rouge[composante principale]  1 : l'axe qui préserve un maximum d'inertie, cet axe est défini par un vecteur $\vec{u_1}.$ 
-
-2. Chercher ensuite le vecteur $\vec{u_2}$, orthogonal à $\vec{u_1}$ qui explique le maximum d'inertie après $\vec{u_1}$.
-
-3. Déterminer ainsi les $p$ vecteurs orthogonaux, classés en fonction de l'inertie qu'ils portent.
-
 --
+```{r acp_toy, echo  = FALSE, results='hide'}
+small_dta <- penguins %>% select(body_mass_g, flipper_length_mm) %>% as.data.frame()
+library(FactoMineR)
+res_pca <- PCA(small_dta)
+```
 
  
 ```{r concret, eval = TRUE, out.width = "50%"}
@@ -419,8 +426,34 @@ penguins_centre %>% ggplot() + geom_point(aes(x  =  body_mass_g, y = flipper_len
   geom_point(data=data.frame(x=0, y=0), aes(x=x,y=y), col = "red", size = 4) + 
   geom_segment(aes(x=  0, xend = pc1[1], y =0, yend = pc1[2]),  arrow =  arrow(length = unit(0.4,"cm")),  col = "#1F908E") +
   geom_segment(aes(x=  0, xend = pc2[1], y =0, yend = pc2[2]),  arrow =  arrow(length = unit(0.4,"cm")),  col = "#F1D763") +
-  geom_segment(aes(x=  0, xend = 1, y =0, yend = 0),  arrow =  arrow(length = unit(0.4,"cm")), col  ="#969696") +
-  geom_segment(aes(x=  0, xend = 0, y =0, yend = 1),  arrow =  arrow(length = unit(0.4,"cm")), col = "#969696") 
+  coord_fixed()
+
+```
+
+---
+
+template: construction
+
+
+
+ 
+```{r concret_bis, eval = TRUE, out.width = "50%"}
+ok  <- penguins %>% 
+  add_column(res_pca$ind$coord[,1]) %>% 
+  add_column(res_pca$ind$coord[,2]) %>% 
+  rename(coord1 =  `res_pca$ind$coord[, 1]`) %>% 
+  rename(coord2 =  `res_pca$ind$coord[, 2]`) 
+
+ok %>% ggplot() + geom_point(aes(x  =  coord1, y = coord2), alpha = 0.2)  + 
+  coord_fixed() + 
+  geom_point(data=data.frame(x=0, y=0), aes(x=x,y=y), col = "red", size = 4) + 
+  geom_segment(aes(x=  0, xend = 1, y =0, yend = 0),  arrow =  arrow(length = unit(0.4,"cm")),  col = "#1F908E") +
+  geom_segment(aes(x=  0, xend = 0, y =0, yend = 1),  arrow =  arrow(length = unit(0.4,"cm")),  col = "#F1D763") +  geom_segment(aes(x=  0,, xend = res_pca$var$cor[1,1], y =0, yend = res_pca$var$cor[1,2]),  arrow =  arrow(length = unit(0.4,"cm")), col  ="#969696") +
+   geom_segment(aes(x=  0, xend = res_pca$var$cor[2,1], y =0, yend = res_pca$var$cor[2,2]),  arrow =  arrow(length = unit(0.4,"cm")), col = "#969696") + coord_fixed() +
+  annotate(geom = "text", x= res_pca$var$cor[1,1]+0.1,  y= res_pca$var$cor[1,2]+0.1, label ="V1") +
+  annotate(geom = "text", x= res_pca$var$cor[2,1]+0.1,  y= res_pca$var$cor[2,2]+0.1, label ="V2") +
+  annotate(geom = "text", x= 1.2,  y= 0, label ="CP1",  col = "#1F908E") +
+  annotate(geom = "text", x= 0,  y= 1.1, label ="CP2",  col = "#F1D763") 
 
 ```
 
