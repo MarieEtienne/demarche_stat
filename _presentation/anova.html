@@ -84,11 +84,7 @@ Les données peuvent être visualisées à l'aide d'un boxplot.
 
 
 ---
-name: model
-# Le modèle d'analyse de la variance à 1 facteur
-
----
-template: model
+template: intro
 
 ## Graphiquement 
 
@@ -213,9 +209,22 @@ count: false
 &lt;p class="question"&gt; Au vu de nos données, le modèle M1 est-il plus pertinent que le modèle M0 ?&lt;/p&gt;
 
 
+---
+# Plan du cours
+
+## Formaliser les modèles M0 et M1
+
+## Estimer les paramètres inconnus
+
+## Proposer une méthode pour décider entre M0 et M1
+
+## Si M1, comparer les comportements moyens de sgroupes 2 à 2
 
 ---
-template: model
+name: model
+# Formaliser les modèles M0 et M1
+
+--
 
 ## Version régulière du modèle M1
 
@@ -550,13 +559,13 @@ template: parametre
 
 --
 
-Les paramètres du modèle  sont inconnus. Ils sont notés par des lettres grecques `\(\bf{\theta}\)`, `\(\mu, \alpha, \dots\)`. 
+Les paramètres du modèle  sont inconnus. Ils sont notés par des lettres grecques `\(\class{rouge}{\bf{\theta}}\)`, `\(\class{rouge}{\mu}, \class{rouge}{\alpha}, \dots\)`. 
 
 
-On veut en donner une estimation à partir des données observées ( `\(\bf{y}\)`). Les estimations des paramètres sont notées par les mêmes lettres décorées d'un chapeau `\(\bf{\hat{\theta}}, \hat{\mu}, \hat{\alpha}, \dots\)`.  
+On veut en donner une estimation à partir des données observées ( `\(\class{fixe}{\bf{y}}\)`). Les estimations des paramètres sont notées par les mêmes lettres décorées d'un chapeau `\(\class{fixe}{\bf{\hat{\theta}}}, \class{fixe}{\hat{\mu}}, \class{fixe}{\hat{\alpha}}, \dots\)`.  
 
 
-L'estimateur d'un paramètre est la variable aléatoire correspondante. Il sera noté en majuscule avec une lettre latine. Par exemple, l'etimateur de `\(\theta\)` sera noté `\(T\)`, l'estimateur de `\(\mu\)` sera noté `\(M\)` et l'estimateur de `\(\alpha_1\)` sera noté `\(A_1\)`.
+L'estimateur d'un paramètre est la variable aléatoire correspondante. Il sera noté en majuscule avec une lettre latine. Par exemple, l'etimateur de `\(\class{rouge}{\theta}\)` sera noté `\(\class{alea}{T}\)`, l'estimateur de `\(\class{rouge}{\mu}\)` sera noté `\(\class{alea}{M}\)` et l'estimateur de `\(\class{rouge}{\alpha_1}\)` sera noté `\(\class{alea}{A_1}\)`.
 
 
 
@@ -564,30 +573,30 @@ L'estimateur d'un paramètre est la variable aléatoire correspondante. Il sera 
 template: parametre
 ## Estimation des paramètres du modèle version régulière
 
-`$$Y_{ik} = \mu_i + E_{ik}, \quad E_{ik}\overset{ind}{\sim}\mathcal{N}(0,\sigma^2).$$`
+`$$\class{alea}{Y_{ik}} = \class{rouge}{\mu_i} + \class{alea}{E_{ik}}, \quad \class{alea}{E_{ik}}\overset{ind}{\sim}\mathcal{N}(0,\class{rouge}{\sigma^2}).$$`
 
 ### Estimation
 
-`\(\mu_i\)` représente le comportement moyen de l'ensemble des individus du groupe `\(i\)`.  On peut l'estimer par `\(\hat{\mu}_i = \frac{1}{n_i}\sum_{k=1}^{n_i} y_{ik}\)`
+`\(\class{rouge}{\mu_i}\)` représente le comportement moyen de l'ensemble des individus du groupe `\(i\)`.  On peut l'estimer par `\(\class{fixe}{\hat{\mu}_i} = \frac{1}{n_i}\sum_{k=1}^{n_i} \class{fixe}{y_{ik}}= \class{fixe}{y_{i\bullet}}\)`
 
 --
 
 ### Estimateur 
 
-L'estimateur de `\(\mu_i\)` est donc défini par `\(M_i= \frac{1}{n_i}\sum_{k=1}^{n_i} Y_{ik},\)`  c'est une variable aléatoire
+L'estimateur de `\(\class{rouge}{\mu_i}\)` est donc défini par `\(\class{alea}{M_i}= \frac{1}{n_i}\sum_{k=1}^{n_i} \class{alea}{Y_{ik}},\)`  c'est une variable aléatoire
 
---
-- de loi normale (somme de variables normales)
 
+- de loi normale `\(\mathcal{N}\)`, 
 --
-- d'espérance `\(\mathbb{E}(M_i) = \mathbb{E}\left( \frac{1}{n_i}\sum_{k=1}^{n_i} Y_{ik}\right) =  \frac{1}{n_i} \sum_{k=1}^{n_i} \mathbb{E}(Y_{ik}) =\mu_i.\)` 
+
+- et espérance `\(\mathbb{E}(\class{alea}{M_i}) = \class{rouge}{\mu_i}.\)` 
 --
 &lt;a class=care&gt; C'est un estimateur sans biais&lt;/a&gt;
 --
 
-- de variance `\(\mathbb{V}(M_i) = \mathbb{V}\left( \frac{1}{n_i}\sum_{k=1}^{n_i} Y_{ik}\right) =  \frac{1}{n_i^2} \sum_{k=1}^{n_i} \mathbb{V}(Y_{ik}) = \frac{\sigma^2}{n_i}\)`
+- de variance `\(\mathbb{V}(M_i) =  \frac{\class{rouge}{\sigma^2}}{n_i}\)`
 --
-&lt;a class=care&gt; la variance de l'estimateur diminue quand le nombre de personnes dans le groupe augmente.&lt;/a&gt;
+&lt;a class=care&gt; la variance de l'estimateur diminue quand le nombre d'individus dans le groupe augmente.&lt;/a&gt;
 --
 
 `$$M_i \sim\mathcal{N}\left(\mu_i, \frac{\sigma^2}{n_i}\right).$$`
@@ -601,24 +610,24 @@ template: parametre
 
 ### Estimation
 
-- `\(\mu\)` représente le comportement moyen du groupe 1 (groupe de référence) : `\(\hat{\mu} = \frac{1}{n_1}\sum_{k=1}^{n_1} y_{1k}\)`
+- `\(\mu\)` représente le comportement moyen du groupe 1 (groupe de référence) : `\(\class{fixe}{\hat{\mu}} =  \class{fixe}{y_{1\bullet}}\)`
 --
 
-- `\(\mu + \alpha_i = \mu_i\)`, donc  `\(\alpha_i = \mu_i -\mu\)` ,représente l'effet différentiel du groupe i par rapport au groupe de référence.  `\(\hat{\alpha_i} = \frac{1}{n_i}\sum_{k=1}^{n_i} y_{1k} - \hat{\mu}\)`
+- `\(\class{rouge}{\mu} + \class{rouge}{\alpha_i} = \class{rouge}{\mu_i}\)`, donc  `\(\class{rouge}{\alpha_i} = \class{rouge}{\mu_i} -\class{rouge}{\mu}\)` ,représente l'effet différentiel du groupe i par rapport au groupe de référence.  `\(\class{fixe}{\hat{\alpha_i}} = \class{fixe}{y_{i\bullet}} -\class{fixe}{y_{1\bullet}}\)`
 
 --
 
 ### Estimateur 
 
-L'estimateur de `\(\mu\)` est donc défini par `\(M= \frac{1}{n_1}\sum_{k=1}^{n_1} Y_{1k}.\)`  
+L'estimateur de `\(\class{alea}{\mu}\)` est donc défini par `\(\class{alea}{M}= \class{alea}{Y_{1\bullet}} = \frac{1}{n_1}\sum_{k=1}^{n_1} \class{alea}{Y_{1k}}.\)`  
 
-`$$M \sim\mathcal{N}\left(\mu, \frac{\sigma^2}{n_1}\right).$$`
+`$$\class{alea}{M} \sim\mathcal{N}\left(\class{rouge}{\mu}, \frac{\class{rouge}{\sigma^2}}{n_1}\right).$$`
 
 --
 
-L'estimateur de `\(\alpha_i\)` est donc défini par `\(A_i= \frac{1}{n_i}\sum_{k=1}^{n_i} Y_{ik} - \frac{1}{n_1}\sum_{k=1}^{n_1} Y_{1k}.\)`
+L'estimateur de `\(\alpha_i\)` est donc défini par `\(\class{alea}{A_i}=  \class{alea}{Y_{i\bullet}} -\class{alea}{Y_{1\bullet}}.\)`
 
-`$$A_i \sim\mathcal{N}\left(\alpha_i, \sigma^2\left(\frac{1}{n_i} + \frac{1}{n_1}\right) \right).$$`
+`$$\class{alea}{A_i} \sim\mathcal{N}\left(\class{rouge}{\alpha_i}, \class{rouge}{\sigma^2}\left(\frac{1}{n_i} + \frac{1}{n_1}\right) \right).$$`
 
 
 ---
@@ -717,20 +726,20 @@ Naturellement, on a choisi d'estimer  `\(\mu_i\)` par `\(\frac{1}{n_i}\sum_{k=1}
 
 --
 
-En fait, `\(\hat{\mu}_i\)` est choisi pour minimiser `\(RSS_{obs}\)`, la somme observée des erreurs au carré  donnée par  
+En fait, `\(\hat{\mu}_i\)` est choisi pour minimiser `\(RSS_{M_1, obs}\)`, la somme observée des erreurs au carré  donnée par  
 
-`$$RSS_{obs} = \sum_{i=1}^I \sum_{k=1}^{n_i} (y_{ik} - \hat{\mu}_i)^2.$$` 
+`$$RSS_{M_1, obs} = \sum_{i=1}^I \sum_{k=1}^{n_i} (y_{ik} - \hat{\mu}_i)^2.$$` 
 --
 
 Le modèle d'analyse de la variance 
 `$$Y_{ik} =\mu_i +E_{ik}.$$`
 Pour un nouvel individu `\(k_0\)` dans le groupe `\(i\)`, le modèle prédit que sa fréquence cardiaque sera `\(\hat{y}_{ik_0}=\hat{\mu}_i\)`.
 
-`\(RSS_{obs}\)` se réécrit dans un cadre général comme 
+`\(RSS_{M_1,obs}\)` se réécrit dans un cadre général comme 
 
-`$$RSS_{obs} = \sum_{i=1}^I \sum_{k=1}^{n_i} (y_{ik} - \hat{y}_{ik})^2.$$` 
+`$$RSS_{M_1, obs} = \sum_{i=1}^I \sum_{k=1}^{n_i} (y_{ik} - \hat{y}_{ik})^2.$$` 
 
-`$$RSS = \sum_{i=1}^I \sum_{k=1}^{n_i} (Y_{ik} - \hat{Y}_{ik})^2.$$` 
+`$$RSS_{M_1} = \sum_{i=1}^I \sum_{k=1}^{n_i} (Y_{ik} - \hat{Y}_{ik})^2.$$` 
 
 
 
@@ -741,48 +750,17 @@ template: parametre
 
 `$$\frac{RSS}{\sigma^2} \sim \chi^2(n-I).$$`
 
-
 --
-
-### D'où vient ce `\(n-I\)` ?
-
-La variabilité totale des erreurs est donnée par 
-
-`$$\sum_{i=1}^I \sum_{k=1}^{n_i} (Y_{ik} - \mu_i)^2= \sum_{i=1}^I \sum_{k=1}^{n_i} (E_{ik})^2,$$`
-C'est la somme de n variables aléaoires normales centrées de variance `\(\sigma^2\)`, donc 
-
-`$$\sum_{i=1}^I \sum_{k=1}^{n_i} \left( \frac{E_{ik}}{\sigma}\right)^2 \sim\chi^2(n).$$`
---
-
-Mais les `\(\mu_i\)` sont inconnus, on les remplace par leur estimateurs  `\(M_i.\)`
-
-Chaque fois que l'on doit remplacer un paramètre de moyenne par son estimateur, on perd un degré de liberté. Ici on a estimé `\(I\)` paramètres de moyenne, d'où le `\(n-I\)`.
-
-
-
-
----
-template: parametre
-## Le paramètre de variance
-
-Rappel:
-
-Si une variable `\(U\sim\chi^2(l)\)` alors `\(\mathbb{E}(U)=l\)`.
-
-Alors `\(\mathbb{E}\left( \frac{RSS}{\sigma^2} \right) = n-I,\)` donc  `\(\mathbb{E}\left( \frac{RSS}{n-I} \right) = \sigma^2.\)`
-
---
-
 ## Estimateur de la variance 
 
-  $$S^2 =\frac{1}{n-I} RSS, $$
-est un &lt;a class=care&gt; estimateur sans bias de  `\(\sigma^2\)` &lt;/a&gt; .
+  $$\class{alea}{S^2} =\frac{1}{n-I} \class{alea}{RSS}, $$
+est un &lt;a class=care&gt; estimateur sans bias de  `\(\class{rouge}{\sigma^2}\)` &lt;/a&gt; .
 
 --
 
 ## Estimation de `\(\sigma^2\)`
 
-`$$\hat{\sigma}^2 =\frac{1}{n-I} RSS_{obs}.$$`
+`$$\class{fixe}{\hat{\sigma}}^2 =\frac{1}{n-I} \class{fixe}{RSS_{obs}}.$$`
 
 
 ---
@@ -1123,7 +1101,7 @@ Le modèle sous forme matricielle s'écrit
 
 ### Estimateur de `\(\theta\)`
 
-`$$\hat{\theta} = (X^\intercal X )^{-1} X^\intercal Y.$$`
+`$$T = (X^\intercal X )^{-1} X^\intercal Y.$$`
 --
 
 ### Loi de l'estimateur de `\(\theta\)`
@@ -1132,32 +1110,29 @@ Le modèle sous forme matricielle s'écrit
 `$$T = (X^\intercal X )^{-1} X^\intercal Y \sim \mathcal{N}_{I}\left(\theta, \sigma^2 (X^\intercal X )^{-1}\right).$$`
 --
 
-Cette approche très mathématique est utile pour la généralisation, on aura l'occasion d'y revenir !!
-
----
-template: parametre
-### Déclinaison sur les exemples
-
-A partir des données de chauve souris, ajuster un modèle  permettant d'expliquer le volume de la partie Auditive (AUD) en fonction du régime.
-
-Il ne s'agit pas de refaire les calculs à la main, mais uniquement d'utiliser la fonction `lm`. 
-### Méfiez vous 
-
-- vérifier les degrés de liberté et le nom des paramètres
-- Si quelque chose cloche, vérifier la nature de la variable Diet
-- On peut transformer une variable en facteur à l'aide de la fonction `as.factor`.
+Cette approche très mathématique est utile pour la généralisation, dès qu'un modèle s'écrit `\(Y=X\theta + E\)` !!
 
 
 ---
 template: pause
 
+### Méfiez vous 
+
+- vérifier les degrés de liberté et le nom des paramètres
+- Si quelque chose cloche, vérifier la nature des variables
+- On peut transformer une variable en facteur à l'aide de la fonction `as.factor`.
+
 ---
 name: modcomp
-# Test du modèle complet
+# Décider entre M0 et M1
+
+--
+
+**Test du modèle complet**
 
 
----
-template: modcomp
+--
+
 ## Rappel exemple fréquence cardiaque (exemple 1)
 
 On a mesuré la fréquence cardiaque de 20 femmes et 20 hommes.
