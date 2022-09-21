@@ -594,23 +594,23 @@ L'estimateur de `\(\class{rouge}{\mu_i}\)` est donc défini par `\(\class{alea}{
 &lt;a class=care&gt; C'est un estimateur sans biais&lt;/a&gt;
 --
 
-- de variance `\(\mathbb{V}(M_i) =  \frac{\class{rouge}{\sigma^2}}{n_i}\)`
+- de variance `\(\mathbb{V}(\class{alea}{M_i}) =  \frac{\class{rouge}{\sigma^2}}{n_i}\)`
 --
 &lt;a class=care&gt; la variance de l'estimateur diminue quand le nombre d'individus dans le groupe augmente.&lt;/a&gt;
 --
 
-`$$M_i \sim\mathcal{N}\left(\mu_i, \frac{\sigma^2}{n_i}\right).$$`
+`$$\class{alea}{M_i} \sim\mathcal{N}\left(\class{rouge}{\mu_i}, \frac{\class{rouge}{\sigma^2}}{n_i}\right).$$`
 
 
 ---
 template: parametre
 ## Estimation des paramètres du modèle version singulière avec la contrainte par défaut
 
-`$$Y_{ik} = \mu + \alpha_i + E_{ik}, \quad E_{ik}\overset{ind}{\sim}\mathcal{N}(0,\sigma^2).$$`
+`$$\class{alea}{Y_{ik}} = \class{rouge}{\mu} + \class{rouge}{\alpha_i} + \class{alea}{E_{ik}}, \quad \class{alea}{E_{ik}}\overset{ind}{\sim}\mathcal{N}(0,\class{rouge}{\sigma^2}).$$`
 
 ### Estimation
 
-- `\(\mu\)` représente le comportement moyen du groupe 1 (groupe de référence) : `\(\class{fixe}{\hat{\mu}} =  \class{fixe}{y_{1\bullet}}\)`
+- `\(\class{rouge}{\mu}\)` représente le comportement moyen du groupe 1 (groupe de référence) : `\(\class{fixe}{\hat{\mu}} =  \class{fixe}{y_{1\bullet}}\)`
 --
 
 - `\(\class{rouge}{\mu} + \class{rouge}{\alpha_i} = \class{rouge}{\mu_i}\)`, donc  `\(\class{rouge}{\alpha_i} = \class{rouge}{\mu_i} -\class{rouge}{\mu}\)` ,représente l'effet différentiel du groupe i par rapport au groupe de référence.  `\(\class{fixe}{\hat{\alpha_i}} = \class{fixe}{y_{i\bullet}} -\class{fixe}{y_{1\bullet}}\)`
@@ -636,7 +636,7 @@ template: parametre
 
 ### Ce qu'on doit trouver
 
-`$$\hat{\mu} =\frac{1}{20}\sum_{k=1}^{20} y_{1k}, \quad \hat{\alpha}_2 =\frac{1}{20}\sum_{k=1}^{20} y_{2k} - \frac{1}{20}\sum_{k=1}^{20} y_{1k}$$`
+`$$\class{fixe}{\hat{\mu}} = \class{fixe}{y_{1\bullet}}=\frac{1}{20}\sum_{k=1}^{20} y_{1k}, \quad \class{fixe}{\hat{\alpha}_2} =\class{fixe}{y_{2\bullet}}-\class{fixe}{y_{1\bullet}}=\frac{1}{20}\sum_{k=1}^{20} \class{fixe}{y_{2k}} - \frac{1}{20}\sum_{k=1}^{20} \class{fixe}{y_{1k}}$$`
 
 
 ```r
@@ -655,7 +655,7 @@ freqdata %&gt;% group_by(Sexe) %&gt;% summarise(m = mean(freqC), n= n())
 
 --
 
-`\(\hat{\mu} =\)` 84.3 et `\(\hat{\alpha}_2=\)` 0.25. 
+`\(\class{fixe}{\hat{\mu}} =\)` 84.3 et `\(\class{fixe}{\hat{\alpha}_2}=\)` 0.25. 
 
 
 ---
@@ -665,7 +665,7 @@ template: parametre
 
 ### Ce qu'on doit trouver
 
-`\(\hat{\mu} =\)` 84.3 et `\(\hat{\alpha}_2=\)` 0.25. 
+`\(\class{fixe}{\hat{\mu}} =\)` 84.3 et `\(\class{fixe}{\hat{\alpha}_2}=\)` 0.25. 
 
 --
 
@@ -722,24 +722,24 @@ F-statistic: 0.03836 on 1 and 38 DF,  p-value: 0.8458
 template: parametre
 ## Retour sur la méthode d'estimation - Somme des carrés résiduel (RSS)
 
-Naturellement, on a choisi d'estimer  `\(\mu_i\)` par `\(\frac{1}{n_i}\sum_{k=1}^{n_1} y_{ik}.\)` 
+Naturellement, on a choisi d'estimer  `\(\class{rouge}{\mu_i}\)` par `\(\class{fixe}{y_{i\bullet}}.\)` 
 
 --
 
-En fait, `\(\hat{\mu}_i\)` est choisi pour minimiser `\(RSS_{M_1, obs}\)`, la somme observée des erreurs au carré  donnée par  
+En fait, `\(\class{fixe}{\hat{\mu}_i}\)` est choisi pour minimiser `\(\class{fixe}{RSS_{M_1, obs}}\)`, la somme observée des erreurs au carré  donnée par  
 
-`$$RSS_{M_1, obs} = \sum_{i=1}^I \sum_{k=1}^{n_i} (y_{ik} - \hat{\mu}_i)^2.$$` 
+`$$\class{fixe}{RSS_{M_1, obs}} = \sum_{i=1}^I \sum_{k=1}^{n_i} (\class{fixe}{y_{ik}} - \class{fixe}{\hat{\mu}_i})^2.$$` 
 --
 
 Le modèle d'analyse de la variance 
-`$$Y_{ik} =\mu_i +E_{ik}.$$`
-Pour un nouvel individu `\(k_0\)` dans le groupe `\(i\)`, le modèle prédit que sa fréquence cardiaque sera `\(\hat{y}_{ik_0}=\hat{\mu}_i\)`.
+`$$\class{alea}{Y_{ik}} =\class{rouge}{\mu_i} +\class{alea}{E_{ik}}.$$`
+Pour un nouvel individu `\(k_0\)` dans le groupe `\(i\)`, le modèle prédit que sa fréquence cardiaque sera `\(\class{fixe}{\hat{y}_{ik_0}}=\class{fixe}{\hat{\mu}_i}\)`.
 
-`\(RSS_{M_1,obs}\)` se réécrit dans un cadre général comme 
+`\(\class{fixe}{RSS_{M_1,obs}}\)` se réécrit dans un cadre général comme 
 
-`$$RSS_{M_1, obs} = \sum_{i=1}^I \sum_{k=1}^{n_i} (y_{ik} - \hat{y}_{ik})^2.$$` 
+`$$\class{fixe}{RSS_{M_1, obs}} = \sum_{i=1}^I \sum_{k=1}^{n_i} (\class{fixe}{y_{ik}} - \class{fixe}{\hat{y}_{ik}})^2.$$` 
 
-`$$RSS_{M_1} = \sum_{i=1}^I \sum_{k=1}^{n_i} (Y_{ik} - \hat{Y}_{ik})^2.$$` 
+`$$\class{alea}{RSS_{M_1}} = \sum_{i=1}^I \sum_{k=1}^{n_i} (\class{alea}{Y_{ik}} - \class{alea}{\hat{Y}_{ik}})^2.$$` 
 
 
 
@@ -748,7 +748,7 @@ template: parametre
 
 ## Loi de RSS
 
-`$$\frac{RSS}{\sigma^2} \sim \chi^2(n-I).$$`
+`$$\frac{\class{alea}{RSS}}{\class{rouge}{\sigma^2}} \sim \chi^2(n-I).$$`
 
 --
 ## Estimateur de la variance 
