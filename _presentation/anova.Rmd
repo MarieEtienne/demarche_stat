@@ -255,30 +255,30 @@ template: model
 
 ## Version régulière du modèle M1
 
-$$Y_{ik} \overset{ind}{\sim}\mathcal{N}(\mu_i, \sigma^2),$$
+$$\class{alea}{Y_{ik}} \overset{ind}{\sim}\mathcal{N}(\class{rouge}{\mu_i}, \class{rouge}{\sigma^2}),$$
 avec 
 - $i=1,\ldots,I$ le numéro du groupe,
 - $k= 1,\ldots, n_i$ le numéro de l'individu dans le groupe $i$, 
 - $n_i$ le nombre d'individus dans le groupe $i$ et $n=\sum_i n_i$ le nombre total d'individus,
-- $\mu_i$ le comportement moyen du groupe $i$,
-- $\sigma^2$ la variance commune à tous les groupes.
+- $\class{rouge}{\mu_i}$ le comportement moyen du groupe $i$,
+- $\class{rouge}{\sigma^2}$ la variance commune à tous les groupes.
 
 ### Une écriture équivalente 
 
-$$Y_{ik} = \mu_{i} + E_{ik}, \quad E_{ik}\overset{ind}{\sim}\mathcal{N}(0, \sigma^2).$$
+$$\class{alea}{Y_{ik}} = \class{rouge}{\mu_{i}} + \class{alea}{E_{ik}}, \quad \class{alea}{E_{ik}}\overset{ind}{\sim}\mathcal{N}(0, \class{rouge}{\sigma^2}).$$
 
 
 ### Nombre de paramètres du modèle
 
-- $I$ paramètres de moyenne  $(\mu_1, \mu_2, \ldots, \mu_I)$; 
-- 1 paramètre de variance $\sigma^2$
+- $I$ paramètres de moyenne  $(\class{rouge}{\mu_1}, \class{rouge}{\mu_2}, \ldots, \class{rouge}{\mu_I})$; 
+- 1 paramètre de variance $\class{rouge}{\sigma^2}$
 
 ---
 template: model
 
 ## Version régulière du modèle M1 sur l'exemple 1
 
-$$Y_{ik} \overset{ind}{\sim}\mathcal{N}(\mu_i, \sigma^2),$$
+$$\class{alea}{Y_{ik}} \overset{ind}{\sim}\mathcal{N}(\class{rouge}{\mu_i}, \class{rouge}{\sigma^2}),$$
 avec  $I=2$ et  la convention $i=1$ pour les femmes et $i=2$ pour les hommes.
 
 ```{r freq_anova, eval= TRUE, echo = TRUE}
@@ -286,8 +286,8 @@ freqdata %>%group_by(Sexe) %>% summarise(n= n())
 ```
 Ainsi 
 - $k=1, \ldots, n_i$, avec $n_1=20$ et $n_2=20$ et $n=40$.
-- $\mu_1$ la fréquence cardiaque moyenne des femmes et $\mu_2$ celle des hommes. 
-- $\sigma^2$ la variance commune à tous les groupes.
+- $\class{rouge}{\mu_1}$ la fréquence cardiaque moyenne des femmes et $\class{rouge}{\mu_2}$ celle des hommes. 
+- $\class{rouge}{\sigma^2}$ la variance commune à tous les groupes.
 
 ### Nombre de paramètres
 - 2 paramètres de moyenne
@@ -297,17 +297,17 @@ Ainsi
 template: model
 ## Version singulière du modèle du modèle M1
 
-$$Y_{ik} \overset{ind}{\sim}\mathcal{N}(\mu + \alpha_i, \sigma^2),$$
+$$\class{alea}{Y_{ik}} \overset{ind}{\sim}\mathcal{N}(\class{rouge}{\mu} + \class{rouge}{\alpha_i}, \class{rouge}{\sigma^2}),$$
 avec 
 - $i=1,\ldots,I$ le numéro du groupe,
 - $k= 1,\ldots, n_i$ le numéro de l'individu dans le groupe $i$, ( $\sum_i n_i=n$ )
-- $\mu$ un comportement moyen de référence,
-- $\alpha_i$ un effet différentiel du groupe $i$par rapport à la référence,
-- $\sigma^2$ la variance commune à tous les groupes.
+- $\class{rouge}{\mu}$ un comportement moyen de référence,
+- $\class{rouge}{\alpha_i}$ un effet différentiel du groupe $i$par rapport à la référence,
+- $\class{rouge}{\sigma^2}$ la variance commune à tous les groupes.
 
 ### Une écriture équivalente 
 
-$$Y_{ik} = \mu + \alpha_{i} + E_{ik}, \quad E_{ik}\overset{ind}{\sim}\mathcal{N}(0, \sigma^2).$$
+$$\class{alea}{Y_{ik}} = \class{rouge}{\mu} + \class{rouge}{\alpha_{i}} + \class{alea}{E_{ik}}, \quad \class{alea}{E_{ik}}\overset{ind}{\sim}\mathcal{N}(0, \class{rouge}{\sigma^2}).$$
 
 ### Nombre de paramètres du modèle
 
@@ -322,13 +322,13 @@ $$Y_{ik} = \mu + \alpha_{i} + E_{ik}, \quad E_{ik}\overset{ind}{\sim}\mathcal{N}
 template: model
 ## Version singulière du modèle du modèle M1 sur l'exemple 1
 
-$$Y_{ik} \overset{ind}{\sim}\mathcal{N}(\mu + \alpha_i, \sigma^2),$$
+$$\class{alea}{Y_{ik}} \overset{ind}{\sim}\mathcal{N}(\class{rouge}{\mu} + \class{rouge}{\alpha_i}, \class{rouge}{\sigma^2}),$$
 avec 
 - $I=2$ et  la convention $i=1$ pour les femmes et $i=2$ pour les hommes.
 - $k=1, \ldots, n_i$, avec $n_1=20$ et $n_2=20$
-- $\mu$ la fréquence cardiaque moyenne de référence <a class="care"> Référence à définir </a> 
-- $\alpha_1$, l'effet différentiel d'être une femme par rapport à la différence et $\alpha_2$ l'effet différentiel d'être un homme.
-- $\sigma^2$ la variance commune à tous les groupes.
+- $\class{rouge}{\mu}$ la fréquence cardiaque moyenne de référence <a class="care"> Référence à définir </a> 
+- $\class{rouge}{\alpha_1}$, l'effet différentiel d'être une femme par rapport à la différence et $\class{rouge}{\alpha_2}$ l'effet différentiel d'être un homme.
+- $\class{rouge}{\sigma^2}$ la variance commune à tous les groupes.
 
 
 
@@ -408,33 +408,33 @@ template: model
 
 
 
-$$Y_{ik} = \mu + \alpha_{i} + E_{ik}, \quad E_{ik}\overset{ind}{\sim}\mathcal{N}(0, \sigma^2).$$
+$$\class{alea}{Y_{ik}} = \class{rouge}{\mu} + \class{rouge}{\alpha_{i}} + \class{alea}{E_{ik}}, \quad \class{alea}{E_{ik}}\overset{ind}{\sim}\mathcal{N}(0, \class{rouge}{\sigma^2}).$$
 
 avec 
 - $i=1,\ldots,I$ le numéro du groupe,
 - $k= 1,\ldots, n_i$ le numéro de l'individu dans le groupe $i$, ($\sum_i n_i = n$ nombre total d'individus)
-- $\mu$ un comportement moyen de référence <a class=care> c'est celui du groupe 1</a>
-- $\alpha_1=0$  la contrainte choisie, $\alpha_1$ n'est plus un paramètre d'intérêt.
-- $\alpha_i, i\geq 2$ un effet différentiel du groupe $i$par rapport à la référence(i.e. le groupe 1)
-- $\sigma^2$ la variance commune à tous les groupes.
+- $\class{rouge}{\mu}$ un comportement moyen de référence <a class=care> c'est celui du groupe 1</a>
+- $\class{rouge}{\alpha_1}=0$  la contrainte choisie, $\alpha_1$ n'est plus un paramètre d'intérêt.
+- $\class{rouge}{\alpha_i}, i\geq 2$ un effet différentiel du groupe $i$par rapport à la référence(i.e. le groupe 1)
+- $\class{rouge}{\sigma^2}$ la variance commune à tous les groupes.
 
 
 ### Nombre de paramètres du modèle
 
-- $I$ paramètres de moyenne $(\mu,  \alpha_2, \ldots, \alpha_I)$,
-- 1 paramètre de variance $\sigma^2.$
+- $I$ paramètres de moyenne $(\class{rouge}{\mu},  \class{rouge}{\alpha_2}, \ldots, \class{rouge}{\alpha_I})$,
+- 1 paramètre de variance $\class{rouge}{\sigma^2}.$
 
 ---
 template: model
 ## Version singulière du modèle du modèle M1 sur l'exemple 1  en intégrant la contrainte par défaut
 
-$$Y_{ik} \overset{ind}{\sim}\mathcal{N}(\mu + \alpha_i, \sigma^2),$$
+$$\class{alea}{Y_{ik}} \overset{ind}{\sim}\mathcal{N}(\class{rouge}{\mu} + \class{rouge}{\alpha_i}, \class{rouge}{\sigma^2}),$$
 avec 
 - $I=2$ et  la convention $i=1$ pour les femmes et $i=2$ pour les hommes.
 - $k=1, \ldots, n_i$, avec $n_1=20$ et $n_2=20$
-- $\mu$ la fréquence cardiaque moyenne des femmesei 
-- $\alpha_1$, l'effet différentiel d'être une femme par rapport à la différence et $\alpha_2$ l'effet différentiel d'être un homme.
-- $\sigma^2$ la variance commune à tous les groupes.
+- $\class{rouge}{\mu}$ la fréquence cardiaque moyenne des femmes, 
+- $\class{rouge}{\alpha_1}$, l'effet différentiel d'être une femme par rapport à la différence et $\class{rouge}{\alpha_2}$ l'effet différentiel d'être un homme.
+- $\class{rouge}{\sigma^2}$ la variance commune à tous les groupes.
 
 
 
@@ -548,7 +548,7 @@ template: model
 
 
 .footnote[
- Pour un rappel sur le produit matriciel : [Wkipedia](https://fr.wikipedia.org/wiki/Produit_matriciel)
+ Pour un rappel sur le produit matriciel : [Remise à niveau](https://lms.agreenium.fr/course/view.php?id=90&section=5#tabs-tree-start). Faire les deux premiers points.
 ]
 
 ---
@@ -557,7 +557,7 @@ name: pause
 # Pause
 
 <br><br><br><br>
-<p style="color:#B40F20;font-size:35px;text-align:center;">Prenons une petite pause !!!</p> 
+<p style="color:#B40F20;font-size:35px;text-align:center;">Prenons une petite pause TD!!!</p> 
 
 ---
 name: parametre
