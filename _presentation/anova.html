@@ -270,14 +270,13 @@ freqdata %&gt;%group_by(Activite) %&gt;% summarise(n= n())
 2 Pétanque     8
 3 Pilates      8
 ```
-Ainsi 
+
 - `\(k=1, \ldots, n_i\)`, avec `\(n_1=8\)` et `\(n_2=8\)` et `\(n_3=8\)` et `\(n = 24\)`.
-- `\(\class{rouge}{\mu_1}\)` la fréquence cardiaque moyenne des nageurs/nageuses  et `\(\class{rouge}{\mu_2}\)` des partiquant.e.s de pilates et `\(\class{rouge}{\mu_3}\)` celle des joueurs/joueuses de pétanque. 
+- `\(\class{rouge}{\mu_1}\)` la fréquence cardiaque moyenne des nageurs/nageuses  et `\(\class{rouge}{\mu_2}\)` des pratiquant.e.s de pilates et `\(\class{rouge}{\mu_3}\)` celle des joueurs/joueuses de pétanque. 
 - `\(\class{rouge}{\sigma^2}\)` la variance commune à tous les groupes.
 
 ### Nombre de paramètres
-- 3 paramètres de moyenne
-- 1 paramètre de variance
+- 3 paramètres de moyenne et  1 paramètre de variance
 
 ---
 template: model
@@ -1137,7 +1136,7 @@ name: modcomp
 
 ## Rappel exemple fréquence cardiaque (exemple 1)
 
-On a mesuré la fréquence cardiaque de 20 femmes et 20 hommes.
+On a mesuré la fréquence cardiaque de 8 nageurs/nageuses, 8 pratiquant.e.s de pîlate et 8 pratiquant.e.s de pétanque
 
 
 
@@ -1145,7 +1144,7 @@ On a mesuré la fréquence cardiaque de 20 femmes et 20 hommes.
 
 
 --
-&lt;p class="question"&gt; Les hommes et les femmes ont-ils la même fréquence cardiaque au repos ?&lt;/p&gt;
+&lt;p class="question"&gt; Y a -t-il un lien entre fréquence cardiaque et activité sportive ?&lt;/p&gt;
 
 ---
 template: modcomp
@@ -1177,7 +1176,7 @@ template: modcomp
 Deux modèles possibles
 `$$M1 : Y_{ik} = \mu  + \alpha_i + E_{ik},\quad  M0: Y_{ik} = \mu  + E_{ik}$$`
 
-&lt;p class="question"&gt; Le modèle M1 est il plus pertinent que le modèle M0?&lt;/p&gt;
+&lt;p class="question"&gt; Le modèle M1 est-il plus pertinent que le modèle M0?&lt;/p&gt;
 
 
 ---
