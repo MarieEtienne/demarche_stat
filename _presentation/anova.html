@@ -36,22 +36,23 @@ name: intro
 template: intro
 ## Un exemple jouet à but pédagogique
 
-On a mesuré la fréquence cardiaque de 20 femmes et 20 hommes.
+On a mesuré la fréquence cardiaque de 12 femmes et 12 hommes qui pratique des activités sportives différentes (Natation, Pilate, Pétanque).
 
 
 
 
 
 ```r
-library(coursesdata)
-data(freqdata)
+freqdata &lt;- read.table('https://marieetienne.github.io/datasets/activite_FC.csv', sep = ",", header = TRUE )
+freqdata %&gt;% ggplot() +  aes(x= Activite, y = freqC) +  geom_boxplot( alpha = 0.5) + theme(legend.position = 'none')  + 
+  geom_jitter(  alpha=0.7, width = 0.15)
 ```
 
 &lt;img src="anova_files/figure-html/freqdata-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
 
 
 --
-&lt;p class="question"&gt; Les hommes et les femmes ont-ils la même fréquence cardiaque au repos ?&lt;/p&gt;
+&lt;p class="question"&gt; L'activité physique est-elle liée à  fréquence cardiaque au repos ?&lt;/p&gt;
 
 ---
 template: intro
@@ -72,7 +73,7 @@ template: intro
 ## Cadre général du modèle d'analyse de la variance à 1 facteur
 On étudie le lien entre  
 - variable quantitative notée `\(Y\)` (la fréquence cardiaque, volume de cerveau),
-- et une variable qualitative (un facteur) pourvant prendre `\(I\)` modalités (I=2 pour l'exemple 1 et I=4 dans l'exemple 2). 
+- et une variable qualitative (un facteur) pourvant prendre `\(I\)` modalités (I=3 pour l'exemple 1 et I=4 dans l'exemple 2). 
 
 
 Les données peuvent être visualisées à l'aide d'un boxplot.
@@ -153,6 +154,7 @@ count:false
 
 
 
+
 ---
 
 
@@ -199,6 +201,7 @@ count: false
 count: false
 
 &lt;img src="anova_files/figure-html/anova_versiongraphique_proba2_M0-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
+
 ---
 template: model
 count: false
@@ -252,27 +255,28 @@ template: model
 ## Version régulière du modèle M1 sur l'exemple 1
 
 `$$\class{alea}{Y_{ik}} \overset{ind}{\sim}\mathcal{N}(\class{rouge}{\mu_i}, \class{rouge}{\sigma^2}),$$`
-avec  `\(I=2\)` et  la convention `\(i=1\)` pour les femmes et `\(i=2\)` pour les hommes.
+avec  `\(I=3\)` et  la convention `\(i=1\)` pour la natation et `\(i=2\)` pour le pilate et `\(i=3\)` pour la pétanque.
 
 
 ```r
-freqdata %&gt;%group_by(Sexe) %&gt;% summarise(n= n())
+freqdata %&gt;%group_by(Activite) %&gt;% summarise(n= n())
 ```
 
 ```
-# A tibble: 2 × 2
-  Sexe      n
-  &lt;chr&gt; &lt;int&gt;
-1 F        20
-2 M        20
+# A tibble: 3 × 2
+  Activite     n
+  &lt;chr&gt;    &lt;int&gt;
+1 Natation     8
+2 Pétanque     8
+3 Pilates      8
 ```
 Ainsi 
-- `\(k=1, \ldots, n_i\)`, avec `\(n_1=20\)` et `\(n_2=20\)` et `\(n=40\)`.
-- `\(\class{rouge}{\mu_1}\)` la fréquence cardiaque moyenne des femmes et `\(\class{rouge}{\mu_2}\)` celle des hommes. 
+- `\(k=1, \ldots, n_i\)`, avec `\(n_1=8\)` et `\(n_2=8\)` et `\(n_3=8\)` et `\(n = 24\)`.
+- `\(\class{rouge}{\mu_1}\)` la fréquence cardiaque moyenne des nageurs/nageuses  et `\(\class{rouge}{\mu_2}\)` des partiquant.e.s de pilates et `\(\class{rouge}{\mu_3}\)` celle des joueurs/joueuses de pétanque. 
 - `\(\class{rouge}{\sigma^2}\)` la variance commune à tous les groupes.
 
 ### Nombre de paramètres
-- 2 paramètres de moyenne
+- 3 paramètres de moyenne
 - 1 paramètre de variance
 
 ---
@@ -306,16 +310,16 @@ template: model
 
 `$$\class{alea}{Y_{ik}} \overset{ind}{\sim}\mathcal{N}(\class{rouge}{\mu} + \class{rouge}{\alpha_i}, \class{rouge}{\sigma^2}),$$`
 avec 
-- `\(I=2\)` et  la convention `\(i=1\)` pour les femmes et `\(i=2\)` pour les hommes.
-- `\(k=1, \ldots, n_i\)`, avec `\(n_1=20\)` et `\(n_2=20\)`
+- `\(I=3\)` et  la convention `\(i=1\)` pour la natation et `\(i=2\)` pour le pilate et `\(i=3\)` pour la pétanque.
+- `\(k=1, \ldots, n_i\)`, avec `\(n_1=8,\)`  `\(n_2=8\)` et `\(n_3=8\)`, 
 - `\(\class{rouge}{\mu}\)` la fréquence cardiaque moyenne de référence &lt;a class="care"&gt; Référence à définir &lt;/a&gt; 
-- `\(\class{rouge}{\alpha_1}\)`, l'effet différentiel d'être une femme par rapport à la différence et `\(\class{rouge}{\alpha_2}\)` l'effet différentiel d'être un homme.
+- `\(\class{rouge}{\alpha_1}\)`, l'effet différentiel de la pratique de la natation  par rapport à la référence, `\(\class{rouge}{\alpha_2}\)` l'effet différentiel de la pratique du pilate et `\(\class{rouge}{\alpha_3}\)` l'effet différentiel de la pratique de la pétanque  par rapport à la référence.
 - `\(\class{rouge}{\sigma^2}\)` la variance commune à tous les groupes.
 
 
 
 ### Nombre de paramètres
-- 3 paramètres de moyenne
+- 4 paramètres de moyenne
 - 1 paramètre de variance
 
 
@@ -369,7 +373,7 @@ template: model
 
 
 --
-####Exemple
+#### Exemple
 Si `\(\mu_1 =10,\ \mu_2=12,\)` dans la forme singulière peut correspondre à 
 
 - `\(\mu =10,\ \alpha_1=0, \ \alpha_2=2,\)`
@@ -412,16 +416,17 @@ template: model
 
 `$$\class{alea}{Y_{ik}} \overset{ind}{\sim}\mathcal{N}(\class{rouge}{\mu} + \class{rouge}{\alpha_i}, \class{rouge}{\sigma^2}),$$`
 avec 
-- `\(I=2\)` et  la convention `\(i=1\)` pour les femmes et `\(i=2\)` pour les hommes.
-- `\(k=1, \ldots, n_i\)`, avec `\(n_1=20\)` et `\(n_2=20\)`
-- `\(\class{rouge}{\mu}\)` la fréquence cardiaque moyenne des femmes, 
-- `\(\class{rouge}{\alpha_1}\)`, l'effet différentiel d'être une femme par rapport à la différence et `\(\class{rouge}{\alpha_2}\)` l'effet différentiel d'être un homme.
+- `\(I=3\)` et  la convention `\(i=1\)` pour la natation et `\(i=2\)` pour le pilate et `\(i=3\)` pour la pétanque.
+- `\(k=1, \ldots, n_i\)`, avec `\(n_1=8,\)`  `\(n_2=8\)` et `\(n_3=8\)`, 
+- `\(\class{rouge}{\mu}\)` la fréquence cardiaque moyenne de référence, c'est-à-dire, avec la contrainte par défaut de R la fréquence cardiaque des nageurs/nageuses. 
+- `\(\class{rouge}{\alpha_1}\)`, l'effet différentiel de la pratique de la natation  par rapport à la référence (donc valant 0), `\(\class{rouge}{\alpha_2}\)` l'effet différentiel de la pratique du pilate et `\(\class{rouge}{\alpha_3}\)` l'effet différentiel de la pratique de la pétanque  par rapport à la référence.
 - `\(\class{rouge}{\sigma^2}\)` la variance commune à tous les groupes.
 
 
 
+
 ### Nombre de paramètres
-- 3 paramètres de moyenne
+- 4 paramètres de moyenne
 - 1 paramètre de variance
 
 
@@ -533,13 +538,6 @@ template: model
  Pour un rappel sur le produit matriciel : [Remise à niveau](https://lms.agreenium.fr/course/view.php?id=90&amp;section=5#tabs-tree-start). Faire les deux premiers points.
 ]
 
----
-class: inverse
-name: pause
-# Pause
-
-&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
-&lt;p style="color:#B40F20;font-size:35px;text-align:center;"&gt;Prenons une petite pause TD!!!&lt;/p&gt; 
 
 ---
 name: parametre
@@ -636,26 +634,28 @@ template: parametre
 
 ### Ce qu'on doit trouver
 
-`$$\class{fixe}{\hat{\mu}} = \class{fixe}{y_{1\bullet}}=\frac{1}{20}\sum_{k=1}^{20} y_{1k}, \quad \class{fixe}{\hat{\alpha}_2} =\class{fixe}{y_{2\bullet}}-\class{fixe}{y_{1\bullet}}=\frac{1}{20}\sum_{k=1}^{20} \class{fixe}{y_{2k}} - \frac{1}{20}\sum_{k=1}^{20} \class{fixe}{y_{1k}}$$`
+`$$\class{fixe}{\hat{\mu}} = \class{fixe}{y_{1\bullet}}=\frac{1}{8}\sum_{k=1}^{8} y_{1k}= \frac{y_{11} + y_{12} + \ldots + y_{18}}{8}$$`
+`$$\quad \class{fixe}{\hat{\alpha}_2} =\class{fixe}{y_{2\bullet}}-\class{fixe}{y_{1\bullet}}=\frac{1}{8}\sum_{k=1}^{8} \class{fixe}{y_{2k}} - \frac{1}{8}\sum_{k=1}^{8} \class{fixe}{y_{1k}}, \quad \class{fixe}{\hat{\alpha}_3} =\class{fixe}{y_{3\bullet}}-\class{fixe}{y_{1\bullet}}=\frac{1}{8}\sum_{k=1}^{8} \class{fixe}{y_{3k}} - \frac{1}{8}\sum_{k=1}^{8} \class{fixe}{y_{1k}}$$`
 
 
 ```r
-freqdata %&gt;% group_by(Sexe) %&gt;% summarise(m = mean(freqC), n= n())
+freqdata %&gt;% group_by(Activite) %&gt;% summarise(m = mean(freqC), n= n())
 ```
 
 ```
-# A tibble: 2 × 3
-  Sexe      m     n
-  &lt;chr&gt; &lt;dbl&gt; &lt;int&gt;
-1 F      84.3    20
-2 M      84.6    20
+# A tibble: 3 × 3
+  Activite     m     n
+  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt;
+1 Natation  70       8
+2 Pétanque  80.1     8
+3 Pilates   74.8     8
 ```
 
 
 
 --
 
-`\(\class{fixe}{\hat{\mu}} =\)` 84.3 et `\(\class{fixe}{\hat{\alpha}_2}=\)` 0.25. 
+`\(\class{fixe}{\hat{\mu}} =\)` 70 , `\(\class{fixe}{\hat{\alpha}_2}=\)` 10.125 et `\(\class{fixe}{\hat{\alpha}_3}=\)` 4.75. 
 
 
 ---
@@ -665,7 +665,7 @@ template: parametre
 
 ### Ce qu'on doit trouver
 
-`\(\class{fixe}{\hat{\mu}} =\)` 84.3 et `\(\class{fixe}{\hat{\alpha}_2}=\)` 0.25. 
+`\(\class{fixe}{\hat{\mu}} =\)` 70 et `\(\class{fixe}{\hat{\alpha}_2}=\)` 10.125et `\(\class{fixe}{\hat{\alpha}_3}=\)` 4.75.  
 
 --
 
@@ -679,9 +679,9 @@ summary(M1)$coefficients
 ```
 
 ```
-            Estimate Std. Error    t value     Pr(&gt;|t|)
-(Intercept)    84.30  0.9025913 93.3977539 1.649393e-46
-SexeM           0.25  1.2764569  0.1958546 8.457675e-01
+             Estimate Std. Error    t value     Pr(&gt;|t|)
+(Intercept) 74.416667   1.397938 53.2331784 9.572514e-25
+SexeM        1.083333   1.976982  0.5479732 5.892277e-01
 ```
 
 ---
@@ -691,29 +691,30 @@ template: parametre
 
 
 ```r
-M1 &lt;- lm(freqC ~ Sexe, data = freqdata)
+M1 &lt;- lm(freqC ~ Activite, data = freqdata)
 summary(M1)
 ```
 
 ```
 
 Call:
-lm(formula = freqC ~ Sexe, data = freqdata)
+lm(formula = freqC ~ Activite, data = freqdata)
 
 Residuals:
-   Min     1Q Median     3Q    Max 
--8.550 -2.737 -0.425  2.513  8.700 
+    Min      1Q  Median      3Q     Max 
+-4.0000 -1.7500 -0.0625  2.0000  3.2500 
 
 Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  84.3000     0.9026  93.398   &lt;2e-16 ***
-SexeM         0.2500     1.2765   0.196    0.846    
+                 Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)       70.0000     0.8179  85.589  &lt; 2e-16 ***
+ActivitePétanque  10.1250     1.1566   8.754 1.89e-08 ***
+ActivitePilates    4.7500     1.1566   4.107 0.000503 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 4.037 on 38 degrees of freedom
-Multiple R-squared:  0.001008,	Adjusted R-squared:  -0.02528 
-F-statistic: 0.03836 on 1 and 38 DF,  p-value: 0.8458
+Residual standard error: 2.313 on 21 degrees of freedom
+Multiple R-squared:  0.7851,	Adjusted R-squared:  0.7647 
+F-statistic: 38.36 on 2 and 21 DF,  p-value: 9.73e-08
 ```
 
 
@@ -775,22 +776,22 @@ count: false
 .panel1-var_est-user[
 
 ```r
-*freqdata %&gt;%  group_by(Sexe)
+*freqdata %&gt;%  group_by(Activite)
 ```
 ]
  
 .panel2-var_est-user[
 
 ```
-# A tibble: 40 × 3
-# Groups:   Sexe [2]
-  freqC Sport Sexe 
-  &lt;dbl&gt; &lt;int&gt; &lt;chr&gt;
-1    82     1 M    
-2    82     1 F    
-3    77     1 M    
-4    79     1 F    
-# … with 36 more rows
+# A tibble: 24 × 3
+# Groups:   Activite [3]
+  freqC Sexe  Activite
+  &lt;int&gt; &lt;chr&gt; &lt;chr&gt;   
+1    72 M     Natation
+2    72 F     Natation
+3    67 M     Natation
+4    69 F     Natation
+# … with 20 more rows
 ```
 ]
 
@@ -801,7 +802,7 @@ count: false
 .panel1-var_est-user[
 
 ```r
-freqdata %&gt;%  group_by(Sexe) %&gt;%
+freqdata %&gt;%  group_by(Activite) %&gt;%
 * mutate(yhat =  mean(freqC))
 ```
 ]
@@ -809,15 +810,15 @@ freqdata %&gt;%  group_by(Sexe) %&gt;%
 .panel2-var_est-user[
 
 ```
-# A tibble: 40 × 4
-# Groups:   Sexe [2]
-  freqC Sport Sexe   yhat
-  &lt;dbl&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt;
-1    82     1 M      84.6
-2    82     1 F      84.3
-3    77     1 M      84.6
-4    79     1 F      84.3
-# … with 36 more rows
+# A tibble: 24 × 4
+# Groups:   Activite [3]
+  freqC Sexe  Activite  yhat
+  &lt;int&gt; &lt;chr&gt; &lt;chr&gt;    &lt;dbl&gt;
+1    72 M     Natation    70
+2    72 F     Natation    70
+3    67 M     Natation    70
+4    69 F     Natation    70
+# … with 20 more rows
 ```
 ]
 
@@ -828,7 +829,7 @@ count: false
 .panel1-var_est-user[
 
 ```r
-freqdata %&gt;%  group_by(Sexe) %&gt;%
+freqdata %&gt;%  group_by(Activite) %&gt;%
   mutate(yhat =  mean(freqC)) %&gt;%
 * mutate( Ehat = freqC-yhat,Ehat_2 = Ehat^2)
 ```
@@ -837,15 +838,15 @@ freqdata %&gt;%  group_by(Sexe) %&gt;%
 .panel2-var_est-user[
 
 ```
-# A tibble: 40 × 6
-# Groups:   Sexe [2]
-  freqC Sport Sexe   yhat  Ehat Ehat_2
-  &lt;dbl&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
-1    82     1 M      84.6 -2.55   6.50
-2    82     1 F      84.3 -2.30   5.29
-3    77     1 M      84.6 -7.55  57.0 
-4    79     1 F      84.3 -5.3   28.1 
-# … with 36 more rows
+# A tibble: 24 × 6
+# Groups:   Activite [3]
+  freqC Sexe  Activite  yhat  Ehat Ehat_2
+  &lt;int&gt; &lt;chr&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+1    72 M     Natation    70     2      4
+2    72 F     Natation    70     2      4
+3    67 M     Natation    70    -3      9
+4    69 F     Natation    70    -1      1
+# … with 20 more rows
 ```
 ]
 
@@ -856,7 +857,7 @@ count: false
 .panel1-var_est-user[
 
 ```r
-freqdata %&gt;%  group_by(Sexe) %&gt;%
+freqdata %&gt;%  group_by(Activite) %&gt;%
   mutate(yhat =  mean(freqC)) %&gt;%
   mutate( Ehat = freqC-yhat,Ehat_2 = Ehat^2) %&gt;%
 * ungroup %&gt;% summarise(RSSobs=sum(Ehat_2)) %&gt;% as.numeric() -&gt; RSSobs
@@ -867,7 +868,7 @@ freqdata %&gt;%  group_by(Sexe) %&gt;%
 .panel2-var_est-user[
 
 ```
-[1] 619.15
+[1] 112.375
 ```
 ]
 
@@ -878,7 +879,7 @@ count: false
 .panel1-var_est-user[
 
 ```r
-freqdata %&gt;%  group_by(Sexe) %&gt;%
+freqdata %&gt;%  group_by(Activite) %&gt;%
   mutate(yhat =  mean(freqC)) %&gt;%
   mutate( Ehat = freqC-yhat,Ehat_2 = Ehat^2) %&gt;%
   ungroup %&gt;% summarise(RSSobs=sum(Ehat_2)) %&gt;% as.numeric() -&gt; RSSobs
@@ -891,11 +892,11 @@ RSSobs
 .panel2-var_est-user[
 
 ```
-[1] 619.15
+[1] 112.375
 ```
 
 ```
-[1] 16.29342
+[1] 5.107955
 ```
 ]
 
@@ -906,7 +907,7 @@ count: false
 .panel1-var_est-user[
 
 ```r
-freqdata %&gt;%  group_by(Sexe) %&gt;%
+freqdata %&gt;%  group_by(Activite) %&gt;%
   mutate(yhat =  mean(freqC)) %&gt;%
   mutate( Ehat = freqC-yhat,Ehat_2 = Ehat^2) %&gt;%
   ungroup %&gt;% summarise(RSSobs=sum(Ehat_2)) %&gt;% as.numeric() -&gt; RSSobs
@@ -921,15 +922,15 @@ sigma2_hat
 .panel2-var_est-user[
 
 ```
-[1] 619.15
+[1] 112.375
 ```
 
 ```
-[1] 16.29342
+[1] 5.107955
 ```
 
 ```
-[1] 4.036511
+[1] 2.260078
 ```
 ]
 
@@ -969,7 +970,7 @@ template: parametre
 
 ### On doit trouver
 
-`\(\hat{\sigma}=\)` 4.036511.
+`\(\hat{\sigma}=\)` 2.313264.
 
 
 --
@@ -979,7 +980,7 @@ template: parametre
 
 
 ```r
-M1 &lt;- lm(freqC ~ Sexe, data = freqdata)
+M1 &lt;- lm(freqC ~ Activite, data = freqdata)
 ```
 
 --
@@ -990,7 +991,7 @@ summary(M1)$sigma
 ```
 
 ```
-[1] 4.036511
+[1] 2.313264
 ```
 
 ---
@@ -1000,7 +1001,7 @@ template: parametre
 
 ### On doit trouver
 
-`\(\hat{\sigma}=\)` 4.036511.
+`\(\hat{\sigma}=\)` 2.313264.
 
 
 
@@ -1012,22 +1013,23 @@ summary(M1)
 ```
 
 Call:
-lm(formula = freqC ~ Sexe, data = freqdata)
+lm(formula = freqC ~ Activite, data = freqdata)
 
 Residuals:
-   Min     1Q Median     3Q    Max 
--8.550 -2.737 -0.425  2.513  8.700 
+    Min      1Q  Median      3Q     Max 
+-4.0000 -1.7500 -0.0625  2.0000  3.2500 
 
 Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  84.3000     0.9026  93.398   &lt;2e-16 ***
-SexeM         0.2500     1.2765   0.196    0.846    
+                 Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)       70.0000     0.8179  85.589  &lt; 2e-16 ***
+ActivitePétanque  10.1250     1.1566   8.754 1.89e-08 ***
+ActivitePilates    4.7500     1.1566   4.107 0.000503 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 4.037 on 38 degrees of freedom
-Multiple R-squared:  0.001008,	Adjusted R-squared:  -0.02528 
-F-statistic: 0.03836 on 1 and 38 DF,  p-value: 0.8458
+Residual standard error: 2.313 on 21 degrees of freedom
+Multiple R-squared:  0.7851,	Adjusted R-squared:  0.7647 
+F-statistic: 38.36 on 2 and 21 DF,  p-value: 9.73e-08
 ```
 
 
@@ -1233,15 +1235,15 @@ count: false
 .panel2-rss-user[
 
 ```
-# A tibble: 40 × 4
+# A tibble: 24 × 4
 # Groups:   Sexe [2]
-  freqC Sport Sexe      m
-  &lt;dbl&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt;
-1    82     1 M      84.6
-2    82     1 F      84.3
-3    77     1 M      84.6
-4    79     1 F      84.3
-# … with 36 more rows
+  freqC Sexe  Activite     m
+  &lt;int&gt; &lt;chr&gt; &lt;chr&gt;    &lt;dbl&gt;
+1    72 M     Natation  75.5
+2    72 F     Natation  74.4
+3    67 M     Natation  75.5
+4    69 F     Natation  74.4
+# … with 20 more rows
 ```
 ]
 
@@ -1261,15 +1263,15 @@ freqdata %&gt;% group_by(Sexe) %&gt;%
 .panel2-rss-user[
 
 ```
-# A tibble: 40 × 5
+# A tibble: 24 × 5
 # Groups:   Sexe [2]
-  freqC Sport Sexe      m  Ehat
-  &lt;dbl&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;
-1    82     1 M      84.6 -2.55
-2    82     1 F      84.3 -2.30
-3    77     1 M      84.6 -7.55
-4    79     1 F      84.3 -5.3 
-# … with 36 more rows
+  freqC Sexe  Activite     m  Ehat
+  &lt;int&gt; &lt;chr&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt;
+1    72 M     Natation  75.5 -3.5 
+2    72 F     Natation  74.4 -2.42
+3    67 M     Natation  75.5 -8.5 
+4    69 F     Natation  74.4 -5.42
+# … with 20 more rows
 ```
 ]
 
@@ -1290,15 +1292,15 @@ freqdata %&gt;% group_by(Sexe) %&gt;%
 .panel2-rss-user[
 
 ```
-# A tibble: 40 × 6
+# A tibble: 24 × 6
 # Groups:   Sexe [2]
-  freqC Sport Sexe      m  Ehat E2hat
-  &lt;dbl&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-1    82     1 M      84.6 -2.55  6.50
-2    82     1 F      84.3 -2.30  5.29
-3    77     1 M      84.6 -7.55 57.0 
-4    79     1 F      84.3 -5.3  28.1 
-# … with 36 more rows
+  freqC Sexe  Activite     m  Ehat E2hat
+  &lt;int&gt; &lt;chr&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1    72 M     Natation  75.5 -3.5  12.2 
+2    72 F     Natation  74.4 -2.42  5.84
+3    67 M     Natation  75.5 -8.5  72.2 
+4    69 F     Natation  74.4 -5.42 29.3 
+# … with 20 more rows
 ```
 ]
 
@@ -1320,14 +1322,14 @@ freqdata %&gt;% group_by(Sexe) %&gt;%
 .panel2-rss-user[
 
 ```
-# A tibble: 40 × 6
-  freqC Sport Sexe      m  Ehat E2hat
-  &lt;dbl&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-1    82     1 M      84.6 -2.55  6.50
-2    82     1 F      84.3 -2.30  5.29
-3    77     1 M      84.6 -7.55 57.0 
-4    79     1 F      84.3 -5.3  28.1 
-# … with 36 more rows
+# A tibble: 24 × 6
+  freqC Sexe  Activite     m  Ehat E2hat
+  &lt;int&gt; &lt;chr&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1    72 M     Natation  75.5 -3.5  12.2 
+2    72 F     Natation  74.4 -2.42  5.84
+3    67 M     Natation  75.5 -8.5  72.2 
+4    69 F     Natation  74.4 -5.42 29.3 
+# … with 20 more rows
 ```
 ]
 
@@ -1350,7 +1352,7 @@ freqdata %&gt;% group_by(Sexe) %&gt;%
 .panel2-rss-user[
 
 ```
-[1] 619.15
+[1] 515.9167
 ```
 ]
 
@@ -1396,47 +1398,31 @@ freqdata %&gt;% group_by(Sexe) %&gt;%
 .panel2-rss-user[
 
 ```
-   freqC Sport Sexe      m
-1     82     1    M 84.425
-2     82     1    F 84.425
-3     77     1    M 84.425
-4     79     1    F 84.425
-5     81     1    M 84.425
-6     83     1    F 84.425
-7     76     1    M 84.425
-8     80     1    F 84.425
-9     80     2    M 84.425
-10    83     2    F 84.425
-11    83     2    M 84.425
-12    81     2    F 84.425
-13    81     2    M 84.425
-14    84     2    F 84.425
-15    80     2    M 84.425
-16    82     2    F 84.425
-17    88     3    M 84.425
-18    81     3    F 84.425
-19    87     3    M 84.425
-20    83     3    F 84.425
-21    86     3    M 84.425
-22    83     3    F 84.425
-23    87     3    M 84.425
-24    83     3    F 84.425
-25    85     4    M 84.425
-26    85     4    F 84.425
-27    84     4    M 84.425
-28    86     4    F 84.425
-29    87     4    M 84.425
-30    87     4    F 84.425
-31    85     4    M 84.425
-32    85     4    F 84.425
-33    92     5    M 84.425
-34    88     5    F 84.425
-35    91     5    M 84.425
-36    93     5    F 84.425
-37    90     5    M 84.425
-38    88     5    F 84.425
-39    89     5    M 84.425
-40    90     5    F 84.425
+   freqC Sexe Activite        m
+1     72    M Natation 74.95833
+2     72    F Natation 74.95833
+3     67    M Natation 74.95833
+4     69    F Natation 74.95833
+5     71    M Natation 74.95833
+6     73    F Natation 74.95833
+7     66    M Natation 74.95833
+8     70    F Natation 74.95833
+9     78    M  Pilates 74.95833
+10    71    F  Pilates 74.95833
+11    77    M  Pilates 74.95833
+12    73    F  Pilates 74.95833
+13    76    M  Pilates 74.95833
+14    73    F  Pilates 74.95833
+15    77    M  Pilates 74.95833
+16    73    F  Pilates 74.95833
+17    82    M Pétanque 74.95833
+18    78    F Pétanque 74.95833
+19    81    M Pétanque 74.95833
+20    83    F Pétanque 74.95833
+21    80    M Pétanque 74.95833
+22    78    F Pétanque 74.95833
+23    79    M Pétanque 74.95833
+24    80    F Pétanque 74.95833
 ```
 ]
 
@@ -1462,47 +1448,31 @@ freqdata %&gt;%  mutate(m= mean(freqC)) %&gt;%
 .panel2-rss-user[
 
 ```
-   freqC Sport Sexe      m   Ehat
-1     82     1    M 84.425 -2.425
-2     82     1    F 84.425 -2.425
-3     77     1    M 84.425 -7.425
-4     79     1    F 84.425 -5.425
-5     81     1    M 84.425 -3.425
-6     83     1    F 84.425 -1.425
-7     76     1    M 84.425 -8.425
-8     80     1    F 84.425 -4.425
-9     80     2    M 84.425 -4.425
-10    83     2    F 84.425 -1.425
-11    83     2    M 84.425 -1.425
-12    81     2    F 84.425 -3.425
-13    81     2    M 84.425 -3.425
-14    84     2    F 84.425 -0.425
-15    80     2    M 84.425 -4.425
-16    82     2    F 84.425 -2.425
-17    88     3    M 84.425  3.575
-18    81     3    F 84.425 -3.425
-19    87     3    M 84.425  2.575
-20    83     3    F 84.425 -1.425
-21    86     3    M 84.425  1.575
-22    83     3    F 84.425 -1.425
-23    87     3    M 84.425  2.575
-24    83     3    F 84.425 -1.425
-25    85     4    M 84.425  0.575
-26    85     4    F 84.425  0.575
-27    84     4    M 84.425 -0.425
-28    86     4    F 84.425  1.575
-29    87     4    M 84.425  2.575
-30    87     4    F 84.425  2.575
-31    85     4    M 84.425  0.575
-32    85     4    F 84.425  0.575
-33    92     5    M 84.425  7.575
-34    88     5    F 84.425  3.575
-35    91     5    M 84.425  6.575
-36    93     5    F 84.425  8.575
-37    90     5    M 84.425  5.575
-38    88     5    F 84.425  3.575
-39    89     5    M 84.425  4.575
-40    90     5    F 84.425  5.575
+   freqC Sexe Activite        m      Ehat
+1     72    M Natation 74.95833 -2.958333
+2     72    F Natation 74.95833 -2.958333
+3     67    M Natation 74.95833 -7.958333
+4     69    F Natation 74.95833 -5.958333
+5     71    M Natation 74.95833 -3.958333
+6     73    F Natation 74.95833 -1.958333
+7     66    M Natation 74.95833 -8.958333
+8     70    F Natation 74.95833 -4.958333
+9     78    M  Pilates 74.95833  3.041667
+10    71    F  Pilates 74.95833 -3.958333
+11    77    M  Pilates 74.95833  2.041667
+12    73    F  Pilates 74.95833 -1.958333
+13    76    M  Pilates 74.95833  1.041667
+14    73    F  Pilates 74.95833 -1.958333
+15    77    M  Pilates 74.95833  2.041667
+16    73    F  Pilates 74.95833 -1.958333
+17    82    M Pétanque 74.95833  7.041667
+18    78    F Pétanque 74.95833  3.041667
+19    81    M Pétanque 74.95833  6.041667
+20    83    F Pétanque 74.95833  8.041667
+21    80    M Pétanque 74.95833  5.041667
+22    78    F Pétanque 74.95833  3.041667
+23    79    M Pétanque 74.95833  4.041667
+24    80    F Pétanque 74.95833  5.041667
 ```
 ]
 
@@ -1529,47 +1499,31 @@ freqdata %&gt;%  mutate(m= mean(freqC)) %&gt;%
 .panel2-rss-user[
 
 ```
-   freqC Sport Sexe      m   Ehat     E2hat
-1     82     1    M 84.425 -2.425  5.880625
-2     82     1    F 84.425 -2.425  5.880625
-3     77     1    M 84.425 -7.425 55.130625
-4     79     1    F 84.425 -5.425 29.430625
-5     81     1    M 84.425 -3.425 11.730625
-6     83     1    F 84.425 -1.425  2.030625
-7     76     1    M 84.425 -8.425 70.980625
-8     80     1    F 84.425 -4.425 19.580625
-9     80     2    M 84.425 -4.425 19.580625
-10    83     2    F 84.425 -1.425  2.030625
-11    83     2    M 84.425 -1.425  2.030625
-12    81     2    F 84.425 -3.425 11.730625
-13    81     2    M 84.425 -3.425 11.730625
-14    84     2    F 84.425 -0.425  0.180625
-15    80     2    M 84.425 -4.425 19.580625
-16    82     2    F 84.425 -2.425  5.880625
-17    88     3    M 84.425  3.575 12.780625
-18    81     3    F 84.425 -3.425 11.730625
-19    87     3    M 84.425  2.575  6.630625
-20    83     3    F 84.425 -1.425  2.030625
-21    86     3    M 84.425  1.575  2.480625
-22    83     3    F 84.425 -1.425  2.030625
-23    87     3    M 84.425  2.575  6.630625
-24    83     3    F 84.425 -1.425  2.030625
-25    85     4    M 84.425  0.575  0.330625
-26    85     4    F 84.425  0.575  0.330625
-27    84     4    M 84.425 -0.425  0.180625
-28    86     4    F 84.425  1.575  2.480625
-29    87     4    M 84.425  2.575  6.630625
-30    87     4    F 84.425  2.575  6.630625
-31    85     4    M 84.425  0.575  0.330625
-32    85     4    F 84.425  0.575  0.330625
-33    92     5    M 84.425  7.575 57.380625
-34    88     5    F 84.425  3.575 12.780625
-35    91     5    M 84.425  6.575 43.230625
-36    93     5    F 84.425  8.575 73.530625
-37    90     5    M 84.425  5.575 31.080625
-38    88     5    F 84.425  3.575 12.780625
-39    89     5    M 84.425  4.575 20.930625
-40    90     5    F 84.425  5.575 31.080625
+   freqC Sexe Activite        m      Ehat     E2hat
+1     72    M Natation 74.95833 -2.958333  8.751736
+2     72    F Natation 74.95833 -2.958333  8.751736
+3     67    M Natation 74.95833 -7.958333 63.335069
+4     69    F Natation 74.95833 -5.958333 35.501736
+5     71    M Natation 74.95833 -3.958333 15.668403
+6     73    F Natation 74.95833 -1.958333  3.835069
+7     66    M Natation 74.95833 -8.958333 80.251736
+8     70    F Natation 74.95833 -4.958333 24.585069
+9     78    M  Pilates 74.95833  3.041667  9.251736
+10    71    F  Pilates 74.95833 -3.958333 15.668403
+11    77    M  Pilates 74.95833  2.041667  4.168403
+12    73    F  Pilates 74.95833 -1.958333  3.835069
+13    76    M  Pilates 74.95833  1.041667  1.085069
+14    73    F  Pilates 74.95833 -1.958333  3.835069
+15    77    M  Pilates 74.95833  2.041667  4.168403
+16    73    F  Pilates 74.95833 -1.958333  3.835069
+17    82    M Pétanque 74.95833  7.041667 49.585069
+18    78    F Pétanque 74.95833  3.041667  9.251736
+19    81    M Pétanque 74.95833  6.041667 36.501736
+20    83    F Pétanque 74.95833  8.041667 64.668403
+21    80    M Pétanque 74.95833  5.041667 25.418403
+22    78    F Pétanque 74.95833  3.041667  9.251736
+23    79    M Pétanque 74.95833  4.041667 16.335069
+24    80    F Pétanque 74.95833  5.041667 25.418403
 ```
 ]
 
@@ -1597,7 +1551,7 @@ freqdata %&gt;%  mutate(m= mean(freqC)) %&gt;%
 .panel2-rss-user[
 
 ```
-[1] 619.775
+[1] 522.9583
 ```
 ]
 
@@ -1655,7 +1609,7 @@ SSM &lt;- RSSM0 - RSSM1
 .panel2-rss-user[
 
 ```
-[1] 0.625
+[1] 7.041667
 ```
 ]
 
@@ -1691,7 +1645,7 @@ SSM &lt;- RSSM0 - RSSM1
 
 
 ```
-[1] 0.625
+[1] 7.041667
 ```
 
 ---
@@ -1712,8 +1666,8 @@ Analysis of Variance Table
 Model 1: freqC ~ 1
 Model 2: freqC ~ Sexe
   Res.Df    RSS Df Sum of Sq      F Pr(&gt;F)
-1     39 619.77                           
-2     38 619.15  1     0.625 0.0384 0.8458
+1     23 522.96                           
+2     22 515.92  1    7.0417 0.3003 0.5892
 ```
 
 
@@ -1888,8 +1842,8 @@ Analysis of Variance Table
 Model 1: freqC ~ 1
 Model 2: freqC ~ Sexe
   Res.Df    RSS Df Sum of Sq      F Pr(&gt;F)
-1     39 619.77                           
-2     38 619.15  1     0.625 0.0384 0.8458
+1     23 522.96                           
+2     22 515.92  1    7.0417 0.3003 0.5892
 ```
 
 --
@@ -2102,9 +2056,9 @@ template: test_param
 
 --
 
-- `\(\hat{\sigma}=\)` 4.037.
-- `\(\sqrt{c_j}\hat{\sigma}=\)` 0.903,
-- `\(t_{j,obs}=\)` 93.398,
+- `\(\hat{\sigma}=\)` 4.843.
+- `\(\sqrt{c_j}\hat{\sigma}=\)` 1.398,
+- `\(t_{j,obs}=\)` 53.233,
 - p-value= 0,
 
 --
@@ -2120,19 +2074,19 @@ Call:
 lm(formula = freqC ~ Sexe, data = freqdata)
 
 Residuals:
-   Min     1Q Median     3Q    Max 
--8.550 -2.737 -0.425  2.513  8.700 
+    Min      1Q  Median      3Q     Max 
+-9.5000 -3.4375 -0.4583  3.5833  8.5833 
 
 Coefficients:
             Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  84.3000     0.9026  93.398   &lt;2e-16 ***
-SexeM         0.2500     1.2765   0.196    0.846    
+(Intercept)   74.417      1.398  53.233   &lt;2e-16 ***
+SexeM          1.083      1.977   0.548    0.589    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 4.037 on 38 degrees of freedom
-Multiple R-squared:  0.001008,	Adjusted R-squared:  -0.02528 
-F-statistic: 0.03836 on 1 and 38 DF,  p-value: 0.8458
+Residual standard error: 4.843 on 22 degrees of freedom
+Multiple R-squared:  0.01347,	Adjusted R-squared:  -0.03138 
+F-statistic: 0.3003 on 1 and 22 DF,  p-value: 0.5892
 ```
 
 

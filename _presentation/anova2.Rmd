@@ -148,11 +148,11 @@ fake_dta <- tibble( F1 = rep(rep(1:I, each=J), effectif),
 
 names(mu) <- paste('mu', rep(1:I, each=J), rep(1:J,I), sep ='_')
 
-params <- fake_dta %>% 
+params2 <- fake_dta %>% 
   group_by(F1,F2) %>% 
   summarise(m =mean(m)) %>% 
   ungroup()
-params_dessin <-  params %>% 
+params2_dessin <-  params2 %>% 
   mutate(x= c(0.65, 1.02, 1.65, 2.02, 2.65, 3.02),
          xend =x+ 0.33,
          y = m,
@@ -162,7 +162,7 @@ p_comp_1 <- ggplot(data=fake_dta) +
   ggtitle('Modèle Mcomp') +
   labs(x = 'F1', y = 'y') +
   geom_boxplot(aes(x=F1, y = y, fill = F1, linetype=F2), col = 'gray', alpha = 0.1) +
-  geom_segment(data=params_dessin, aes(x=x, xend = xend, y = y, yend = yend, colour=F1, linetype = F2), lwd = 1.4)
+  geom_segment(data=params2_dessin, aes(x=x, xend = xend, y = y, yend = yend, colour=F1, linetype = F2), lwd = 1.4)
 
   
 
