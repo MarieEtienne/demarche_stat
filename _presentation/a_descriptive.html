@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # Analyse descriptive des données
 ### Marie-Pierre Etienne
 ### <a href="mailto:marie-pierre.etienne@agrocampus-ouest.fr" class="email">marie-pierre.etienne@agrocampus-ouest.fr</a>
-### 2021/11/19 (updated: 2022-09-21)
+### 2021/11/19 (updated: 2022-11-17)
 
 ---
 
@@ -95,7 +95,7 @@ C'est l'occasion de découvrir le langage R et son interface RStudio.
 ---
 template: intro
 
-## Remarque essetnielle
+## Remarque essentielle
 
 
  * une ligne = un individu : un indice `\(i\)` de 1 au nombre total de ligne est utile pour différencier les individus (lignes) 
@@ -152,14 +152,14 @@ template: description
 
 ## Résumé des variables 
 
-* Comment résumer une variable quantitative ?
+### Comment résumer une variable quantitative ?
 
 --
-  - la moyenne de la variable `\(p\)` :
+  * la moyenne de la variable `\(p\)` :
   `$$x_{\bullet, p} = \frac{1}{n} \sum_{i=1}^n x_{ip} = \frac{x_{1,p} + x_{2,p} + \ldots x_{n,p} }{n}$$` 
 
 
-  - la variance de la variable `\(p\)` : 
+  *  la variance de la variable `\(p\)` : 
   `$$s^2_{x_p} = \frac{1}{n} \sum_{i=1}^n (x_{ip}-x_{\bullet, p})^2$$`
 
 La variance représente la dispersion autour de la valeur moyenne.
@@ -170,9 +170,9 @@ template: description
 
 ## Résumé des variables 
 
-* Comment résumer la variable `Note`
+### Comment résumer la variable `Note` ?
 
-  - la moyenne de la variable  `Note` 
+  * la moyenne de la variable  `Note` 
   
 
 ```r
@@ -180,7 +180,7 @@ dta  %&gt;%
   summarise(moyenne_note = mean(Note))
 ```
 
-  - la variance  `Note` 
+  * la variance  `Note` 
   
 
 ```r
@@ -194,11 +194,11 @@ dta  %&gt;%
 template: description
 ## Résumé des variables 
 
-* Comment résumer une variable qualitative ?
+### Comment résumer une variable qualitative ?
 
 --
-  - lister ses modalités
-  - donner les effectifs par modalité
+  * lister ses modalités
+  * donner les effectifs par modalité
 
 
 ---
@@ -206,9 +206,9 @@ template: description
 
 ## Résumé des variables 
 
-* Comment résumer la variable `Variété`
+### Comment résumer la variable `Variété`
 
-  - lister les modalités et donner les effectifs
+  * lister les modalités et donner les effectifs
   
   
 
@@ -246,7 +246,9 @@ Comment quantifier ce lien ?
 
 ---
 template: bivarie
+
 ## La covariance
+
 On s'intéresse à deux variables `\(x_{,i}\)` et `\(x_{,j}\)`, le lien est mesuré par 
 
 `$$Cov(x_i, x_j) = \frac{1}{n} \sum_{k=1}^n (x_{k,i} - x_{\bullet,i}) (x_{k,j} - x_{\bullet,j})$$`
@@ -264,16 +266,15 @@ Les variables `\((x_{k,i} - x_{\bullet, i})/s_{x_i}\)` sont dites centrées réd
 
 --
 
-
 # Ce qu'il faut absolument pour la suite
 
-- Avoir une installation fonctionnelle de R et RStudio
+* Avoir une installation fonctionnelle de R et RStudio
 
-- Savoir organiser des données
+* Savoir organiser des données
 
-- Reconnaître la nature des variables
+* Reconnaître la nature des variables
 
-- Les commandes de base de R vues dans le cours
+* Les commandes de base de R vues dans le cours
 
 
 
