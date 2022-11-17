@@ -56,7 +56,7 @@ name: intro
 template: intro
 ## Un exemple jouet à but pédagogique
 
-On a mesuré la fréquence cardiaque de 20 femmes et 20 hommes.
+On a mesuré la fréquence cardiaque de 12 femmes et 12 hommes qui pratique des activités sportives différentes (Natation, Pilate, Pétanque).
 
 
 ```{r datapackage, eval = TRUE, echo = FALSE, warning = FALSE}
@@ -66,15 +66,14 @@ ggplot <- function(...) ggplot2::ggplot(...) + scale_fill_manual(values = wesand
 ```
 
 ```{r freqdata, eval = TRUE, echo = c(1,2), warning = FALSE}
-library(coursesdata)
-data(freqdata)
-freqdata %>% ggplot() +  aes(x= Sexe, y = freqC) +  geom_boxplot(aes(fill = Sexe, col = Sexe), alpha = 0.5) + theme(legend.position = 'none')  + 
-  geom_jitter( size=0.8, alpha=0.7, width = 0.15, aes(col = as.factor(Sexe)))
+freqdata <- read.table('https://marieetienne.github.io/datasets/activite_FC.csv', sep = ",", header = TRUE )
+freqdata %>% ggplot() +  aes(x= Activite, y = freqC) +  geom_boxplot( alpha = 0.5) + theme(legend.position = 'none')  + 
+  geom_jitter(  alpha=0.7, width = 0.15)
 ```
 
 
 --
-<p class="question"> Les hommes et les femmes ont-ils la même fréquence cardiaque au repos ?</p>
+<p class="question"> L'activité physique est-elle liée à  fréquence cardiaque au repos ?</p>
 
 ---
 template: intro
@@ -86,7 +85,7 @@ template: intro
 `r Citet(myBib, "hutcheon2002comparative")` ont recensé pour 63 espèces de chauves souris l'espèce, le régime alimentaire, le clade (groupe dans l'arbre phylogénétique), différentes variables morphologiques dont le volume du cerveau dédié à l'audition (AUD)
 
 ```{r batsdata, eval = TRUE, echo = FALSE}
-data(bats)
+bats <- read.table('https://marieetienne.github.io/datasets/bats.csv', sep = ",", header = TRUE)
 bats %>% ggplot() + aes(x= as.factor(Diet), y = AUD) +geom_boxplot(aes(col = as.factor(Diet), fill = as.factor(Diet)), alpha = 0.5) + 
   geom_jitter(size=0.8, alpha=0.7, width = 0.15, aes(col = as.factor(Diet))) + scale_color_manual(values = wesanderson::wes_palette(name = "Darjeeling1")) + scale_fill_manual(values = wesanderson::wes_palette(name = "Darjeeling1")) + theme(legend.position = 'none') + xlab('Diet')
 ```
@@ -99,7 +98,7 @@ template: intro
 ## Cadre général du modèle d'analyse de la variance à 1 facteur
 On étudie le lien entre  
 - variable quantitative notée $Y$ (la fréquence cardiaque, volume de cerveau),
-- et une variable qualitative (un facteur) pourvant prendre $I$ modalités (I=2 pour l'exemple 1 et I=4 dans l'exemple 2). 
+- et une variable qualitative (un facteur) pourvant prendre $I$ modalités (I=3 pour l'exemple 1 et I=4 dans l'exemple 2). 
 
 
 Les données peuvent être visualisées à l'aide d'un boxplot.
@@ -172,7 +171,6 @@ geom_line(data = norm_dta, aes(x= x, y = density, col = groupe), alpha= 0.1) +
 
 
 ```{r anova_versiongraphiqueM0, eval = TRUE, echo = FALSE}
-
 mu0 <- mean(fake_dta$y)
 fake_dta <- fake_dta %>% mutate(mu0 = mu0)
 sd0 <- sd(fake_dta$y)
@@ -184,6 +182,7 @@ norm_dta_M0 <- tibble( x  = norm_dta$x)  %>%
   pivot_longer(cols = starts_with("d"), names_to = 'Groupe', values_to ='density' )%>% 
   mutate(groupe = as.factor(as.numeric(as.factor(Groupe))))
 ```
+
 ---
 
 ```{r anova_versiongraphique_proba_M0}
@@ -195,7 +194,6 @@ ggplot() + ggtitle('Modèle M0') +
   labs(col = 'Groupe') + 
   geom_vline(data=fake_dta, aes(xintercept = mu0, col = groupe), alpha = 0.6) +#BREAK
   geom_point(data = fake_dta, aes(x = y, col = groupe, y=ord), size = 2, alpha = 0.7)
-
 ```
 
 `r chunk_reveal("anova_versiongraphique_proba_M0", break_type = "user", display_type="output")`
@@ -214,6 +212,7 @@ ggplot() +
 geom_line(data = norm_dta_M0, aes(x= x, y = density, col = groupe), alpha= 0.1) +  #BREAK
   geom_vline(data=fake_dta, aes(xintercept = mu0, col = groupe), alpha = 0.1) #BREAK
 ```
+
 ---
 template: model
 count: false
@@ -288,18 +287,18 @@ template: model
 ## Version régulière du modèle M1 sur l'exemple 1
 
 $$\class{alea}{Y_{ik}} \overset{ind}{\sim}\mathcal{N}(\class{rouge}{\mu_i}, \class{rouge}{\sigma^2}),$$
-avec  $I=2$ et  la convention $i=1$ pour les femmes et $i=2$ pour les hommes.
+avec  $I=3$ et  la convention $i=1$ pour la natation et $i=2$ pour le pilate et $i=3$ pour la pétanque.
 
 ```{r freq_anova, eval= TRUE, echo = TRUE}
-freqdata %>%group_by(Sexe) %>% summarise(n= n())
+freqdata %>%group_by(Activite) %>% summarise(n= n())
 ```
 Ainsi 
-- $k=1, \ldots, n_i$, avec $n_1=20$ et $n_2=20$ et $n=40$.
-- $\class{rouge}{\mu_1}$ la fréquence cardiaque moyenne des femmes et $\class{rouge}{\mu_2}$ celle des hommes. 
+- $k=1, \ldots, n_i$, avec $n_1=8$ et $n_2=8$ et $n_3=8$ et $n = 24$.
+- $\class{rouge}{\mu_1}$ la fréquence cardiaque moyenne des nageurs/nageuses  et $\class{rouge}{\mu_2}$ des partiquant.e.s de pilates et $\class{rouge}{\mu_3}$ celle des joueurs/joueuses de pétanque. 
 - $\class{rouge}{\sigma^2}$ la variance commune à tous les groupes.
 
 ### Nombre de paramètres
-- 2 paramètres de moyenne
+- 3 paramètres de moyenne
 - 1 paramètre de variance
 
 ---
@@ -333,16 +332,16 @@ template: model
 
 $$\class{alea}{Y_{ik}} \overset{ind}{\sim}\mathcal{N}(\class{rouge}{\mu} + \class{rouge}{\alpha_i}, \class{rouge}{\sigma^2}),$$
 avec 
-- $I=2$ et  la convention $i=1$ pour les femmes et $i=2$ pour les hommes.
-- $k=1, \ldots, n_i$, avec $n_1=20$ et $n_2=20$
+- $I=3$ et  la convention $i=1$ pour la natation et $i=2$ pour le pilate et $i=3$ pour la pétanque.
+- $k=1, \ldots, n_i$, avec $n_1=8,$  $n_2=8$ et $n_3=8$, 
 - $\class{rouge}{\mu}$ la fréquence cardiaque moyenne de référence <a class="care"> Référence à définir </a> 
-- $\class{rouge}{\alpha_1}$, l'effet différentiel d'être une femme par rapport à la différence et $\class{rouge}{\alpha_2}$ l'effet différentiel d'être un homme.
+- $\class{rouge}{\alpha_1}$, l'effet différentiel de la pratique de la natation  par rapport à la référence, $\class{rouge}{\alpha_2}$ l'effet différentiel de la pratique du pilate et $\class{rouge}{\alpha_3}$ l'effet différentiel de la pratique de la pétanque  par rapport à la référence.
 - $\class{rouge}{\sigma^2}$ la variance commune à tous les groupes.
 
 
 
 ### Nombre de paramètres
-- 3 paramètres de moyenne
+- 4 paramètres de moyenne
 - 1 paramètre de variance
 
 
@@ -396,7 +395,7 @@ template: model
 
 
 --
-####Exemple
+#### Exemple
 Si $\mu_1 =10,\ \mu_2=12,$ dans la forme singulière peut correspondre à 
 
 - $\mu =10,\ \alpha_1=0, \ \alpha_2=2,$
@@ -439,16 +438,17 @@ template: model
 
 $$\class{alea}{Y_{ik}} \overset{ind}{\sim}\mathcal{N}(\class{rouge}{\mu} + \class{rouge}{\alpha_i}, \class{rouge}{\sigma^2}),$$
 avec 
-- $I=2$ et  la convention $i=1$ pour les femmes et $i=2$ pour les hommes.
-- $k=1, \ldots, n_i$, avec $n_1=20$ et $n_2=20$
-- $\class{rouge}{\mu}$ la fréquence cardiaque moyenne des femmes, 
-- $\class{rouge}{\alpha_1}$, l'effet différentiel d'être une femme par rapport à la différence et $\class{rouge}{\alpha_2}$ l'effet différentiel d'être un homme.
+- $I=3$ et  la convention $i=1$ pour la natation et $i=2$ pour le pilate et $i=3$ pour la pétanque.
+- $k=1, \ldots, n_i$, avec $n_1=8,$  $n_2=8$ et $n_3=8$, 
+- $\class{rouge}{\mu}$ la fréquence cardiaque moyenne de référence, c'est-à-dire, avec la contrainte par défaut de R la fréquence cardiaque des nageurs/nageuses. 
+- $\class{rouge}{\alpha_1}$, l'effet différentiel de la pratique de la natation  par rapport à la référence (donc valant 0), $\class{rouge}{\alpha_2}$ l'effet différentiel de la pratique du pilate et $\class{rouge}{\alpha_3}$ l'effet différentiel de la pratique de la pétanque  par rapport à la référence.
 - $\class{rouge}{\sigma^2}$ la variance commune à tous les groupes.
 
 
 
+
 ### Nombre de paramètres
-- 3 paramètres de moyenne
+- 4 paramètres de moyenne
 - 1 paramètre de variance
 
 
@@ -560,13 +560,6 @@ template: model
  Pour un rappel sur le produit matriciel : [Remise à niveau](https://lms.agreenium.fr/course/view.php?id=90&section=5#tabs-tree-start). Faire les deux premiers points.
 ]
 
----
-class: inverse
-name: pause
-# Pause
-
-<br><br><br><br>
-<p style="color:#B40F20;font-size:35px;text-align:center;">Prenons une petite pause TD!!!</p> 
 
 ---
 name: parametre
@@ -663,19 +656,20 @@ template: parametre
 
 ### Ce qu'on doit trouver
 
-$$\class{fixe}{\hat{\mu}} = \class{fixe}{y_{1\bullet}}=\frac{1}{20}\sum_{k=1}^{20} y_{1k}, \quad \class{fixe}{\hat{\alpha}_2} =\class{fixe}{y_{2\bullet}}-\class{fixe}{y_{1\bullet}}=\frac{1}{20}\sum_{k=1}^{20} \class{fixe}{y_{2k}} - \frac{1}{20}\sum_{k=1}^{20} \class{fixe}{y_{1k}}$$
+$$\class{fixe}{\hat{\mu}} = \class{fixe}{y_{1\bullet}}=\frac{1}{8}\sum_{k=1}^{8} y_{1k}= \frac{y_{11} + y_{12} + \ldots + y_{18}}{8}$$
+$$\quad \class{fixe}{\hat{\alpha}_2} =\class{fixe}{y_{2\bullet}}-\class{fixe}{y_{1\bullet}}=\frac{1}{8}\sum_{k=1}^{8} \class{fixe}{y_{2k}} - \frac{1}{8}\sum_{k=1}^{8} \class{fixe}{y_{1k}}, \quad \class{fixe}{\hat{\alpha}_3} =\class{fixe}{y_{3\bullet}}-\class{fixe}{y_{1\bullet}}=\frac{1}{8}\sum_{k=1}^{8} \class{fixe}{y_{3k}} - \frac{1}{8}\sum_{k=1}^{8} \class{fixe}{y_{1k}}$$
 
 ```{r estim_par1,  echo = TRUE, eval = TRUE}
-freqdata %>% group_by(Sexe) %>% summarise(m = mean(freqC), n= n())
+freqdata %>% group_by(Activite) %>% summarise(m = mean(freqC), n= n())
 ```
 ```{r estim_par1_save, eval = TRUE}
-resM1 <- freqdata %>% group_by(Sexe) %>% summarise(m = mean(freqC), n= n())
+resM1 <- freqdata %>% group_by(Activite) %>% summarise(m = mean(freqC), n= n())
 ```
 
 
 --
 
-$\class{fixe}{\hat{\mu}} =$ `r resM1$m[1]` et $\class{fixe}{\hat{\alpha}_2}=$ `r resM1$m[2] - resM1$m[1]`. 
+$\class{fixe}{\hat{\mu}} =$ `r resM1$m[1]` , $\class{fixe}{\hat{\alpha}_2}=$ `r resM1$m[2] - resM1$m[1]` et $\class{fixe}{\hat{\alpha}_3}=$ `r resM1$m[3] - resM1$m[1]`. 
 
 
 ---
@@ -685,7 +679,7 @@ template: parametre
 
 ### Ce qu'on doit trouver
 
-$\class{fixe}{\hat{\mu}} =$ `r resM1$m[1]` et $\class{fixe}{\hat{\alpha}_2}=$ `r resM1$m[2] - resM1$m[1]`. 
+$\class{fixe}{\hat{\mu}} =$ `r resM1$m[1]` et $\class{fixe}{\hat{\alpha}_2}=$ `r resM1$m[2] - resM1$m[1]`et $\class{fixe}{\hat{\alpha}_3}=$ `r resM1$m[3] - resM1$m[1]`.  
 
 --
 
@@ -703,7 +697,7 @@ template: parametre
 ## Estimation des paramètres pour l'exemple 1.
 
 ```{r estim_par_lm_2, echo = TRUE, eval = TRUE}
-M1 <- lm(freqC ~ Sexe, data = freqdata)
+M1 <- lm(freqC ~ Activite, data = freqdata)
 summary(M1)
 ```
 
@@ -759,7 +753,7 @@ $$\class{fixe}{\hat{\sigma}}^2 =\frac{1}{n-I} \class{fixe}{RSS_{obs}}.$$
 ---
 
 ```{r var_est}
-freqdata %>%  group_by(Sexe) %>% #BREAK
+freqdata %>%  group_by(Activite) %>% #BREAK
   mutate(yhat =  mean(freqC)) %>% #BREAK
   mutate( Ehat = freqC-yhat,Ehat_2 = Ehat^2) %>% #BREAK
   ungroup %>% summarise(RSSobs=sum(Ehat_2)) %>% as.numeric() -> RSSobs 
@@ -790,7 +784,7 @@ $\hat{\sigma}=$ `r sigma_hat`.
 
 
 ```{r recal_lm_fit_command, echo = TRUE}
-M1 <- lm(freqC ~ Sexe, data = freqdata)
+M1 <- lm(freqC ~ Activite, data = freqdata)
 ```
 
 --
@@ -820,10 +814,11 @@ template: parametre
 ## Visualisation graphique des paramètres estimés
 
 ```{r anova_visu_par}
-freqdata %>% mutate(ord = 0) %>% ggplot() + xlab('freqC') + ylab('Density') + geom_point(aes(x=freqC, col = Sexe, y = ord), alpha = 0.5) +  scale_color_manual(values = wesanderson::wes_palette(name = "Darjeeling1")) + #BREAK
-  geom_vline(data=resM1, aes(xintercept = m, col = Sexe)) + #BREAK
+freqdata %>% mutate(ord = 0) %>% ggplot() + xlab('freqC') + ylab('Density') + geom_point(aes(x=freqC, col = Activite, y = ord), alpha = 0.5) +  scale_color_manual(values = wesanderson::wes_palette(name = "Darjeeling1")) + #BREAK
+  geom_vline(data=resM1, aes(xintercept = m, col = Activite)) + #BREAK
   stat_function(fun = dnorm, n = 101, args = list(mean = resM1$m[1], sd = sigma_hat ), col =  "#FF0000") +
-  stat_function(fun = dnorm, n = 101, args = list(mean = resM1$m[2], sd = sigma_hat ), col =  "#00A08A") 
+  stat_function(fun = dnorm, n = 101, args = list(mean = resM1$m[2], sd = sigma_hat ), col =  "#00A08A") +
+  stat_function(fun = dnorm, n = 101, args = list(mean = resM1$m[3], sd = sigma_hat ), col =  "#F2AD00") 
 ```
 
 ---

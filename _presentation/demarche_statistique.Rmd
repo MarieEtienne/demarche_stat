@@ -1,0 +1,113 @@
+---
+title: Demarche statistique
+subtitle: introduction
+author: Marie-Pierre Etienne
+date: '2020/09/11 (updated: `r Sys.Date()`)'
+institute: https://github.com/marieetienne
+csl: ../courses_tools/resources/apa-no-doi-no-issue.csl
+output:
+  xaringan::moon_reader:
+    css: [  'metropolis',  'mpe_pres.css']
+    lib_dir: libs
+    nature:
+      ratio: 16:10
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      beforeInit: '../courses_tools/resources/collapseoutput.js'
+    includes:
+      after_body: '../courses_tools/resources/insert-logo.html'
+fontsize: 10pt
+params:
+  child_path: ''
+  setup_path: ../courses_tools/resources/
+---
+
+
+
+```{r setup, include=FALSE, eval = TRUE}
+source(paste0(params$setup_path, "knitr_setup.R"))
+with_sol <- TRUE ## in order to control the output
+with_course <- TRUE
+library('flipbookr')
+library(RefManageR)
+library(tidyverse)
+```
+
+```{r xaringanExtra-share-again, echo=FALSE}
+xaringanExtra::use_share_again()
+```
+
+```{r reference,  include=FALSE, cache=FALSE, eval = TRUE}
+BibOptions(check.entries = FALSE,
+           bib.style = "authoryear",
+           cite.style = "alphabetic",
+           style = "markdown",
+           hyperlink = FALSE,
+           dashed = FALSE)
+myBib <- ReadBib("./lm.bib", check = FALSE)
+```
+
+name: intro
+# Introduction
+
+---
+template: intro
+## Un exemple jouet à but pédagogique
+
+On a mesuré la fréquence cardiaque de 20 femmes et 20 hommes qui pratique trois sports différents : la natation, le pilate ou la pétanque. Pour le moment, on ne s'intéresse qu'à l avariable sport
+
+
+```{r datapackage, eval = TRUE, echo = FALSE, warning = FALSE}
+ggplot_save <- function(...) ggplot2::ggplot(...) 
+ggplot <- function(...) ggplot2::ggplot(...) + scale_fill_manual(values = wesanderson::wes_palette(name = "Darjeeling1")) + scale_color_manual(values = wesanderson::wes_palette(name = "Darjeeling1")) 
+#remotes::install_github('MarieEtienne/coursesdata', force = TRUE)
+```
+
+```{r freqdata, eval = TRUE, echo = c(1,2), warning = FALSE}
+freqdata <- read.table('https://marieetienne.github.io/datasets/activite_FC.csv', sep = ",", header = TRUE )
+freqdata %>% ggplot() +  aes(x= Activite, y = freqC) +  geom_boxplot( alpha = 0.5) + theme(legend.position = 'none')  + 
+  geom_jitter(  alpha=0.7, width = 0.15)
+```
+
+
+--
+<p class="question"> L'activité physique est-elle liée à  fréquence cardiaque au repos ?</p>
+---
+
+
+# Démarche statistique 
+
+* Formaliser la question posée sous forme statistique : proposer une *modélisation* statistique du problème
+
+* Identifier une quantité qui se comporte différemment selon que la réponse à la question est oui ou non : *statistique de test*
+
+* Décrire le comportement de la statistique de test pour un type de réponse à la question : comportement sous *H0*
+
+* Evaluer à quel point le comportement observé est loin du comportement attendu : *probabilité critique*
+
+* Conclure et répondre à la question posée
+
+
+
+---
+
+
+# Image du procès 
+
+* 
+
+* 
+
+* 
+
+* 
+
+* 
+
+```{r ggplot_back, echo = FALSE, eval = TRUE}
+ggplot <- function(...) ggplot2::ggplot(...) 
+```
+
+
+
