@@ -16,7 +16,7 @@ class: center, middle, inverse, title-slide
 ## à 1 facteur
 ### Marie-Pierre Etienne
 ### <a href="https://github.com/marieetienne" class="uri">https://github.com/marieetienne</a>
-### 2020/09/11 (updated: 2022-11-17)
+### 2020/09/11 (updated: 2022-11-23)
 
 ---
 
@@ -673,14 +673,15 @@ template: parametre
 
 
 ```r
-M1 &lt;- lm(freqC ~ Sexe, data = freqdata)
+M1 &lt;- lm(freqC ~ Activite, data = freqdata)
 summary(M1)$coefficients
 ```
 
 ```
-             Estimate Std. Error    t value     Pr(&gt;|t|)
-(Intercept) 74.416667   1.397938 53.2331784 9.572514e-25
-SexeM        1.083333   1.976982  0.5479732 5.892277e-01
+                 Estimate Std. Error   t value     Pr(&gt;|t|)
+(Intercept)        70.000  0.8178623 85.588976 3.355090e-28
+ActivitePétanque   10.125  1.1566320  8.753865 1.887487e-08
+ActivitePilates     4.750  1.1566320  4.106751 5.033922e-04
 ```
 
 ---
@@ -1226,7 +1227,7 @@ count: false
 .panel1-rss-user[
 
 ```r
-*freqdata %&gt;% group_by(Sexe) %&gt;%
+*freqdata %&gt;% group_by(Activite) %&gt;%
 * mutate(m= mean(freqC))
 ```
 ]
@@ -1235,13 +1236,13 @@ count: false
 
 ```
 # A tibble: 24 × 4
-# Groups:   Sexe [2]
+# Groups:   Activite [3]
   freqC Sexe  Activite     m
   &lt;int&gt; &lt;chr&gt; &lt;chr&gt;    &lt;dbl&gt;
-1    72 M     Natation  75.5
-2    72 F     Natation  74.4
-3    67 M     Natation  75.5
-4    69 F     Natation  74.4
+1    72 M     Natation    70
+2    72 F     Natation    70
+3    67 M     Natation    70
+4    69 F     Natation    70
 # … with 20 more rows
 ```
 ]
@@ -1253,7 +1254,7 @@ count: false
 .panel1-rss-user[
 
 ```r
-freqdata %&gt;% group_by(Sexe) %&gt;%
+freqdata %&gt;% group_by(Activite) %&gt;%
   mutate(m= mean(freqC)) %&gt;%
 * mutate( Ehat = freqC - m)
 ```
@@ -1263,13 +1264,13 @@ freqdata %&gt;% group_by(Sexe) %&gt;%
 
 ```
 # A tibble: 24 × 5
-# Groups:   Sexe [2]
+# Groups:   Activite [3]
   freqC Sexe  Activite     m  Ehat
   &lt;int&gt; &lt;chr&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt;
-1    72 M     Natation  75.5 -3.5 
-2    72 F     Natation  74.4 -2.42
-3    67 M     Natation  75.5 -8.5 
-4    69 F     Natation  74.4 -5.42
+1    72 M     Natation    70     2
+2    72 F     Natation    70     2
+3    67 M     Natation    70    -3
+4    69 F     Natation    70    -1
 # … with 20 more rows
 ```
 ]
@@ -1281,7 +1282,7 @@ count: false
 .panel1-rss-user[
 
 ```r
-freqdata %&gt;% group_by(Sexe) %&gt;%
+freqdata %&gt;% group_by(Activite) %&gt;%
   mutate(m= mean(freqC)) %&gt;%
   mutate( Ehat = freqC - m) %&gt;%
 * mutate( E2hat = Ehat^2)
@@ -1292,13 +1293,13 @@ freqdata %&gt;% group_by(Sexe) %&gt;%
 
 ```
 # A tibble: 24 × 6
-# Groups:   Sexe [2]
+# Groups:   Activite [3]
   freqC Sexe  Activite     m  Ehat E2hat
   &lt;int&gt; &lt;chr&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-1    72 M     Natation  75.5 -3.5  12.2 
-2    72 F     Natation  74.4 -2.42  5.84
-3    67 M     Natation  75.5 -8.5  72.2 
-4    69 F     Natation  74.4 -5.42 29.3 
+1    72 M     Natation    70     2     4
+2    72 F     Natation    70     2     4
+3    67 M     Natation    70    -3     9
+4    69 F     Natation    70    -1     1
 # … with 20 more rows
 ```
 ]
@@ -1310,7 +1311,7 @@ count: false
 .panel1-rss-user[
 
 ```r
-freqdata %&gt;% group_by(Sexe) %&gt;%
+freqdata %&gt;% group_by(Activite) %&gt;%
   mutate(m= mean(freqC)) %&gt;%
   mutate( Ehat = freqC - m) %&gt;%
   mutate( E2hat = Ehat^2) %&gt;%
@@ -1324,10 +1325,10 @@ freqdata %&gt;% group_by(Sexe) %&gt;%
 # A tibble: 24 × 6
   freqC Sexe  Activite     m  Ehat E2hat
   &lt;int&gt; &lt;chr&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-1    72 M     Natation  75.5 -3.5  12.2 
-2    72 F     Natation  74.4 -2.42  5.84
-3    67 M     Natation  75.5 -8.5  72.2 
-4    69 F     Natation  74.4 -5.42 29.3 
+1    72 M     Natation    70     2     4
+2    72 F     Natation    70     2     4
+3    67 M     Natation    70    -3     9
+4    69 F     Natation    70    -1     1
 # … with 20 more rows
 ```
 ]
@@ -1339,7 +1340,7 @@ count: false
 .panel1-rss-user[
 
 ```r
-freqdata %&gt;% group_by(Sexe) %&gt;%
+freqdata %&gt;% group_by(Activite) %&gt;%
   mutate(m= mean(freqC)) %&gt;%
   mutate( Ehat = freqC - m) %&gt;%
   mutate( E2hat = Ehat^2) %&gt;%
@@ -1351,7 +1352,7 @@ freqdata %&gt;% group_by(Sexe) %&gt;%
 .panel2-rss-user[
 
 ```
-[1] 515.9167
+[1] 112.375
 ```
 ]
 
@@ -1362,7 +1363,7 @@ count: false
 .panel1-rss-user[
 
 ```r
-freqdata %&gt;% group_by(Sexe) %&gt;%
+freqdata %&gt;% group_by(Activite) %&gt;%
   mutate(m= mean(freqC)) %&gt;%
   mutate( Ehat = freqC - m) %&gt;%
   mutate( E2hat = Ehat^2) %&gt;%
@@ -1383,7 +1384,7 @@ count: false
 .panel1-rss-user[
 
 ```r
-freqdata %&gt;% group_by(Sexe) %&gt;%
+freqdata %&gt;% group_by(Activite) %&gt;%
   mutate(m= mean(freqC)) %&gt;%
   mutate( Ehat = freqC - m) %&gt;%
   mutate( E2hat = Ehat^2) %&gt;%
@@ -1432,7 +1433,7 @@ count: false
 .panel1-rss-user[
 
 ```r
-freqdata %&gt;% group_by(Sexe) %&gt;%
+freqdata %&gt;% group_by(Activite) %&gt;%
   mutate(m= mean(freqC)) %&gt;%
   mutate( Ehat = freqC - m) %&gt;%
   mutate( E2hat = Ehat^2) %&gt;%
@@ -1482,7 +1483,7 @@ count: false
 .panel1-rss-user[
 
 ```r
-freqdata %&gt;% group_by(Sexe) %&gt;%
+freqdata %&gt;% group_by(Activite) %&gt;%
   mutate(m= mean(freqC)) %&gt;%
   mutate( Ehat = freqC - m) %&gt;%
   mutate( E2hat = Ehat^2) %&gt;%
@@ -1533,7 +1534,7 @@ count: false
 .panel1-rss-user[
 
 ```r
-freqdata %&gt;% group_by(Sexe) %&gt;%
+freqdata %&gt;% group_by(Activite) %&gt;%
   mutate(m= mean(freqC)) %&gt;%
   mutate( Ehat = freqC - m) %&gt;%
   mutate( E2hat = Ehat^2) %&gt;%
@@ -1561,7 +1562,7 @@ count: false
 .panel1-rss-user[
 
 ```r
-freqdata %&gt;% group_by(Sexe) %&gt;%
+freqdata %&gt;% group_by(Activite) %&gt;%
   mutate(m= mean(freqC)) %&gt;%
   mutate( Ehat = freqC - m) %&gt;%
   mutate( E2hat = Ehat^2) %&gt;%
@@ -1588,7 +1589,7 @@ count: false
 .panel1-rss-user[
 
 ```r
-freqdata %&gt;% group_by(Sexe) %&gt;%
+freqdata %&gt;% group_by(Activite) %&gt;%
   mutate(m= mean(freqC)) %&gt;%
   mutate( Ehat = freqC - m) %&gt;%
   mutate( E2hat = Ehat^2) %&gt;%
@@ -1608,7 +1609,7 @@ SSM &lt;- RSSM0 - RSSM1
 .panel2-rss-user[
 
 ```
-[1] 7.041667
+[1] 410.5833
 ```
 ]
 
@@ -1644,7 +1645,7 @@ SSM &lt;- RSSM0 - RSSM1
 
 
 ```
-[1] 7.041667
+[1] 410.5833
 ```
 
 ---
@@ -1654,7 +1655,7 @@ template: modcomp
 
 
 ```r
-M1 &lt;- lm(freqC ~ Sexe, data= freqdata)
+M1 &lt;- lm(freqC ~ Activite, data= freqdata)
 M0 &lt;- lm(freqC ~ 1, data= freqdata)
 anova(M0, M1)
 ```
@@ -1663,10 +1664,12 @@ anova(M0, M1)
 Analysis of Variance Table
 
 Model 1: freqC ~ 1
-Model 2: freqC ~ Sexe
-  Res.Df    RSS Df Sum of Sq      F Pr(&gt;F)
-1     23 522.96                           
-2     22 515.92  1    7.0417 0.3003 0.5892
+Model 2: freqC ~ Activite
+  Res.Df    RSS Df Sum of Sq      F   Pr(&gt;F)    
+1     23 522.96                                 
+2     21 112.38  2    410.58 38.364 9.73e-08 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 
@@ -1839,10 +1842,12 @@ anova(M0,M1)
 Analysis of Variance Table
 
 Model 1: freqC ~ 1
-Model 2: freqC ~ Sexe
-  Res.Df    RSS Df Sum of Sq      F Pr(&gt;F)
-1     23 522.96                           
-2     22 515.92  1    7.0417 0.3003 0.5892
+Model 2: freqC ~ Activite
+  Res.Df    RSS Df Sum of Sq      F   Pr(&gt;F)    
+1     23 522.96                                 
+2     21 112.38  2    410.58 38.364 9.73e-08 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 --
@@ -2055,9 +2060,9 @@ template: test_param
 
 --
 
-- `\(\hat{\sigma}=\)` 4.843.
-- `\(\sqrt{c_j}\hat{\sigma}=\)` 1.398,
-- `\(t_{j,obs}=\)` 53.233,
+- `\(\hat{\sigma}=\)` 2.313.
+- `\(\sqrt{c_j}\hat{\sigma}=\)` 0.818,
+- `\(t_{j,obs}=\)` 85.589,
 - p-value= 0,
 
 --
@@ -2070,22 +2075,23 @@ summary(M1)
 ```
 
 Call:
-lm(formula = freqC ~ Sexe, data = freqdata)
+lm(formula = freqC ~ Activite, data = freqdata)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--9.5000 -3.4375 -0.4583  3.5833  8.5833 
+-4.0000 -1.7500 -0.0625  2.0000  3.2500 
 
 Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)   74.417      1.398  53.233   &lt;2e-16 ***
-SexeM          1.083      1.977   0.548    0.589    
+                 Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)       70.0000     0.8179  85.589  &lt; 2e-16 ***
+ActivitePétanque  10.1250     1.1566   8.754 1.89e-08 ***
+ActivitePilates    4.7500     1.1566   4.107 0.000503 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 4.843 on 22 degrees of freedom
-Multiple R-squared:  0.01347,	Adjusted R-squared:  -0.03138 
-F-statistic: 0.3003 on 1 and 22 DF,  p-value: 0.5892
+Residual standard error: 2.313 on 21 degrees of freedom
+Multiple R-squared:  0.7851,	Adjusted R-squared:  0.7647 
+F-statistic: 38.36 on 2 and 21 DF,  p-value: 9.73e-08
 ```
 
 
@@ -2142,7 +2148,7 @@ Une question initiale :  Le volume auditif dépend il de régime alimentaire.
 
 
 ### But 
-Etudier le lien entre une variable quantitative (la fréquence cardiaque) et un facteur (le Sexe).
+Etudier le lien entre une variable quantitative (la fréquence cardiaque) et un facteur (le Activite).
 
 ## Le modèle 
 `$$Y_{ik} = \mu + \alpha_i + E_{ik}$$`
