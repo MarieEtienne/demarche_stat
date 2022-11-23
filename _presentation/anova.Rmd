@@ -686,7 +686,7 @@ $\class{fixe}{\hat{\mu}} =$ `r resM1$m[1]` et $\class{fixe}{\hat{\alpha}_2}=$ `r
 ### Estimer avec R
 
 ```{r estim_par_lm, echo = TRUE, eval = TRUE}
-M1 <- lm(freqC ~ Sexe, data = freqdata)
+M1 <- lm(freqC ~ Activite, data = freqdata)
 summary(M1)$coefficients
 ```
 
@@ -975,7 +975,7 @@ A la main :
 
 
 ```{r rss}
-freqdata %>% group_by(Sexe) %>% 
+freqdata %>% group_by(Activite) %>% 
   mutate(m= mean(freqC)) %>% #BREAK
   mutate( Ehat = freqC - m) %>% #BREAK 
   mutate( E2hat = Ehat^2) %>% #BREAK
@@ -998,7 +998,7 @@ SSM #BREAK
 
 
 ```{r rss_cache,  eval = TRUE}
-freqdata %>% group_by(Sexe) %>%
+freqdata %>% group_by(Activite) %>%
   mutate(m= mean(freqC)) %>% 
   mutate( Ehat = freqC - m) %>% 
   mutate( E2hat = Ehat^2) %>% 
@@ -1020,7 +1020,7 @@ template: modcomp
 
 
 ```{r SCM,  echo = TRUE, eval = TRUE, highlight = 1:2}
-M1 <- lm(freqC ~ Sexe, data= freqdata)
+M1 <- lm(freqC ~ Activite, data= freqdata)
 M0 <- lm(freqC ~ 1, data= freqdata)
 anova(M0, M1)
 ```
@@ -1323,7 +1323,7 @@ template: test_param
 ### test $\mu = 0$ .
 
 ```{r test_alpha1, eval =TRUE, echo = FALSE}
-M1 <- lm(freqC~Sexe, data = freqdata)
+M1 <- lm(freqC~Activite, data = freqdata)
 ```
 
 --
@@ -1390,7 +1390,7 @@ Une question initiale :  Le volume auditif dépend il de régime alimentaire.
 
 
 ### But 
-Etudier le lien entre une variable quantitative (la fréquence cardiaque) et un facteur (le Sexe).
+Etudier le lien entre une variable quantitative (la fréquence cardiaque) et un facteur (le Activite).
 
 ## Le modèle 
 $$Y_{ik} = \mu + \alpha_i + E_{ik}$$
