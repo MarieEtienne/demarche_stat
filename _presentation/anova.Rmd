@@ -1012,7 +1012,7 @@ template: modcomp
 
 ## Mesurer le caractère surprenant : Proabilité critique
 
-```{r pvalue_graphique_2, eval = TRUE}
+```{r pvalue_graphique_3, eval = TRUE}
 ggplot(data  = chi_dta) + xlab('y') + 
   ggtitle("Une valeur de la statistique peu surprenante") + ylab('density') + geom_line(aes(x=x, y=y)) + #BREAK
   annotate("text", x = 3, y = 0.05, label = "Fobs", col = 'red')+  geom_vline(aes(xintercept = Fobs), col = 'red') + #BREAK
@@ -1138,11 +1138,19 @@ template: test_param
 
 ## Comparaison des pratiques sportives
 
-```{r test_alpha1, eval =TRUE, echo = FALSE}
+```{r test_alpha1}
 M1 <- lm(freqC~Activite, data = freqdata)
+library(emmeans)
+FC_mean <- emmeans(object = M1, specs = ~Activite)
+FC_mean
+pairs(FC_mean)
 ```
 
---
+---
+
+`r chunk_reveal("test_alpha1", break_type = "user", display_type="output")`
+
+---
 
 - $\hat{\sigma}=$ `r round(summary(M1)$sigma,3)`.
 - $\sqrt{c_j}\hat{\sigma}=$ `r round(summary(M1)$coefficients[1,2],3)`,
@@ -1154,41 +1162,6 @@ M1 <- lm(freqC~Activite, data = freqdata)
 ```{r summary_alpha1, eval =TRUE, echo = TRUE}
 summary(M1)
 ```
-
-
-
----
-name: diagnostic 
-# Diagnostic du modèle 
-
----
-template: dignostic
-## Le coefficient de détermination
-
-
-$$R^2 = 1 - \frac{ RSS}{RSS_0} =  \frac{SS_{M1}}{RSS_0}$$
-
-Le pourcentage de variablité capturé par le modèle. 
-
---
-
-Ce coefficient augmente systématiquement avec le nombre de paramètres dans le modèle.
-
---
-## Le coefficient de détermination ajusté
-
-$$R^2_{adj} = 1 - \frac{ \frac{RSS}{n-I}}{\frac{RSS_0}{n-1}}$$
-est un indicateur du degré d'ajustement du modèle en pénalisant par le nombre de variables.
-
----
-template: diagnostic
-## Vérification graphique des hypothèses de modélisation
-
-```{r diagn_grap, eval = TRUE, echo =TRUE}
-library(ggfortify)
-autoplot(M1)
-```
-
 
 
 ---
@@ -1214,15 +1187,13 @@ avec $\mu$ le comportement de référence et $\alpha_i$ l'effet différentiel du
 
 La référence est définie par la contrainte choisie. R par défaut choisit la contrainte $\alpha_1=0$, ce qui place le groupe 1 comme groupe de référence.
 
-Le modèle d'analyse de la variance à un facteur est un modèle linéaire et peut se mettre sous la forme générique 
-$$Y = X\theta +E$$
-
 ## Tests
-Pour comparer des modèles ( pour tester un potentiel effet du facteur),
 
-Sur un  paramètre  pvaut une valeur donnée (par défaut R teste systématiquement si un paramètre vaut 0)
-- on doit vérifier que les hypothèses de modélisation ne sont pas trop fausses.
+* Pour comparer des modèles ( pour tester un potentiel effet du facteur),
 
+* Comparer les modalités (trouver quelles sont les modalités différentes les unes des autres)
+
+## Conclusion concrète
 
 
 
