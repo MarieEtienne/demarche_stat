@@ -1890,7 +1890,6 @@ template: test_param
 ## Comparaison des pratiques sportives
 
 
-
 ---
 
 count: false
@@ -1908,11 +1907,13 @@ Confidence level used: 0.95
 ```
  contrast            estimate   SE df t.ratio p.value
  Natation - Pétanque   -10.12 1.16 21  -8.754  &lt;.0001
- Natation - Pilates     -4.75 1.16 21  -4.107  0.0014
+ Natation - Pilates     -4.75 1.16 21  -4.107  0.0015
  Pétanque - Pilates      5.38 1.16 21   4.647  0.0004
 
-P value adjustment: tukey method for comparing a family of 3 estimates 
+P value adjustment: bonferroni method for 3 tests 
 ```
+
+&lt;img src="anova_files/figure-html/test_alpha1_user_01_output-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
 
 &lt;style&gt;
 .panel1-test_alpha1-user {
@@ -2014,10 +2015,6 @@ La référence est définie par la contrainte choisie. R par défaut choisit la 
 
 
 
----
-template: pause
-
-Avant de passer à l'analyse de variance à deux facteurs ...
 ---
 
 

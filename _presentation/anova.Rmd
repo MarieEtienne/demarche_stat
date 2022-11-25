@@ -1143,9 +1143,9 @@ M1 <- lm(freqC~Activite, data = freqdata)
 library(emmeans)
 FC_mean <- emmeans(object = M1, specs = ~Activite)
 FC_mean
-pairs(FC_mean)
+pairs(FC_mean,  adjust = "bonf")
+plot(FC_mean)
 ```
-
 ---
 
 `r chunk_reveal("test_alpha1", break_type = "user", display_type="output")`
@@ -1198,10 +1198,6 @@ La référence est définie par la contrainte choisie. R par défaut choisit la 
 
 
 
----
-template: pause
-
-Avant de passer à l'analyse de variance à deux facteurs ...
 ---
 
 ```{r ggplot_back, echo = FALSE, eval = TRUE}
