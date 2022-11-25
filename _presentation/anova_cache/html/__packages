@@ -21,4 +21,4 @@ cowplot
 palmerpenguins
 plotly
 FactoMineR
-ggfortify
+emmeans

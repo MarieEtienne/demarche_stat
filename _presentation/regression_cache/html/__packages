@@ -21,9 +21,8 @@ cowplot
 palmerpenguins
 plotly
 FactoMineR
-ggfortify
+emmeans
 carData
 car
-emmeans
 coursesdata
 animation
