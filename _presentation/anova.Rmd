@@ -253,7 +253,7 @@ ggpubr::ggarrange(p_M1, p_M0, ncol = 2)
 
 ## Proposer une méthode pour décider entre M0 et M1
 
-## Si M1, comparer les comportements moyens de sgroupes 2 à 2
+## Si M1, comparer les comportements moyens des groupes 2 à 2
 
 ---
 name: model
@@ -450,114 +450,6 @@ avec
 - 4 paramètres de moyenne
 - 1 paramètre de variance
 
-
----
-template: model
-## Sous forme matricielle
- $$\bf{Y = X\theta + E}$$
-### Forme régulière 
-
-$${\bf{Y}} = \overset{}{\begin{pmatrix}
-Y_{11}\\
-Y_{12}\\
-Y_{13}\\
-\vdots\\
-Y_{1n_1}\\
-Y_{21}\\
-Y_{22}\\
-\vdots\\
-Y_{2n_2}\\
-\vdots\\
-Y_{In_I}\end{pmatrix}}, \quad
-{\bf{X}} =\overset{\color{gray}{\begin{matrix}\mu_1 & \mu_2 & \ldots & \ldots &\mu_I\end{matrix}}}{\begin{pmatrix}
-1 & 0 & 0 & \ldots 0\\
-1 & 0 & 0 & \ldots 0\\
-1 & 0 & 0 & \ldots 0\\
-\vdots\\
-1 & 0 & 0 & \ldots 0\\
-0 & 1 & 0 & \ldots 0 \\
-0 & 1 & 0 & \ldots 0 \\\vdots\\
-0 & 1 & 0 & \ldots 0 \\\vdots\\
-0 & 0 & 0 & \ldots 1 \end{pmatrix}}, \quad
-{\bf{\theta}} =\begin{pmatrix}
-\mu_{1}\\
-\mu_{2}\\
-\vdots\\
-\mu_I\end{pmatrix}, \quad{\bf{E}} =\begin{pmatrix}
-E_{11}\\
-E_{12}\\
-E_{13}\\
-\vdots\\
-E_{1n_1}\\
-E_{21}\\
-E_{22}\\
-\vdots\\
-E_{2n_2}\\
-\vdots\\
-E_{In_I}\end{pmatrix}. \quad$$
-
-
-
----
-template: model
-## Sous forme matricielle
- $$\bf{Y = X\theta + E}$$
-### Forme singulière 
-
-$${\bf{Y}} = \overset{}{\begin{pmatrix}
-Y_{11}\\
-Y_{12}\\
-Y_{13}\\
-\vdots\\
-Y_{1n_1}\\
-Y_{21}\\
-Y_{22}\\
-\vdots\\
-Y_{2n_2}\\
-\vdots\\
-Y_{In_I}\end{pmatrix}}, \quad
-{\bf{X}} =\overset{\color{gray}{\begin{matrix}\mu & \alpha_2 & \ldots & \ldots &\alpha_I\end{matrix}}}{\begin{pmatrix}
-1 & 0 & 0 & \ldots 0\\
-1 & 0 & 0 & \ldots 0\\
-1 & 0 & 0 & \ldots 0\\
-\vdots\\
-1 & 0 & 0 & \ldots 0\\
-1 & 1 & 0 & \ldots 0 \\
-1 & 1 & 0 & \ldots 0 \\\vdots\\
-1 & 1 & 0 & \ldots 0 \\\vdots\\
-1 & 0 & 0 & \ldots 1 \end{pmatrix}}, \quad
-{\bf{\theta}} =\begin{pmatrix}
-\mu\\
-\alpha\\
-\vdots\\
-\alpha_I\end{pmatrix}, \quad{\bf{E}} =\begin{pmatrix}
-E_{11}\\
-E_{12}\\
-E_{13}\\
-\vdots\\
-E_{1n_1}\\
-E_{21}\\
-E_{22}\\
-\vdots\\
-E_{2n_2}\\
-\vdots\\
-E_{In_I}\end{pmatrix}. \quad$$
-
----
-count: false
-template: model
-## Déclinaisons sur l'exemple 1 (fréquence cardiaque)
-
-#### Donner les dimensions de $\bf{Y,\ X,\ \theta}$  et $\bf{E}$ (nombre de lignes et de colonnes)
-
-#### Ecrire $\theta$
-
-#### Expliquer comment construire $\bf{X}$
-
-
-.footnote[
- Pour un rappel sur le produit matriciel : [Remise à niveau](https://lms.agreenium.fr/course/view.php?id=90&section=5#tabs-tree-start). Faire les deux premiers points.
-]
 
 
 ---
@@ -826,36 +718,6 @@ freqdata %>% mutate(ord = 0) %>% ggplot() + xlab('freqC') + ylab('Density') + ge
 
 
 ---
-template: parametre
-## Estimation des paramètres du modèle version matricielle
-
-
-Le modèle sous forme matricielle s'écrit
-
-$$\bf{Y = X\theta + E}.$$
---
-
-### Estimation de $\theta$
-
-$$\hat{\theta} = (X^\intercal X )^{-1} X^\intercal Y_{obs}.$$
-
---
-
-### Estimateur de $\theta$
-
-$$T = (X^\intercal X )^{-1} X^\intercal Y.$$
---
-
-### Loi de l'estimateur de $\theta$
-
-
-$$T = (X^\intercal X )^{-1} X^\intercal Y \sim \mathcal{N}_{I}\left(\theta, \sigma^2 (X^\intercal X )^{-1}\right).$$
---
-
-Cette approche très mathématique est utile pour la généralisation, dès qu'un modèle s'écrit $Y=X\theta + E$ !!
-
-
----
 template: pause
 
 ### Méfiez vous 
@@ -902,8 +764,10 @@ Autrement dit
 ```{r freqdata_graphia_anova, eval = TRUE, warning = FALSE, results ='markup'}
 freq_p_M <- ggplot(data = freqdata) + geom_point(aes(x=freqC, y =0, col = Activite), alpha = 0.5)
 
-freq_p_M1 <- freq_p_M +   stat_function(fun = dnorm, n = 101, args = list(mean = resM1$m[1], sd = sigma_hat ), col =  "#FF0000") +
+freq_p_M1 <- freq_p_M + 
+  stat_function(fun = dnorm, n = 101, args = list(mean = resM1$m[1], sd = sigma_hat ), col =  "#FF0000") +
   stat_function(fun = dnorm, n = 101, args = list(mean = resM1$m[2], sd = sigma_hat ), col =  "#00A08A") +
+  stat_function(fun = dnorm, n = 101, args = list(mean = resM1$m[3], sd = sigma_hat ), col =  "#F2AD00") +
   geom_vline(aes(xintercept = resM1$m[1] ), col =  "#FF0000") +
   geom_vline(aes(xintercept = resM1$m[2] ), col =  "#00A08A")  +
   geom_vline(aes(xintercept = resM1$m[3] ), col =  "#F2AD00") 
@@ -1088,15 +952,9 @@ template: modcomp
 
 Il faut être capable de décrire quelles sont les valeurs possibles de $SS_{M1, obs}$, pour ceci il faut connaitre la loi de la variable aléatoire $SS_{M1}$.
 
--
+--
+
 On peut montrer que sous $H_0$,  
-
-$$\frac{SS_{M1}}{\sigma^2} \underset{H_0}{\sim}\chi^2(I-1)$$  
-
---
-Mais $\sigma^2$ est inconnu, on a envie de le remplacer par son estimateur $RSS / (n-I).$
-
---
 
 
 <p class=question> 
@@ -1105,7 +963,9 @@ $$F= \frac{\frac{SS_{M1}}{I-1}}{\frac{RSS}{n-I}} \underset{H_0}{\sim}\mathcal{F}
 </p>
 
 
+--
 
+Intuitivement le numérateur de $F$ mesure la force d'un signal, le dénominateur un niveau de bruit. Plus la valeur de $F$ est grande, plus il est raisonnable de penser que le signal capturé par le modèle est fort et donc révélateur d'un véritable effet de la variable explicative.
 
 ---
 template: modcomp
@@ -1119,13 +979,22 @@ tibble(x = seq(0, 10, length.out = 2001)) %>%
 Fobs <- 1
 chi_dta %>% filter(x> Fobs) %>% add_row(x=100,y = 0) %>%  add_row(x=Fobs, y =0)  %>% 
   add_row(x=Fobs, y =df(Fobs, df1 = 4, df= 38)) %>% arrange(x,y)  -> chi_dta_poly
+ggplot(data  = chi_dta) + xlab('y') + ylab('density') + geom_line(aes(x=x, y=y))
 ```
 
 
 ```{r pvalue_graphique}
-ggplot(data  = chi_dta) + xlab('y') + ylab('density') + geom_line(aes(x=x, y=y)) + #BREAK
-  annotate("text", x = Fobs- 0.5, y = 0.05, label = "Fobs", col = 'red')+  geom_vline(aes(xintercept = Fobs), col = 'red') + #BREAK
-  geom_polygon(data = chi_dta_poly,  aes(x=x, y= y), alpha = 0.3) + xlim(c(0, max(chi_dta$x))) 
+ggplot(data  = chi_dta) + xlab('y') + 
+  ggtitle("Une valeur de la statistique peu surprenante") + ylab('density') + geom_line(aes(x=x, y=y)) + #BREAK
+  annotate("text", x = Fobs- 0.5, y = 0.05, label = "Fobs", col = 'red')+  geom_vline(aes(xintercept = Fobs), col = 'red') 
+
+```
+
+
+```{r pvalue_graphique_2}
+ggplot(data  = chi_dta) + xlab('y') + 
+  ggtitle("Une valeur de la statistique peu surprenante") + ylab('density') + geom_line(aes(x=x, y=y)) + #BREAK
+  annotate("text", x = 3, y = 0.05, label = "Fobs", col = 'red')+  geom_vline(aes(xintercept = Fobs), col = 'red') 
 
 ```
 
@@ -1133,18 +1002,32 @@ ggplot(data  = chi_dta) + xlab('y') + ylab('density') + geom_line(aes(x=x, y=y))
 
 `r chunk_reveal("pvalue_graphique", break_type = "user", display_type="output")`
 
+
+---
+
+`r chunk_reveal("pvalue_graphique_2", break_type = "user", display_type="output")`
+
 ---
 template: modcomp
 
-## Proabilité critique
+## Mesurer le caractère surprenant : Proabilité critique
 
+```{r pvalue_graphique_2, eval = TRUE}
+ggplot(data  = chi_dta) + xlab('y') + 
+  ggtitle("Une valeur de la statistique peu surprenante") + ylab('density') + geom_line(aes(x=x, y=y)) + #BREAK
+  annotate("text", x = 3, y = 0.05, label = "Fobs", col = 'red')+  geom_vline(aes(xintercept = Fobs), col = 'red') + #BREAK
+  geom_polygon(data = chi_dta_poly,  aes(x=x, y= y), alpha = 0.3) + xlim(c(0, max(chi_dta$x))) 
+
+```
+
+--
 La probabilité critique ( p-value en anglais) est définie par 
 
 $$ \mathbb{P}(F> F_{obs} \vert H_0)$$
 
 --
 
-Grossièrement dit, c'est la,probabilité d'observer Fobs ou des valeurs encore plus extrèmes sous $H_0$.
+Intuitivement c'est la probabilité d'observer Fobs ou des valeurs encore plus extrèmes sous $H_0$.
 
 --
 
@@ -1185,108 +1068,41 @@ template: modcomp
 
 
 ---
-template: pause
-
----
 name: test_param
-# Test sur un paramètre
+# Comparer les modalités
+
 
 ---
 template: test_param
 ## Réflexion sur le sens de ce test
 
-$$Y_{ik} = \mu +\alpha_i + E_{ik}, \quad i=1,\ldots I,\ k=1,\ldots, n_i.$$
-Par défaut, R propose pour chaque coefficient le test de l'hypothèse $H_0\ :\ \left\lbrace\mbox{ le coefficient est nul } \right\rbrace$. 
+On souhaite comparer les différentes modalités : et répondre aux questions 
+
+* La fréquence cardiaque des nageurs est-elle différente de la fréquence cardiaque des pratiquants de yoga ?
+* La fréquence cardiaque des nageurs est-elle différente de la fréquence cardiaque des joueurs de pétanque ? 
+* La fréquence cardiaque des pratiquants de yoga est-elle différente de la fréquence cardiaque des joueurs de pétanque ? 
 
 --
 
-Que signifie ce test ?
+Comment faire ?
 
-- pour $\mu$
-- pour $\alpha_i$
+-- 
 
+Tester 
+
+$$H_0 : \left\lbrace (\mu+\alpha_i) = (\mu + \alpha_j) \right\rbrace = \left\lbrace\alpha_i =  \alpha_j \right\rbrace $$
+contre 
+$$H_1 : \left \lbrace(\mu+\alpha_i \ne \mu + \alpha_j) \right\rbrace = \left\lbrace\alpha_i \ne  \alpha_j \right\rbrace $$
+---
+template: test_param
+## Mise en place du test de comparaison des modalités
+
+Sous $H_0$,
+
+$$T = \frac{Y_{i,\bullet} -Y_{j,\bullet}}{ \hat{\sigma} \sqrt{\frac{1}{n_i} + \frac{1}{n_j}}} \sim \mathcal{T}(DDL_{res})$$
+
+où $\mathcal{T}(DDL_{res})$ désigne la loi de Student à $DDL_{res}$ degrés de liberté. 
 --
-
-<a class=care> Attention, le sens de ce test dépend  de la contrainte choisie </p>
-
-
----
-template: test_param
-## Loi de la statistique de test
-
-### Sur le cas particulier de $\mu$
-
-On a vu que l'estimateur $M$ de $\mu$ avait pour loi
-
-$$ M\sim \mathcal{N}(\mu, \sigma^2 \frac{1}{n_1})$$
-
---
-
-Sous l'hypothèse $H_0:\left\lbrace \mu = 0\right\rbrace,$ 
-
-$$ M\sim \mathcal{N}(0, \sigma^2 \frac{1}{n_1}), $$
---
-et donc 
-
-$$ \sqrt{n_1}\, \frac{M}{\sigma}\sim \mathcal{N}(0, 1), $$
-- On a donc envie de vérifier si la valeur $\hat{\mu}$ (renormalisée par l'écart type et la taille du groupe) observé sur l'échantillon est compatible avec une loi normale centrée réduite.
-
-Malheureusemet $\sigma$ est inconnu.
-
-
----
-template: test_param
-## Loi de la statistique de test
-
-### Sur le cas particulier de $\mu$
-
-On a vu que l'estimateur $M$ de $\mu$ avait pour loi
-
-$$ M\sim \mathcal{N}(\mu, \sigma^2 \frac{1}{n_1})$$
-
-
-
-Sous l'hypothèse $H_0:\left\lbrace \mu = 0\right\rbrace,$ 
-
-$$ M\sim \mathcal{N}(0, \sigma^2 \frac{1}{n_1}), $$
-et donc 
-
-$$ \sqrt{n_1}\, \frac{M}{S}\sim \mathcal{T}(n-I). $$
-
-
----
-template: test_param
-## Loi de la statistique de test
-
-$$ Y = X\theta +E$$
-
-### Plus généralement
-
-On a vu que l'estimateur $T$ de $\theta$ avait pour loi
-
-$$ T\sim \mathcal{N}(\theta, \sigma^2 (X X^\intercal)^{-1})$$
-
-Si on s'intéresse au $\mbox{j}^\mbox{eme}$ terme du vecteur $\theta$  ( $\theta_j$ ):
-
-sous l'hypothèse $H_0:\left\lbrace \theta_j = 0\right\rbrace,$ 
-
-$$ T_j\sim \mathcal{N}(0, \sigma^2  c_j), $$
-où $c_j$ est une constante connue qui dépend de la matrice $X$ (cette constante valait $1/n_1$ dans le cas particulier de $\mu$.)
-
-$$  \frac{T_j}{\sqrt{c_j} S}\sim \mathcal{T}(n-I). $$
-
----
-template: test_param
-## Loi de la statistique de test
-
-
-### Hypothèses de test
-
-$$H_0 = \left \lbrace \theta_j = 0 \right\rbrace\quad \mbox{contre} \quad H_1 = \left \lbrace \theta_j \ne 0 \right\rbrace.$$
-
-### Loi de la statistique de  test sous $H_0$
-
-$$  \frac{T_j}{\sqrt{c_j} S}\sim \mathcal{T}(n-I). $$
 
 ### Définition de la p-value
 
@@ -1320,7 +1136,7 @@ template: test_param
 
 ## Déclinaison sur les exemples
 
-### test $\mu = 0$ .
+## Comparaison des pratiques sportives
 
 ```{r test_alpha1, eval =TRUE, echo = FALSE}
 M1 <- lm(freqC~Activite, data = freqdata)
