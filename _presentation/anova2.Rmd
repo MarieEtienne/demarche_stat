@@ -557,117 +557,13 @@ avec
 
 #### La version dans les logiciels et qui permet de séparer les effets des différens facteurs.
 
-
----
-template: model
-## Sous forme matricielle
- $$\bf{\class{alea}{Y} = X\class{rouge}{\theta} + \class{alea}{E}}$$
-### Forme régulière 
-
-$$Y=\begin{pmatrix}
-Y_{111}\\
-Y_{112}\\
-\vdots\\
-Y_{11n_{11}}\\
-Y_{121}\\
-\vdots\\
-Y_{12n_{12}}\\
-\vdots\\
-Y_{ijk}\\
-\vdots\\
-Y_{IJn_{IJ}}\end{pmatrix},
- \quad
-{\bf{X}} =\overset{\color{gray}{\begin{matrix}\mu & \alpha_{2} &  \ldots & \alpha_{I} & \beta_2 & \ldots &\beta_{J} & \gamma_{22} & \gamma_{23} & \ldots  &\gamma_{IJ}\end{matrix}}}{\begin{pmatrix}
-1 & 0 & \ldots & 0 & 0 & \ldots 0 & 0 & 0 & \ldots 0\\
-1 & 0 & \ldots & 0 & 0 & \ldots 0 & 0 & 0 & \ldots 0\\
-\vdots\\
-1 & 0 & \ldots & 0 & 0 & \ldots 0 & 0 & 0 & \ldots 0\\
-1 & 0 & \ldots & 0 & 1 & \ldots 0 & 0 & 0 & \ldots 0\\
-\vdots\\
-1 & 0 & \ldots & 0 & 0 & \ldots 1 & 0 & 0 & \ldots 0\\
-1 & 1 & \ldots & 0 & 0 & \ldots 0 & 0 & 0 & \ldots 0\\
-\vdots\\
-\vdots\\
-\vdots\\
-1 & 0 & \ldots & 1 & 0 & \ldots 1 & 0 & 0 & \ldots 1\\
- \end{pmatrix}},\quad
-{\bf{\theta}} =\begin{pmatrix}
-\mu\\
-\alpha_2\\
-\vdots\\
-\alpha_I\\
-\beta_2\\
-\vdots\\
-\beta_J \\
-\gamma_{22} \\
-\gamma_{23} \\
-\vdots \\
-\gamma_{IJ} \end{pmatrix}, \quad{\bf{E}} = \overset{}{\begin{pmatrix}
-E_{111}\\
-E_{112}\\
-\vdots\\
-E_{11n_{11}}\\
-E_{121}\\
-\vdots\\
-E_{12n_{12}}\\
-\vdots\\
-E_{IJn_{IJ}}\end{pmatrix}}$$
-
-
----
-template: model
-
-## sur l'exemple de la fréquence cardiaque
-
-.pull-left[
-Les 10 premières lignes sont données par 
-```{r head_FC, echo = FALSE, eval = TRUE}
-freqdata %>% as_tibble() %>% print(n=10)
-```
-
-Ecrire la matrice $X$.
-
-]
-
---
-.pull-righ[
-```{r m_comp_false, eval = TRUE, echo = TRUE, out.width="100%"}
-Mcomp <- lm(freqC ~ Activite + Sexe + Sexe:Activite, data = freqdata)
-model.matrix(Mcomp)[1:10, ]
-```
-]
-
-
----
-template: model
-
-## sur l'exemple de la fréquence cardiaque
-
-*Reamrque, pas de colonne pour $\alpha_1, \beta_1, \gamma_{11}, \gamma_{12}, \gamma_{21}$ *
-
-```{r m_comp, eval = TRUE, echo = TRUE}
-Mcomp <- lm(freqC ~ Sexe + Activite_Fact + Sexe:Activite_Fact, data = freqdata)
-model.matrix(Mcomp)
-```
-
----
-class: inverse
-name: pause
-#  Une petit pause ?
---
-
-<br><br><br><br>
-<p style="color:#33658a;font-size:35px;text-align:center;">Ok, prenons une petite pause !!!</p> 
-
-
-
 ---
 name: parametre
 # Estimation des paramètres
 --
 
 .pull-left[
-###  Estimateur de $\class{rouge}{\theta}$ : $\class{alea}{T}$
+###  Estimateur des paramètres de moyenne$
 
 $$\class{alea}{T} = \begin{pmatrix} \class{alea}{M} \\ \class{alea}{A_2} \\ \vdots  \\  \class{alea}{A_I} \\ \class{alea}{B_2} \\ \vdots\\ \class{alea}{B_J} \\ \class{alea}{G_{22}} \\ \vdots \\ \class{alea}{G_{IJ}}\\ \end{pmatrix} = (X^\intercal X )^{-1} X^\intercal \class{alea}{Y}$$
 
@@ -678,54 +574,19 @@ $$\class{alea}{T} = \begin{pmatrix} \class{alea}{M} \\ \class{alea}{A_2} \\ \vdo
 .pull-right[
 ### Estimation de $\class{rouge}{\theta}$ : $\class{fixe}{\hat{\theta}}$
 
+Par minimisation de la somme des carrés résiduels. 
 
-$$\class{fixe}{\hat{\theta}}  = (X^\intercal X )^{-1} X^\intercal \class{fixe}{Y_{obs}} $$
-
+$$RSS(\mu,\alpha_i,\beta_j,\gamma_{ij}) =  \sum_{i=1}^{I} \sum_{j=1}^{J} \sum_{k=1}^{n_{ij}} \left \lbrace {y_{ijk}} - (  {\mu} + {\alpha_i} + {B=\beta_j} + {\gamma_{ij}}) \right\rbrace ^2$$
 ]
 
---
+.pull-left[
 
-### Loi de l'estimateur de $\class{rouge}{\theta}$
-
-
-$$\class{alea}{T}  \sim \mathcal{N}_{IJ}\left(\class{rouge}{\theta}, \class{rouge}{\sigma^2} (X^\intercal X )^{-1}\right).$$
-
-
-
-
-
----
-template: parametre
-## Le paramètre de variance
-
-L'estimateur de la somme des carrés résiduels s'écrit sous la forme 
-
-$$RSS = || \class{alea}{Y}- X \, \class{alea}{T} ||^2 = \sum_{i=1}^{I} \sum_{j=1}^{J} \sum_{k=1}^{n_{ij}} \left \lbrace \class{alea}{Y_{ijk}} - (  \class{alea}{M} + \class{alea}{A_i} + \class{alea}{B_j} + \class{alea}{G_{ij}}) \right\rbrace ^2$$
-
-
-### Estimateur de la variance 
-
-  $$\class{alea}{S^2} =\frac{\class{alea}{RSS}}{DF_{res}} , $$
-est un <a class=care> estimateur sans biais de  $\class{rouge}{\sigma^2}$ </a> .
-
-Dans le cas du modèle d'analyse de la variance à 2 facteurs avec interactions  $DF_{res}=n-IJ$ (n observations et IJ paramètres de moyennes à estimer, le nombre de composantes dans le vecteur $\class{rouge}{\theta}$)
-
---
-
-### Estimation de $\class{rouge}{\sigma^2}$
+### Estimation de la variance  $\class{rouge}{\sigma^2}$
 
 $$\class{fixe}{\hat{\sigma}}^2 =\frac{1}{n-IJ} \class{fixe}{RSS_{obs}},$$
 $$\class{fixe}{RSS_{obs}} = || \class{fixe}{Y_{obs}}- X \, \class{fixe}{\hat{\theta}}  ||^2 =  \sum_{i=1}^{I} \sum_{j=1}^{J} \sum_{k=1}^{n_{ij}} \left \lbrace  \class{fixe}{y_k} - (\class{fixe}{\hat{\mu}} + \class{fixe}{\hat{\alpha}_i} + \class{fixe}{\hat{\beta}_j } + \class{fixe}{\hat{\gamma}_{ij}}   ) \right\rbrace ^2$$
+]
 
-
-
----
-
-template: pause
-
-
-<br><br><br><br>
-<p style="color:#33658a;font-size:35px;text-align:center;">Ok, prenons une petite pause !!!</p> 
 
 ---
 name: modcomp
@@ -811,14 +672,6 @@ ggplot(data  = chi_dta) + xlab('y') + ylab('density') + geom_line(aes(x=x, y=y))
 ---
 
 `r chunk_reveal("pvalue_graphique", break_type = "user", display_type="output")`
-
-
----
-template: pause
-
---
-<br><br><br><br>
-<p style="color:#33658a;font-size:35px;text-align:center;">Pas encore, non !!!</p> 
 
 
 ---
@@ -1049,99 +902,6 @@ template: comp_moyenne
 ```{r ajuste_Activite_graph, eval = TRUE}
 plot(m_ajust_Activite)
 ```
----
-template: pause
-
---
-<br><br><br><br>
-<p style="color:#33658a;font-size:35px;text-align:center;">Ok, prenons une petite pause !!!</p> 
-
-
----
-name: ancova
-# Comparaison de droite de régression : modèle d'analyse de la covariance
-
---
-## Cadre général
-C'est la situation où 
-* la variable à expliquer $Y$ est quantitative
-* Les variables explicatives sont qualitatives et quantitatives
-
-```{r load_penguins, echo = FALSE, eval = TRUE}
-library(palmerpenguins)
-data("penguins")
-penguins %>% 
-  ggplot() + geom_point(aes(x=bill_length_mm, y = bill_depth_mm, col = species))+
-  geom_smooth(method = 'lm', aes(x=bill_length_mm, y = bill_depth_mm, col = species), se = FALSE)
-```
-
----
-
-template: ancova
-## Le modèle
-
-$$\class{alea}{Y_{ik}} = \class{rouge}{\mu} + \class{rouge}{\alpha_i} + \class{rouge}{\beta}x_{ik} +\class{rouge}{\gamma_i} x_{ik} + \class{alea}{E_{ik}},\quad \class{alea}{E_{ik}}\overset{ind}{\sim}\mathcal{N}(0, \class{rouge}{\sigma^2}),$$
-avec 
-- $i=1,\ldots,I$ le niveau du facteur 1,
-- $x_{ik}$ la mesure de la variable quantitative $x$ sur l'individu $k$ du groupe $i$, 
-- $\class{rouge}{\mu}$ l'ordonnée à l'origine de référence,
-- $\class{rouge}{\alpha_i}$ l'effet différentiel de l'espèce $i$ sur l'ordonnée à l'origine, ( $\alpha_1=0$ )
-- $\class{rouge}{\beta}$ l'effet de la variable $x$ pour le groupe de référence,   
-- $\class{rouge}{\gamma_i}$ l'effet différentiel de la variable $x$ pour le groupe $i$ par rapport au groupe de référence ( $\gamma_1=0$ ),  
-- $\class{rouge}{\sigma^2}$ la variance commune à tous les groupes.
-
-
-### Nombre de paramètres du modèle
-
-- $2I$ paramètres de moyenne  $(\class{rouge}{(\mu, \alpha_2, \ldots, \alpha_I, \beta, \gamma_2, \ldots, \gamma_I)}$; 
-- 1 paramètre de variance $\class{rouge}{\sigma^2}$
-
-
-
----
-
-template: ancova
-## Comment tester
-
-* L'égalité de toutes les pentes  ?
-
-* Comment mesurer l'effet de l'espèce ?
-
-* Comment mesurer l'effet de la longueur du bec ?
-
-
----
-
-template: ancova
-
-* Que teste t on avec la commande suivante?
-
-```{r penguins_lm1, echo = TRUE, eval = TRUE}
-Mcomp <- lm(bill_depth_mm ~ species + bill_length_mm + species:bill_length_mm, data =penguins)
-M0 <- lm(bill_depth_mm ~ 1, data =penguins)
-anova(M0, Mcomp)
-```
-
-* avec celle-ci  ?
-
-```{r penguins_lm2, echo = TRUE, eval = TRUE}
-M12 <- lm(bill_depth_mm ~ species + bill_length_mm , data =penguins)
-anova(M12, Mcomp)
-```
-
-
----
-
-template: ancova
-
-* Que teste t on maintenant ?
-
-
-```{r penguins_lm3, echo = TRUE, eval = TRUE}
-Anova(Mcomp)
-```
-
-
 
 ---
 
@@ -1162,13 +922,6 @@ Anova(Mcomp)
 --
 - Tester l'existence de l'effet d'un facteur en particulier
 
---
-
-- Reconnaître une situation d'analyse de la covariance
-
---
-
-- Savoir adapter ce qu'on a fait en analyse de la variance au cas de l'analyse de la covariance
 
 
 ```{r ggplot_back, echo = FALSE, eval = TRUE}
