@@ -847,7 +847,7 @@ On examine d'abord l'interaction
 
 ```{r freq_comp2, eval = TRUE, echo =TRUE}
 library(car)
-Mcomp <- lm(freqC ~ Sexe + Activite + Sexe:Activite, data = freqdata)
+Mcomp <- lm(freqC ~ Sexe + Activite_Fact + Sexe:Activite_Fact, data = freqdata)
 Anova(Mcomp, type = 2)
 ```
 
