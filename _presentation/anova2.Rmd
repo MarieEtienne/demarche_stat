@@ -562,21 +562,18 @@ name: parametre
 # Estimation des paramètres
 --
 
-.pull-left[
 ###  Estimation des paramètres de moyenne  $\class{rouge}{(\hat{\mu}, \hat{\alpha_2},\ldots,\hat{\alpha_I}, \hat{\beta_2}, \ldots, \hat{\beta_J}, \hat{\gamma_22}, \ldots,\hat{\gamma_{IJ}})}$ 
 
 Par minimisation de la somme des carrés résiduels. 
 
 $$RSS(\mu,\alpha_i,\beta_j,\gamma_{ij}) =  \sum_{i=1}^{I} \sum_{j=1}^{J} \sum_{k=1}^{n_{ij}} \left \lbrace {y_{ijk}} - (  {\mu} + {\alpha_i} + {\beta_j} + {\gamma_{ij}}) \right\rbrace ^2$$
-]
-
-.pull-right[
+--
 
 ### Estimation de la variance  $\class{rouge}{\sigma^2}$
 
 $$\class{fixe}{\hat{\sigma}}^2 =\frac{1}{n-IJ} \class{fixe}{RSS_{obs}},$$
 $$\class{fixe}{RSS_{obs}} =  \sum_{i=1}^{I} \sum_{j=1}^{J} \sum_{k=1}^{n_{ij}} \left \lbrace  \class{fixe}{y_k} - (\class{fixe}{\hat{\mu}} + \class{fixe}{\hat{\alpha}_i} + \class{fixe}{\hat{\beta}_j } + \class{fixe}{\hat{\gamma}_{ij}}   ) \right\rbrace ^2$$
-]
+
 
 
 ---
