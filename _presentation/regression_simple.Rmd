@@ -340,13 +340,14 @@ anova(M0, Mcomp)
 .pull-right[
 ```{r reg_test_complet_bis, eval = TRUE, echo = FALSE}
 ```
-
 ]
+
+
 ---
 name: test_param
 # Test sur la valeur d'un paramètre
 
-La question d'intérêt porte ici sur l'unique paramètre $\beta_1$. On peut donc répondre à la question sur le lien entre pollution et population en testant sir le paramètre $\beta_1$ vaut ou non 0.
+La question d'intérêt porte ici sur l'unique paramètre $\beta_1$. On peut donc répondre à la question sur le lien entre pollution et population en testant si le paramètre $\beta_1$ vaut ou non 0.
 
 $$H_0  =\left \lbrace  \beta_1 =0  \right\rbrace$$
 
@@ -360,10 +361,16 @@ $$T = \frac{B_1}{Var(B_1)} \sim \mathcal{T}(n-2)$$
 ---
 template: test_param 
 
+.pull-left[
 ```{r reg_test_complet, echo = TRUE}
 summary(Mcomp)
 ```
+]
 
+.pull-right[
+```{r reg_test_complet, echo = FALSE, eval = TRUE}
+```
+]
 
 ---
 
@@ -387,11 +394,12 @@ predict(Mcomp, newdata=data.frame(pop=333))
 --
 
 ### Intervalle de confiance pour la valeur moyenne prédite  pour $y$ pour un $x$ donné : 
-$\class{alea}{B_0} + \class{alea}{B_1} x \sim\mathcal{N}(\class{rouge}{\beta_0} + \class{rouge}{\beta_1} x, \class{fixe}{\sigma^2} \class{clair}{Constante} )$
+$IC_{1-\alpha}({B_0} + \class{alea}{B_1} x)$
 
 ```{r pred_IC, eval = TRUE, echo = TRUE}
 predict(Mcomp, newdata=data.frame(pop=333), interval = 'confidence')
 ```
+On peut affirmer, avec un risque de se tromper de $\alpha$ que cet intervalle contient la vraie valeur de $\class{rouge}{\beta_0} + \class{rouge}{\class{rouge}{\beta_1}} x$
 
 ---
 template:  prediction
