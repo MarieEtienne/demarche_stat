@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Régression linéaire</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Marie-Pierre Etienne" />
+    <script src="libs/header-attrs-2.11/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
+    <link rel="stylesheet" href="mpe_pres.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Régression linéaire
+## simple et multiple
+### Marie-Pierre Etienne
+### <a href="mailto:marie-pierre.etienne@agrocampus-ouest.fr" class="email">marie-pierre.etienne@agrocampus-ouest.fr</a>
+### 2021/11/19 (updated: 2023-01-08)
+
+---
+
+name: intro
+
+&lt;!-- F1D763 --&gt;
+&lt;!-- F7A913 --&gt;
+&lt;!-- C94326 --&gt;
+&lt;!-- 1F908E --&gt;
+&lt;!-- 33658A --&gt;
+
+
+
+
+
+
+
+# Introduction
+
+--
+## Etude de la pollution au SO2
+
+On a mesuré pour 41 villes américaines, la pollution au SO2 ainsi que la population dans la ville
+
+
+
+
+```r
+library(coursesdata) #remotes::install_github('MarieEtienne/coursesdata')
+data(usdata)
+```
+
+
+&lt;img src="regression_simple_files/figure-html/visu_reg_simple-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
+
+
+
+--
+&lt;p class="question"&gt; La taille d'une ville est elle liée à la pollution en SO2 ?&lt;/p&gt;
+
+
+---
+template: intro
+## Cadre général du modèle de régression simple
+
+On étudie le lien entre  
+- une variable quantitative notée `\(Y\)` (l'indicateur de SO2),
+- et une variable quantitative `\(x\)` (la taille de la population)
+
+Les données peuvent être visualisées à l'aide d'un nuage de points.
+
+--
+&lt;img src="regression_simple_files/figure-html/visu_reg_simple-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
+
+--
+&lt;p class="question"&gt; La variable x permet-elle d'expliquer la variabilité de la variable Y ?&lt;/p&gt;
+
+---
+name: model
+# Le modèle de régression simple
+
+--
+
+
+##  Une visualisation graphique du modèle d'analyse de régression simple
+
+ .center[Si la population et la pollution en SO2 sont liées, comment imagine-t-on le processus aléatoire qui a conduit à nos données ?]
+
+---
+
+
+
+
+
+
+count: false
+
+&lt;img src="regression_simple_files/figure-html/reg_versiongraphique_user_01_output-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
+
+---
+count: false
+
+&lt;img src="regression_simple_files/figure-html/reg_versiongraphique_user_02_output-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
+
+---
+count: false
+
+&lt;img src="regression_simple_files/figure-html/reg_versiongraphique_user_03_output-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
+
+---
+count: false
+
+&lt;img src="regression_simple_files/figure-html/reg_versiongraphique_user_04_output-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
+
+&lt;style&gt;
+.panel1-reg_versiongraphique-user {
+  color: black;
+  width: 99%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-reg_versiongraphique-user {
+  color: black;
+  width: NA%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-reg_versiongraphique-user {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+---
+template: model
+
+.pull-left[
+## Le modèle de régression simple, graphiquement
+
+&lt;img src="regression_simple_files/figure-html/reg_versiongraphique-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+
+## Le modèle de régression simple, mathématiquement 
+`$$M_{comp}:  \quad \class{alea}{Y_{k}} = \class{rouge}{\beta_0} +\class{rouge}{\beta_1} x_{k}  + \class{alea}{E_{k}},\quad \class{alea}{E_{k}}\overset{ind}{\sim}\mathcal{N}(0, \class{rouge}{\sigma^2}),$$`
+avec 
+- `\(x_k\)` la valeur de la variable explicative pour l'observation `\(k\)`, 
+- `\(k=1,\ldots,n\)` le numéro d'individu, `\(n\)` le nombre total d'individus,
+- `\(\class{rouge}{\beta_0}\)` l'ordonnée à l'origine, 
+- `\(\class{rouge}{\beta_1}\)` la pente de la droite, mesure de l'effet de la variable `\(x\)`
+
+- `\(\class{rouge}{\sigma^2}\)` la variance.
+
+### Nombre de paramètres du modèle
+
+- `\(2\)` paramètres de moyenne  `\((\class{rouge}{\beta_0}, \class{rouge}{\beta_1})\)`; 
+- 1 paramètre de variance `\(\class{rouge}{\sigma^2}\)`
+
+]
+
+---
+template: model
+
+##  Une visualisation graphique du modèle d'analyse de régression simple
+
+ .center[Si la population et la pollution en SO2 n'ont aucun lien , comment imagine-t-on le processus aléatoire qui a conduit à nos données ?]
+
+
+---
+
+
+
+count: false
+
+&lt;img src="regression_simple_files/figure-html/reg_versiongraphique_M0_user_01_output-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
+
+---
+count: false
+
+&lt;img src="regression_simple_files/figure-html/reg_versiongraphique_M0_user_02_output-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
+
+---
+count: false
+
+&lt;img src="regression_simple_files/figure-html/reg_versiongraphique_M0_user_03_output-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
+
+---
+count: false
+
+&lt;img src="regression_simple_files/figure-html/reg_versiongraphique_M0_user_04_output-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
+
+&lt;style&gt;
+.panel1-reg_versiongraphique_M0-user {
+  color: black;
+  width: 99%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-reg_versiongraphique_M0-user {
+  color: black;
+  width: NA%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-reg_versiongraphique_M0-user {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+---
+template: model
+
+.pull-left[
+## Le modèle sans effet de la variable population, graphiquement
+
+&lt;img src="regression_simple_files/figure-html/reg_versiongraphique_M0-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+
+## Le modèle sans effet de la variable population, mathématiquement
+
+`$$M_0: \quad \class{alea}{Y_{k}} = \class{rouge}{\beta_0}  + \class{alea}{E_{k}},\quad \class{ælea}{E_{k}}\overset{ind}{\sim}\mathcal{N}(0, \class{rouge}{\sigma^2}),$$`
+avec 
+- `\(k=1,\ldots,n\)` le numéro d'individu, `\(n\)` le nombre total d'individus,
+- `\(\class{rouge}{\beta_0}\)` l'ordonnée à l'origine, 
+
+- `\(\class{rouge}{\sigma^2}\)` la variance.
+
+### Nombre de paramètres du modèle
+
+- `\(1\)` paramètre de moyenne  `\(\class{rouge}{\beta_0}\)`; 
+- 1 paramètre de variance `\(\class{rouge}{\sigma^2}\)`
+
+]
+
+
+
+
+
+---
+template: model
+
+.center[Lequel de ces mécanismes est le plus crédible au vu des données ?]
+
+&lt;img src="regression_simple_files/figure-html/compare_model_graph-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
+--
+
+Les statistiques permettent de comparer ces deux modèles pour répondre à cette question.
+
+
+---
+template: model
+
+## Le modèle de régression simple sur l'exemple de la pollution.
+
+`$$\class{alea}{Y_k} = \class{rouge}{\beta_0} +\class{rouge}{\beta_1} x_{k}  +\class{alea}{E_{k}},\quad \class{alea}{E_{k}}\overset{ind}{\sim}\mathcal{N}(0, \class{rouge}{\sigma^2}),$$`
+avec 
+- `\(x_k\)` la population dans la ville `\(k\)`, 
+- `\(k=1,\ldots,n\)` le numéro de la ville, `\(n=41\)`,
+- `\(\class{rouge}{\beta_0}\)` l'ordonnée à l'origine, 
+- `\(\class{rouge}{\beta_1}\)` la pente de la droite, mesure de l'effet de la population sur la pollution.
+
+- `\(\class{rouge}{\sigma^2}\)` la variance.
+
+### Nombre de paramètres du modèle
+- 2 paramètres de moyenne
+- 1 paramètre de variance
+
+
+---
+template: model
+
+## Ajuster le modèle de régression simple pour la pollution
+
+
+
+```
+
+Call:
+lm(formula = SO2 ~ pop, data = usdata)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-32.545 -14.456  -4.019  11.019  72.549 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 17.868316   4.713844   3.791 0.000509 ***
+pop          0.020014   0.005644   3.546 0.001035 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 20.67 on 39 degrees of freedom
+Multiple R-squared:  0.2438,	Adjusted R-squared:  0.2244 
+F-statistic: 12.57 on 1 and 39 DF,  p-value: 0.001035
+```
+
+
+---
+name: test
+# Test du modèle complet
+
+--
+
+Pour répondre à la question "Y a-t-il un effet de la population sur la pollution" on peut comparer les modèles
+
+`$$M_{comp}: \class{alea}{Y_k} = \class{rouge}{\beta_0} +\class{rouge}{\beta_1} x_{k}  +\class{alea}{E_{k}}$$`
+au modèle nul 
+`$$M_0: \class{alea}{Y_k} = \class{rouge}{\beta_0}  +\class{alea}{E_{k}}$$`
+
+---
+template: test 
+
+Hypothèses de test 
+`$$\begin{align} 
+H_0 &amp; =\left \lbrace \mbox{Pas de lien entre population et pollution}\right\rbrace\\
+    &amp; =\left \lbrace  \beta_1 =0  \right\rbrace\\
+    &amp; =\left \lbrace  M_{comp} \mbox{ est équivalent à } M0 \right\rbrace.
+\end{align}$$`
+
+`$$\begin{align} 
+H_1 &amp; =\left \lbrace \mbox{Il existe un lien entre population et pollution}\right\rbrace\\
+    &amp; =\left \lbrace  \beta_1  \ne 0  \right\rbrace\\
+    &amp; =\left \lbrace  M_{comp} \mbox{ est préférable à } M_0 \right\rbrace.
+\end{align}$$`
+
+--
+Statistique de test et loi sous `\(H_0\)`
+
+`$$F = \frac{ \frac{RSS_0 - RSS}{1}}{\frac{RSS}{n-2}} \sim \mathcal{F}(1, n-2)$$`
+
+
+
+
+---
+template: test 
+
+
+```r
+Mcomp &lt;- lm(SO2 ~ pop , data = usdata)
+M0   &lt;- lm(SO2 ~ 1 , data = usdata)
+anova(M0, Mcomp)
+```
+
+
+---
+name: test_param
+# Test sur la valeur d'un paramètre
+
+La question d'intérêt porte ici sur l'unique paramètre `\(\beta_1\)`. On peut donc répondre à la question sur le lien entre pollution et population en testant sir le paramètre `\(\beta_1\)` vaut ou non 0.
+
+`$$H_0  =\left \lbrace  \beta_1 =0  \right\rbrace$$`
+
+`$$H_1  =\left \lbrace  \beta_1  \ne 0  \right\rbrace$$`
+
+--
+Statistique de test et loi sous `\(H_0\)`
+
+`$$T = \frac{B_1}{Var(B_1)} \sim \mathcal{T}(n-2)$$`
+
+---
+template: test_param 
+
+
+```r
+summary(Mcomp)
+```
+
+
+---
+
+name: prediction
+# Prediction
+
+--
+
+Il est fréquent d'utiliser un modèle de régression pour prédire. 
+
+## Prédiction de la valeur moyenne pour un `\(x\)` particulier
+
+* Valeur moyenne .rouge[attendue] pour `\(y\)` pour un `\(x\)` donné : `\(\class{rouge}{\beta_0} + \class{rouge}{\class{rouge}{\beta_1}} x.\)`
+
+* Valeur moyenne .orange[prédite] pour `\(y\)` pour un `\(x\)` donné : `\(\class{fixe}{\hat{\beta}_0} + \class{fixe}{\hat{\beta}_1 x.}\)`
+
+
+```r
+predict(Mcomp, newdata=data.frame(pop=333))
+```
+
+```
+       1 
+24.53284 
+```
+
+--
+
+### Intervalle de confiance pour la valeur moyenne prédite  pour `\(y\)` pour un `\(x\)` donné : 
+`\(\class{alea}{B_0} + \class{alea}{B_1} x \sim\mathcal{N}(\class{rouge}{\beta_0} + \class{rouge}{\beta_1} x, \class{fixe}{\sigma^2} \class{clair}{Constante} )\)`
+
+
+```r
+predict(Mcomp, newdata=data.frame(pop=333), interval = 'confidence')
+```
+
+```
+       fit      lwr      upr
+1 24.53284 17.28453 31.78115
+```
+
+---
+template:  prediction
+Il est fréquent d'utiliser un modèle de régression pour prédire. 
+
+## Cas de la régression simple
+
+### Prédiction de la valeur moyenne pour un `\(x\)` particulier et son intervalle de confiance
+
+&lt;img src="regression_simple_files/figure-html/conf_plot-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+template:  prediction
+Il est fréquent d'utiliser un modèle de régression pour prédire. 
+
+## Prédiction d'une .vert[nouvelle valeur]  `\(\class{vert}{Y_{new}}\)` pour un `\(x\)` donné
+
+*  `\(\mathbb{E}(\class{alea}{Y_{new}}) = \class{rouge}{\beta_0} + \class{rouge}{\beta_1} x_{new}\)`
+
+* La variance de `\(\class{alea}{Y_{new}}\)` prend en compte l'incertitude sur les paramètres et la variabilité naturelle des observations ( `\(\class{rouge}{\sigma^2}\)` )
+
+
+```r
+predict(Mcomp, newdata=data.frame(pop=333), interval = 'prediction')
+```
+
+```
+       fit       lwr      upr
+1 24.53284 -17.90225 66.96793
+```
+
+
+
+---
+template:  prediction
+Il est fréquent d'utiliser un modèle de régression pour prédire. 
+
+## Prédiction d'une .vert[nouvelle valeur] `\(\class{vert}{Y_{new}}\)` pour un `\(x\)` donné
+
+&lt;img src="regression_simple_files/figure-html/predic_plot_pred-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+# Ce qu'il faut absolument savoir pour les TDs
+
+- savoir reconnaître une situtation de régression simple
+--
+
+  * On cherche à comprendre le lien entre une variable d'intérêt `\(Y\)` et une variable quantitative.
+  
+--
+- savoir écrire le modèle de régression simple
+
+--
+- Tester l'existence de l'effet de la  variable explicative de deux manières
+
+--
+- Ce que signifie prédire en utilisant le modèle et comment le faire
+
+
+
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="../courses_tools/resources/collapseoutput.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:10",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
