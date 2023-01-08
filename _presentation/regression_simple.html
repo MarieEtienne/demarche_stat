@@ -325,7 +325,7 @@ name: test
 
 --
 
-Pour répondre à la question "Y a-t-il un effet de la population sur la pollution" on peut comparer les modèles
+Pour répondre à la question "Y a-t-il un effet de la population sur la pollution" on peut comparer le modèle
 
 `$$M_{comp}: \class{alea}{Y_k} = \class{rouge}{\beta_0} +\class{rouge}{\beta_1} x_{k}  +\class{alea}{E_{k}}$$`
 au modèle nul 
@@ -358,6 +358,8 @@ Statistique de test et loi sous `\(H_0\)`
 ---
 template: test 
 
+.pull-left[
+
 
 ```r
 Mcomp &lt;- lm(SO2 ~ pop , data = usdata)
@@ -365,7 +367,23 @@ M0   &lt;- lm(SO2 ~ 1 , data = usdata)
 anova(M0, Mcomp)
 ```
 
+]
 
+.pull-right[
+
+```
+Analysis of Variance Table
+
+Model 1: SO2 ~ 1
+Model 2: SO2 ~ pop
+  Res.Df   RSS Df Sum of Sq      F   Pr(&gt;F)   
+1     40 22038                                
+2     39 16665  1    5373.2 12.575 0.001035 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+]
 ---
 name: test_param
 # Test sur la valeur d'un paramètre

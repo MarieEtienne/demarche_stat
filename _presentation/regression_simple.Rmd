@@ -294,7 +294,7 @@ name: test
 
 --
 
-Pour répondre à la question "Y a-t-il un effet de la population sur la pollution" on peut comparer les modèles
+Pour répondre à la question "Y a-t-il un effet de la population sur la pollution" on peut comparer le modèle
 
 $$M_{comp}: \class{alea}{Y_k} = \class{rouge}{\beta_0} +\class{rouge}{\beta_1} x_{k}  +\class{alea}{E_{k}}$$
 au modèle nul 
@@ -327,13 +327,21 @@ $$F = \frac{ \frac{RSS_0 - RSS}{1}}{\frac{RSS}{n-2}} \sim \mathcal{F}(1, n-2)$$
 ---
 template: test 
 
+.pull-left[
+
 ```{r reg_test_complet_bis, echo = TRUE}
 Mcomp <- lm(SO2 ~ pop , data = usdata)
 M0   <- lm(SO2 ~ 1 , data = usdata)
 anova(M0, Mcomp)
 ```
 
+]
 
+.pull-right[
+```{r reg_test_complet_bis, eval = TRUE, echo = FALSE}
+```
+
+]
 ---
 name: test_param
 # Test sur la valeur d'un paramètre
