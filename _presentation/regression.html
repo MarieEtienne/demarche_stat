@@ -13,7 +13,7 @@
 class: center, middle, inverse, title-slide
 
 # Régression linéaire
-## simple et multiple
+## multiple
 ### Marie-Pierre Etienne
 ### <a href="mailto:marie-pierre.etienne@agrocampus-ouest.fr" class="email">marie-pierre.etienne@agrocampus-ouest.fr</a>
 ### 2021/11/19 (updated: 2023-01-11)
@@ -49,344 +49,6 @@ library(coursesdata) #remotes::install_github('MarieEtienne/coursesdata')
 data(usdata)
 ```
 
-
-&lt;img src="regression_files/figure-html/visu_reg_simple-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
-
-
-
---
-&lt;p class="question"&gt; La taille d'une ville est elle liée à la pollution en SO2 ?&lt;/p&gt;
-
-
----
-template: intro
-## Cadre général du modèle de régression simple
-
-On étudie le lien entre  
-- une variable quantitative notée `\(Y\)` (l'indicateur de SO2),
-- et une variable quantitative `\(x\)` (la taille de la population)
-
-Les données peuvent être visualisées à l'aide d'un nuage de points.
-
---
-&lt;img src="regression_files/figure-html/visu_reg_simple-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
-
---
-&lt;p class="question"&gt; La variable x permet-elle d'expliquer la variabilité de la variable Y ?&lt;/p&gt;
-
----
-name: model
-# Rappel : la régression simple
-
---
-
-
-##  Une visualisation graphique du modèle d'analyse de régression simple
-
- .center[Si la population et la pollution en SO2 sont liées, comment imagine-t-on le processus aléatoire qui a conduit à nos données ?]
-
----
-
-
-
-
-
-
-count: false
-
-&lt;img src="regression_files/figure-html/reg_versiongraphique_user_01_output-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
-
----
-count: false
-
-&lt;img src="regression_files/figure-html/reg_versiongraphique_user_02_output-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
-
----
-count: false
-
-&lt;img src="regression_files/figure-html/reg_versiongraphique_user_03_output-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
-
----
-count: false
-
-&lt;img src="regression_files/figure-html/reg_versiongraphique_user_04_output-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
-
-&lt;style&gt;
-.panel1-reg_versiongraphique-user {
-  color: black;
-  width: 99%;
-  hight: 32%;
-  float: left;
-  padding-left: 1%;
-  font-size: 80%
-}
-.panel2-reg_versiongraphique-user {
-  color: black;
-  width: NA%;
-  hight: 32%;
-  float: left;
-  padding-left: 1%;
-  font-size: 80%
-}
-.panel3-reg_versiongraphique-user {
-  color: black;
-  width: NA%;
-  hight: 33%;
-  float: left;
-  padding-left: 1%;
-  font-size: 80%
-}
-&lt;/style&gt;
-
-
-
----
-template: model
-
-.pull-left[
-## Le modèle de régression simple, graphiquement
-
-&lt;img src="regression_files/figure-html/reg_versiongraphique-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
-]
-
-.pull-right[
-
-## Le modèle de régression simple, mathématiquement 
-`$$M_{comp}:  \quad \class{alea}{Y_{k}} = \class{rouge}{\beta_0} +\class{rouge}{\beta_1} x_{k}  + \class{alea}{E_{k}},\quad \class{alea}{E_{k}}\overset{ind}{\sim}\mathcal{N}(0, \class{rouge}{\sigma^2}),$$`
-avec 
-- `\(x_k\)` la valeur de la variable explicative pour l'observation `\(k\)`, 
-- `\(k=1,\ldots,n\)` le numéro d'individu, `\(n\)` le nombre total d'individus,
-- `\(\class{rouge}{\beta_0}\)` l'ordonnée à l'origine, 
-- `\(\class{rouge}{\beta_1}\)` la pente de la droite, mesure de l'effet de la variable `\(x\)`
-
-- `\(\class{rouge}{\sigma^2}\)` la variance.
-
-### Nombre de paramètres du modèle
-
-- `\(2\)` paramètres de moyenne  `\((\class{rouge}{\beta_0}, \class{rouge}{\beta_1})\)`; 
-- 1 paramètre de variance `\(\class{rouge}{\sigma^2}\)`
-
-]
-
----
-template: model
-
-##  Une visualisation graphique du modèle d'analyse de régression simple
-
- .center[Si la population et la pollution en SO2 n'ont aucun lien , comment imagine-t-on le processus aléatoire qui a conduit à nos données ?]
-
-
----
-
-
-
-count: false
-
-&lt;img src="regression_files/figure-html/reg_versiongraphique_M0_user_01_output-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
-
----
-count: false
-
-&lt;img src="regression_files/figure-html/reg_versiongraphique_M0_user_02_output-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
-
----
-count: false
-
-&lt;img src="regression_files/figure-html/reg_versiongraphique_M0_user_03_output-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
-
----
-count: false
-
-&lt;img src="regression_files/figure-html/reg_versiongraphique_M0_user_04_output-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
-
-&lt;style&gt;
-.panel1-reg_versiongraphique_M0-user {
-  color: black;
-  width: 99%;
-  hight: 32%;
-  float: left;
-  padding-left: 1%;
-  font-size: 80%
-}
-.panel2-reg_versiongraphique_M0-user {
-  color: black;
-  width: NA%;
-  hight: 32%;
-  float: left;
-  padding-left: 1%;
-  font-size: 80%
-}
-.panel3-reg_versiongraphique_M0-user {
-  color: black;
-  width: NA%;
-  hight: 33%;
-  float: left;
-  padding-left: 1%;
-  font-size: 80%
-}
-&lt;/style&gt;
-
-
-
-
----
-template: model
-
-.pull-left[
-## Le modèle sans effet de la variable population, graphiquement
-
-&lt;img src="regression_files/figure-html/reg_versiongraphique_M0-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
-]
-
-.pull-right[
-
-## Le modèle sans effet de la variable population, mathématiquement
-
-`$$M_0: \quad \class{alea}{Y_{k}} = \class{rouge}{\beta_0}  + \class{alea}{E_{k}},\quad \class{ælea}{E_{k}}\overset{ind}{\sim}\mathcal{N}(0, \class{rouge}{\sigma^2}),$$`
-avec 
-- `\(k=1,\ldots,n\)` le numéro d'individu, `\(n\)` le nombre total d'individus,
-- `\(\class{rouge}{\beta_0}\)` l'ordonnée à l'origine, 
-
-- `\(\class{rouge}{\sigma^2}\)` la variance.
-
-### Nombre de paramètres du modèle
-
-- `\(1\)` paramètre de moyenne  `\(\class{rouge}{\beta_0}\)`; 
-- 1 paramètre de variance `\(\class{rouge}{\sigma^2}\)`
-
-]
-
-
-
-
-
----
-template: model
-
-.center[Lequel de ces mécanismes est le plus crédible au vu des données ?]
-
-&lt;img src="regression_files/figure-html/compare_model_graph-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
---
-
-Les statistiques permettent de comparer ces deux modèles pour répondre à cette question.
-
-
----
-template: model
-
-## Le modèle de régression simple sur l'exemple de la pollution.
-
-`$$\class{alea}{Y_k} = \class{rouge}{\beta_0} +\class{rouge}{\beta_1} x_{k}  +\class{alea}{E_{k}},\quad \class{alea}{E_{k}}\overset{ind}{\sim}\mathcal{N}(0, \class{rouge}{\sigma^2}),$$`
-avec 
-- `\(x_k\)` la population dans la ville `\(k\)`, 
-- `\(k=1,\ldots,n\)` le numéro de la ville, `\(n=41\)`,
-- `\(\class{rouge}{\beta_0}\)` l'ordonnée à l'origine, 
-- `\(\class{rouge}{\beta_1}\)` la pente de la droite, mesure de l'effet de la population sur la pollution.
-
-- `\(\class{rouge}{\sigma^2}\)` la variance.
-
-### Nombre de paramètres du modèle
-- 2 paramètres de moyenne
-- 1 paramètre de variance
-
-
----
-template: model
-
-## L'écriture générique du modèle linéaire
-
-`$$\bf{\class{alea}{Y}}=\begin{pmatrix}
-\class{alea}{Y_{1}}\\
-\class{alea}{Y_{2}}\\
-\vdots\\
-\class{alea}{Y_{k}}\\
-\vdots\\
-\class{alea}{Y_{n}}\end{pmatrix} 
- = \begin{pmatrix} 
-\class{rouge}{\beta_0} + \class{rouge}{\beta_1}\,x_1\\
-\class{rouge}{\beta_0} + \class{rouge}{\beta_1}\,x_2\\
-\vdots \\
-\class{rouge}{\beta_0} + \class{rouge}{\beta_1}\,x_k\\
- \vdots \\
-\class{rouge}{\beta_0} + \class{rouge}{\beta_1}\,x_n\\
- \end{pmatrix}+ \overset{}{\begin{pmatrix}
-\class{alea}{E_{1}}\\
-\class{alea}{E_{2}}\\
-\vdots\\
-\class{alea}{E_{k}}\\
-\vdots\\
-\class{alea}{E_{n}}\\
-\end{pmatrix}}$$`
-
---
-`$${\bf{X}} =\overset{\color{gray}{\begin{matrix}{\beta_0}  &amp; {\beta_1}\end{matrix}}}{\begin{pmatrix}
-1 &amp; x_1\\
-1 &amp; x_2\\
-\vdots &amp; \vdots\\
-1 &amp; x_k\\
- \vdots &amp; \vdots\\
-1 &amp; x_n\\
- \end{pmatrix}},\quad
-{\bf{\class{rouge}{\theta}}} =\begin{pmatrix}
-\class{rouge}{\beta_0}\\
-\class{rouge}{\beta_1}\\
-\end{pmatrix}, \quad{\class{alea}{\bf{E}}} = \overset{}{\begin{pmatrix}
-\class{alea}{E_{1}}\\
-\class{alea}{E_{2}}\\
-\vdots\\
-\class{alea}{E_{k}}\\
-\vdots\\
-\class{alea}{E_{n}}\\
-\end{pmatrix}}$$`
-
---
- 
- 
- `$${ \bf{\class{alea}{Y} = X\class{rouge}{\theta} + \class{alea}{E}}}$$`
- 
-
----
-template: model
-
-## Exercice
-
-Les données de pollution
-.pull-left[
-
-
-```
-# A tibble: 41 × 3
-  City            pop   SO2
-  &lt;chr&gt;         &lt;int&gt; &lt;int&gt;
-1 Phoenix         582    10
-2 Little rock     132    13
-3 San Francisco   716    12
-4 Denver          515    17
-# … with 37 more rows
-```
-
-
-&lt;p class=question&gt; Détailler le modèle sous forme matricielle pour l'exemple de la pollution (écrire les 3 premières lignes de la matrice `\(X\)` )&lt;/p&gt;
-]
-
---
-
-.pull-right[
-## Correction 
-
-
-
-```
-  (Intercept) pop
-1           1 582
-2           1 132
-3           1 716
-```
-
-]
-
-
-
 ---
 name: reg_multiple
 # Le modèle de régression multiple
@@ -395,7 +57,7 @@ name: reg_multiple
 
 ## Présentation du problème
 .pull-left[
-Plusieurs variables sont potentiellement liées à la pollution en SO2
+Dans l'exemple de la pollution en SO2 des villes, plusieurs variables sont potentiellement liées à la pollution en SO2
 
 
 - temp : Average temperature in Fahrenheit
@@ -454,210 +116,6 @@ avec
 - 1 paramètre de variance `\(\class{rouge}{\sigma^2}\)`
 
 ---
-template: model
-## Sous forme matricielle
-`$${ \bf{\class{alea}{Y} = X\class{rouge}{\theta} + \class{alea}{E}}}$$`
-
-
-`$$\class{alea}{Y}=\begin{pmatrix}
-\class{alea}{Y_{1}}\\
-\class{alea}{Y_{2}}\\
-\vdots\\
-\class{alea}{Y_{k}}\\
-\vdots\\
-\class{alea}{Y_{n}}\end{pmatrix},
- \quad
-{\bf{X}} =\overset{\color{gray}{\begin{matrix}{\beta_0}  &amp;&amp; {\beta_1}&amp;&amp; \beta_2&amp;&amp;\ldots &amp;&amp;\beta_p\end{matrix}}}{\begin{pmatrix}
-1 &amp; x_{1,1} &amp; x_{1,2} &amp; \ldots &amp;x_{1,p}\\
-1 &amp; x_{2,1} &amp; x_{2,2} &amp; \ldots &amp;x_{2,p}\\
-\vdots &amp; \vdots&amp; \vdots &amp;&amp; \vdots\\
-1 &amp; x_{k,1} &amp; x_{k,2} &amp; \ldots &amp;x_{k,p}\\
- \vdots &amp; \vdots&amp; \vdots &amp;&amp; \vdots\\
-1 &amp; x_{n,1} &amp; x_{n,2} &amp; \ldots &amp;x_{n,p}\\
- \end{pmatrix}},\quad
-{\bf{\class{rouge}{\theta}}} =\begin{pmatrix}
-\class{rouge}{\beta_0}\\
-\class{rouge}{\beta_1}\\
-\class{rouge}{\class{rouge}{\beta_2}}\\
-\vdots\\
-\class{rouge}{\beta_p}\\
-\end{pmatrix}, \quad{\class{alea}{\bf{E}}} = \overset{}{\begin{pmatrix}
-\class{alea}{E_{1}}\\
-\class{alea}{E_{2}}\\
-\vdots\\
-\class{alea}{E_{k}}\\
-\vdots\\
-\class{alea}{E_{n}}\\
-\end{pmatrix}}$$`
-
-
---
-
-.care[BREAKING NEWS !!!
-]
-
-.center[
-.rouge[
-Tous les modèles vus en cours depuis le début peuvent s'écrire sous la forme ]
-
-`$${ \bf{\class{alea}{Y} = X\class{rouge}{\theta} + \class{alea}{E}}}$$`
-
-.rouge[
-Ce sont tous des modèle slinéaires (d'où la commande `lm` ).
-]
-]
-
----
-name: parametre
-# Estimation des paramètres d'un modèle linéaire
-
-
----
-template: parametre
-## Estimation des paramètres du modèle version matricielle
-
-Le modèle sous forme matricielle s'écrit
-
-`$${ \bf{\class{alea}{Y} = X\class{rouge}{\theta} + \class{alea}{E}}}$$`
-avec  `\(\class{rouge}{\theta}\)` .rouge[inconnu]  qu'on cherche à estimer.
-
---
-
-## Propriété mathématique
-
-`$$\mathbb{E}(\class{alea}{\bf{Y}}) = \bf{X\class{rouge}{\theta}}$$` 
-Il s'agit donc de résoudre un système.
-
---
-
-`$$\bf{X^\intercal}\mathbb{E}(\class{alea}{\bf{Y}}) = \bf{X^\intercal}\bf{X\class{rouge}{\theta}}$$` 
---
-
-Si `\(\bf{X^\intercal}\bf{X}\)` est inversible  alors
-
-`$$\bf{\class{rouge}{\theta}} = (X^\intercal X )^{-1} X^\intercal \mathbb{E}(\class{alea}{Y}) .$$`
-
---
-On remplace `\(\mathbb{E}(\class{alea}{\bf{Y}})\)` par notre meilleure approximation et 
---
-.care[ TADAAA !!!!]
-
-
----
-
-template: parametre
-###  Estimateur de `\(\class{rouge}{\theta}\)` : `\(\class{alea}{T}\)`
-
-`$$\class{alea}{T} = \begin{pmatrix} \class{alea}{B_0} \\ \class{alea}{B_1} \\ \vdots \\ \class{alea}{B_p} \end{pmatrix} = (X^\intercal X )^{-1} X^\intercal \class{alea}{Y}$$`
-
-`\(\class{alea}{B_i}\)` représente un estimateur de `\(\class{rouge}{\beta_i}\)`.
-
---
-
-### Estimation de `\(\class{rouge}{\theta}\)` : `\(\class{fixe}{\hat{\theta}}\)`
-
-
-$$\class{fixe}{\hat{\theta}}  = (X^\intercal X )^{-1} X^\intercal \class{fixe}{Y_{obs}} $$
-
-
---
-
-### Loi de l'estimateur de `\(\class{rouge}{\theta}\)`
-
-
-`$$\class{alea}{T}  \sim \mathcal{N}_{p+1}\left(\class{rouge}{\theta}, \class{rouge}{\sigma^2} (X^\intercal X )^{-1}\right).$$`
-
-
-
----
-template: parametre
-## Le paramètre de variance
-
-L'estimateur de la somme des carrés résiduels s'écrit sous la forme 
-
-`$$RSS = || \class{alea}{Y}- X \, \class{alea}{T} ||^2 = \sum_{k=1}^{n} \left \lbrace \class{alea}{Y_k} - ( \class{alea}{B_0} + \class{alea}{B_1} x_1 + \ldots + \class{alea}{B_p} x_p) \right\rbrace ^2$$`
-
-### Estimateur de la variance 
-
-  $$\class{alea}{S^2} =\frac{\class{alea}{RSS}}{DF_{res}} , $$
-est un &lt;a class=care&gt; estimateur sans biais de  `\(\class{rouge}{\sigma^2}\)` &lt;/a&gt; .
-
-Dans le cas du modèle de régression simple  `\(DF_{res}=n-(p+1)\)` (n observations et p+1 paramètres de moyennes à estimer, le nombre de composantes dans le vecteur `\(\class{rouge}{\theta}\)`)
-
---
-
-### Estimation de `\(\class{rouge}{\sigma^2}\)`
-
-`$$\class{fixe}{\hat{\sigma}}^2 =\frac{1}{n-(p+1)} \class{fixe}{RSS_{obs}},$$`
-`$$\class{fixe}{RSS_{obs}} = || \class{fixe}{Y_{obs}}- X \, \class{fixe}{\hat{\theta}}  ||^2 =  \sum_{k=1}^{n} \left \lbrace  \class{fixe}{y_k} - (\class{fixe}{\hat{\beta}_0} + \class{fixe}{\hat{\beta}_1} x_1 + \ldots + \class{fixe}{\hat{\beta}_p} x_p) \right\rbrace ^2$$`
-
-
-
----
-template: parametre
-## Vérifier l'estimation sur l'exemple de la pollution
-
-.pull-left[
-
-### Estimation manuelle des paramètres de moyenne
-
-
-```r
-Mcomp &lt;- lm(SO2 ~ pop + temp + manuf + wind + precip + days, data = usdata)
-X &lt;- model.matrix(Mcomp)
-XXprimemoinsUn &lt;- solve(t(X)%*%X)
-XXprimemoinsUn %*% t(X) %*% matrix(usdata$SO2, ncol =1)
-```
-
-```
-                    [,1]
-(Intercept) 111.72848064
-pop          -0.03927674
-temp         -1.26794109
-manuf         0.06491817
-wind         -3.18136579
-precip        0.51235896
-days         -0.05205019
-```
-
-
-```r
-sqrt( diag( summary(Mcomp)$sigma^2 * XXprimemoinsUn ) )
-```
-
-```
-(Intercept)         pop        temp       manuf        wind      precip 
-47.31810073  0.01513274  0.62117952  0.01574825  1.81501910  0.36275507 
-       days 
- 0.16201386 
-```
-] 
-
---
-
-.pull-right[
-### En demandant à R
-
-
-```r
-summary(Mcomp)$coefficients
-```
-
-```
-                Estimate  Std. Error   t value     Pr(&gt;|t|)
-(Intercept) 111.72848064 47.31810073  2.361221 0.0240867374
-pop          -0.03927674  0.01513274 -2.595482 0.0138461970
-temp         -1.26794109  0.62117952 -2.041183 0.0490557189
-manuf         0.06491817  0.01574825  4.122245 0.0002277862
-wind         -3.18136579  1.81501910 -1.752800 0.0886503978
-precip        0.51235896  0.36275507  1.412410 0.1669175999
-days         -0.05205019  0.16201386 -0.321270 0.7499724652
-```
-
-]
-
-
----
 name: modcomp
 # Test du modèle complet
 
@@ -677,7 +135,7 @@ template: modcomp
 ## Sous forme de comparaison de modèle
 
 
-&lt;img src="regression_files/figure-html/compare_model_graph2-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
+
 
 Sauf que le modèle complet est bien plus complet ....
 
@@ -811,14 +269,9 @@ summary(Mcomp)$coefficients
 ```
 
 ```
-                Estimate  Std. Error   t value     Pr(&gt;|t|)
-(Intercept) 111.72848064 47.31810073  2.361221 0.0240867374
-pop          -0.03927674  0.01513274 -2.595482 0.0138461970
-temp         -1.26794109  0.62117952 -2.041183 0.0490557189
-manuf         0.06491817  0.01574825  4.122245 0.0002277862
-wind         -3.18136579  1.81501910 -1.752800 0.0886503978
-precip        0.51235896  0.36275507  1.412410 0.1669175999
-days         -0.05205019  0.16201386 -0.321270 0.7499724652
+               Estimate  Std. Error  t value     Pr(&gt;|t|)
+(Intercept) 17.86831630 4.713843676 3.790604 0.0005093514
+pop          0.02001359 0.005643813 3.546111 0.0010349968
 ```
 ]
 --
@@ -835,10 +288,10 @@ anova(Mcomp_l, Mcomp)
 Analysis of Variance Table
 
 Model 1: SO2 ~ temp + manuf + wind + precip + days
-Model 2: SO2 ~ pop + temp + manuf + wind + precip + days
-  Res.Df    RSS Df Sum of Sq      F  Pr(&gt;F)  
-1     35 8726.3                              
-2     34 7283.3  1    1443.1 6.7365 0.01385 *
+Model 2: SO2 ~ pop
+  Res.Df     RSS Df Sum of Sq      F    Pr(&gt;F)    
+1     35  8726.3                                  
+2     39 16664.7 -4   -7938.3 7.9599 0.0001131 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
@@ -850,14 +303,9 @@ template: test_variable
 
 
 ```
-                Estimate  Std. Error   t value     Pr(&gt;|t|)
-(Intercept) 111.72848064 47.31810073  2.361221 0.0240867374
-pop          -0.03927674  0.01513274 -2.595482 0.0138461970
-temp         -1.26794109  0.62117952 -2.041183 0.0490557189
-manuf         0.06491817  0.01574825  4.122245 0.0002277862
-wind         -3.18136579  1.81501910 -1.752800 0.0886503978
-precip        0.51235896  0.36275507  1.412410 0.1669175999
-days         -0.05205019  0.16201386 -0.321270 0.7499724652
+               Estimate  Std. Error  t value     Pr(&gt;|t|)
+(Intercept) 17.86831630 4.713843676 3.790604 0.0005093514
+pop          0.02001359 0.005643813 3.546111 0.0010349968
 ```
 
 --
@@ -1052,90 +500,6 @@ name: prediction
 
 Il est fréquent d'utiliser un modèle de régression pour prédire. 
 
-## Cas de la régression simple
-
-### Prédiction de la valeur moyenne pour un `\(x\)` particulier
-
-* Valeur moyenne .rouge[attendue] pour `\(y\)` pour un `\(x\)` donné : `\(\class{rouge}{\beta_0} + \class{rouge}{\class{rouge}{\beta_1}} x.\)`
-
-* Valeur moyenne .orange[prédite] pour `\(y\)` pour un `\(x\)` donné : `\(\class{fixe}{\hat{\beta}_0} + \class{fixe}{\hat{\beta}_1 x.}\)`
-
-
-```r
-predict(Mpop, newdata=data.frame(pop=333))
-```
-
-```
-       1 
-24.53284 
-```
-
---
-
-### Intervalle de confiance pour la valeur moyenne prédite  pour `\(y\)` pour un `\(x\)` donné : 
-`\(\class{alea}{B_0} + \class{alea}{B_1} x \sim\mathcal{N}(\class{rouge}{\beta_0} + \class{rouge}{\beta_1} x, \class{fixe}{\sigma^2} \class{clair}{Constante} )\)`
-
-
-```r
-predict(Mpop, newdata=data.frame(pop=333), interval = 'confidence')
-```
-
-```
-       fit      lwr      upr
-1 24.53284 17.28453 31.78115
-```
-
----
-template:  prediction
-Il est fréquent d'utiliser un modèle de régression pour prédire. 
-
-## Cas de la régression simple
-
-### Prédiction de la valeur moyenne pour un `\(x\)` particulier et son intervalle de confiance
-
-&lt;img src="regression_files/figure-html/conf_plot-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
-
-
-
----
-template:  prediction
-Il est fréquent d'utiliser un modèle de régression pour prédire. 
-
-## Cas de la régression simple
-
-### Prédiction d'une .vert[nouvelle valeur]  `\(\class{vert}{Y_{new}}\)` pour un `\(x\)` donné
-
-*  `\(\mathbb{E}(\class{alea}{Y_{new}}) = \class{rouge}{\beta_0} + \class{rouge}{\beta_1} x_{new}\)`
-
-* La variance de `\(\class{alea}{Y_{new}}\)` prend en compte l'incertitude sur les paramètres et la variabilité naturelle des observations ( `\(\class{rouge}{\sigma^2}\)` )
-
-
-```r
-predict(Mpop, newdata=data.frame(pop=333), interval = 'prediction')
-```
-
-```
-       fit       lwr      upr
-1 24.53284 -17.90225 66.96793
-```
-
-
-
----
-template:  prediction
-Il est fréquent d'utiliser un modèle de régression pour prédire. 
-
-## Cas de la régression simple
-
-### Prédiction d'une .vert[nouvelle valeur] `\(\class{vert}{Y_{new}}\)` pour un `\(x\)` donné
-
-&lt;img src="regression_files/figure-html/predic_plot_pred-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
-
-
----
-template:  prediction
-Il est fréquent d'utiliser un modèle de régression pour prédire. 
-
 ## Cas de la régression multiple
 
 ### Prédiction de la valeur moyenne pour des variables explicatives  `\((x_1, \ldots, x_p)\)` particulières
@@ -1146,17 +510,8 @@ Il est fréquent d'utiliser un modèle de régression pour prédire.
 
 
 
---
-
-### Intervalle de confiance pour la valeur moyenne préditepour des variables explicatives  `\((x_1, \ldots, x_p)\)` particulières :
-`$$\class{alea}{B_0}+\class{alea}{B_1} x_1 + \ldots + \class{alea}{B_p} x_p \sim\mathcal{N}( \class{rouge   }{\beta_0} + \class{rouge}{\beta_1} x_1 +\ldots +\class{rouge}{\beta_p} x_p, \class{rouge}{\sigma^2} \class{clair}{Constante} )$$`
-
-
---
-
-.bonus[Bonus :] On connaît la loi de n'importe quelle combinaison linéaire des paramères
-
-`$$c \class{alea}{T} \sim\mathcal{N}(c\, \class{rouge}{\theta} , \class{rouge}{\sigma^2} \class{clair}{Constante_c} )$$`
+---
+# le problème des varaibles explicatives corrélées 
 
 
 
