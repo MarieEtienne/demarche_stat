@@ -1,0 +1,97 @@
+---
+title: "Untitled"
+author: "MP Etienne"
+date: '2022-11-29'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+---
+name: ancova
+# Comparaison de droite de régression : modèle d'analyse de la covariance
+
+--
+## Cadre général
+C'est la situation où 
+* la variable à expliquer $Y$ est quantitative
+* Les variables explicatives sont qualitatives et quantitatives
+
+```{r load_penguins, echo = FALSE, eval = TRUE}
+library(palmerpenguins)
+data("penguins")
+penguins %>% 
+  ggplot() + geom_point(aes(x=bill_length_mm, y = bill_depth_mm, col = species))+
+  geom_smooth(method = 'lm', aes(x=bill_length_mm, y = bill_depth_mm, col = species), se = FALSE)
+```
+
+---
+
+template: ancova
+## Le modèle
+
+$$\class{alea}{Y_{ik}} = \class{rouge}{\mu} + \class{rouge}{\alpha_i} + \class{rouge}{\beta}x_{ik} +\class{rouge}{\gamma_i} x_{ik} + \class{alea}{E_{ik}},\quad \class{alea}{E_{ik}}\overset{ind}{\sim}\mathcal{N}(0, \class{rouge}{\sigma^2}),$$
+avec 
+- $i=1,\ldots,I$ le niveau du facteur 1,
+- $x_{ik}$ la mesure de la variable quantitative $x$ sur l'individu $k$ du groupe $i$, 
+- $\class{rouge}{\mu}$ l'ordonnée à l'origine de référence,
+- $\class{rouge}{\alpha_i}$ l'effet différentiel de l'espèce $i$ sur l'ordonnée à l'origine, ( $\alpha_1=0$ )
+- $\class{rouge}{\beta}$ l'effet de la variable $x$ pour le groupe de référence,   
+- $\class{rouge}{\gamma_i}$ l'effet différentiel de la variable $x$ pour le groupe $i$ par rapport au groupe de référence ( $\gamma_1=0$ ),  
+- $\class{rouge}{\sigma^2}$ la variance commune à tous les groupes.
+
+
+### Nombre de paramètres du modèle
+
+- $2I$ paramètres de moyenne  $(\class{rouge}{(\mu, \alpha_2, \ldots, \alpha_I, \beta, \gamma_2, \ldots, \gamma_I)}$; 
+- 1 paramètre de variance $\class{rouge}{\sigma^2}$
+
+
+
+---
+
+template: ancova
+## Comment tester
+
+* L'égalité de toutes les pentes  ?
+
+* Comment mesurer l'effet de l'espèce ?
+
+* Comment mesurer l'effet de la longueur du bec ?
+
+
+---
+
+template: ancova
+
+* Que teste t on avec la commande suivante?
+
+```{r penguins_lm1, echo = TRUE, eval = TRUE}
+Mcomp <- lm(bill_depth_mm ~ species + bill_length_mm + species:bill_length_mm, data =penguins)
+M0 <- lm(bill_depth_mm ~ 1, data =penguins)
+anova(M0, Mcomp)
+```
+
+* avec celle-ci  ?
+
+```{r penguins_lm2, echo = TRUE, eval = TRUE}
+M12 <- lm(bill_depth_mm ~ species + bill_length_mm , data =penguins)
+anova(M12, Mcomp)
+```
+
+
+---
+
+template: ancova
+
+* Que teste t on maintenant ?
+
+
+```{r penguins_lm3, echo = TRUE, eval = TRUE}
+Anova(Mcomp)
+```
+
+
+
