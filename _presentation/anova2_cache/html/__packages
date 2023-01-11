@@ -21,6 +21,6 @@ cowplot
 palmerpenguins
 plotly
 FactoMineR
-emmeans
 carData
 car
+emmeans

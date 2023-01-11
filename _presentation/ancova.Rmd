@@ -1,0 +1,188 @@
+---
+title: "Untitled"
+author: "MP Etienne"
+date: '2022-11-29 (updated: `r Sys.Date()`)'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+---
+name: ancova
+# Comparaison de droite de régression : modèle d'analyse de la covariance
+
+--
+## Cadre général
+C'est la situation où 
+* la variable à expliquer $Y$ est quantitative
+* Les variables explicatives sont qualitatives et quantitatives
+
+```{r load_penguins, echo = FALSE, eval = TRUE}
+library(palmerpenguins)
+library(tidyverse)
+data("penguins")
+penguins %>% 
+  ggplot() + geom_point(aes(x=body_mass_g, y = flipper_length_mm, col = species))+
+  geom_smooth(method = 'lm', aes(x=body_mass_g, y = flipper_length_mm, col = species), se = FALSE)
+```
+
+---
+
+template: ancova
+## Le modèle
+
+$$M_{comp} : \class{alea}{Y_{ik}} = \class{rouge}{\mu} + \class{rouge}{\alpha_i} + \class{rouge}{\beta}x_{ik} +\class{rouge}{\gamma_i} x_{ik} + \class{alea}{E_{ik}},\quad \class{alea}{E_{ik}}\overset{ind}{\sim}\mathcal{N}(0, \class{rouge}{\sigma^2}),$$
+avec 
+- $i=1,\ldots,I$ le niveau du facteur 1,
+- $x_{ik}$ la mesure de la variable quantitative $x$ sur l'individu $k$ du groupe $i$, 
+- $\class{rouge}{\mu}$ l'ordonnée à l'origine de référence,
+- $\class{rouge}{\alpha_i}$ l'effet différentiel de l'espèce $i$ sur l'ordonnée à l'origine, ( $\alpha_1=0$ )
+- $\class{rouge}{\beta}$ l'effet de la variable $x$ pour le groupe de référence,   
+- $\class{rouge}{\gamma_i}$ l'effet différentiel de la variable $x$ pour le groupe $i$ par rapport au groupe de référence ( $\gamma_1=0$ ),  
+- $\class{rouge}{\sigma^2}$ la variance commune à tous les groupes.
+
+
+### Nombre de paramètres du modèle
+
+- $2I$ paramètres de moyenne  $(\class{rouge}{(\mu, \alpha_2, \ldots, \alpha_I, \beta, \gamma_2, \ldots, \gamma_I)}$; 
+- 1 paramètre de variance $\class{rouge}{\sigma^2}$
+
+
+
+---
+name: test_complet
+
+# Tests dans le modèle d'analyse de la covariance
+
+--
+## Test du modèle complet 
+
+Pour répondre à la question "La longueur des ailes des manchots est elle liée à leur masse et/ou à leur espèce ?"
+
+
+
+$$\begin{align} 
+H_0 & =\left \lbrace \mbox{La longueur des ailes est la même en moyenne quelque soit la masse ou l'espèce du manchot }\right\rbrace\\
+    & =\left \lbrace  \mbox{pour tout }i, \alpha_i =0,  \gamma_i = 0 \mbox{ et }\beta=0   \right\rbrace\\
+    & =\left \lbrace  M_{comp} \mbox{ est équivalent à } M0 \right\rbrace.
+\end{align}$$
+
+$H_1$ prend les formes équivalentes suivantes
+
+$$\begin{align} 
+H_1 & =\left \lbrace \mbox{la longueur des ailes varie selon la masse ou l'espèce }\right\rbrace\\
+    & =\left \lbrace  \mbox{Il existe un }i, \alpha_i  \ne 0  \mbox{ ou un } \gamma_i \ne 0  \mbox{ ou } \beta \ne 0 \right\rbrace\\
+    & =\left \lbrace  M_{comp} \mbox{ est préférable à } M0 \right\rbrace.
+\end{align}$$
+---
+template: test_complet
+
+## Test du modèle complet 
+
+### Statistique de test 
+
+$$ F = \frac{\frac{RSS_0-RSS}{2I-1}}{\frac{RSS}{n-2I}} \underset{H_0}{\sim} \mathcal{F}(2I-1, n-2I) $$
+---
+template: test_complet
+
+## Test du modèle complet sur l'exemple manchot
+
+```{r penguins_lm1, echo = TRUE, eval = TRUE}
+Mcomp <- lm(flipper_length_mm ~ species + body_mass_g + species:body_mass_g, data =penguins)
+M0 <- lm(flipper_length_mm ~ 1, data =penguins)
+anova(M0, Mcomp)
+```
+
+---
+template: test_complet
+
+## Test de l'égalité des pentes 
+--
+
+$$\begin{align} 
+H_0 & =\left \lbrace \mbox{La longueur des ailes augmente de la même manière avec le poids quelque soit l'espèce }\right\rbrace\\
+    & =\left \lbrace  \mbox{pour tout }i, \gamma_i = 0   \right\rbrace\\
+    & =\left \lbrace  M_{comp} \mbox{ est équivalent à } M_{12} \right\rbrace.
+\end{align}$$
+
+$$M_{12} : \class{alea}{Y_{ik}} = \class{rouge}{\mu} + \class{rouge}{\alpha_i} + \class{rouge}{\beta}x_{ik} + \class{alea}{E_{ik}},\quad \class{alea}{E_{ik}}\overset{ind}{\sim}\mathcal{N}(0, \class{rouge}{\sigma^2})$$
+--
+
+$$\begin{align} 
+H_1 & =\left \lbrace \mbox{L'augmentation de longueur des ailes avec le poids n'est pas la même pour toutes les espèces}\right\rbrace\\
+    & =\left \lbrace  \mbox{Il existe un }i,\gamma_i \ne 0 \right\rbrace\\
+    & =\left \lbrace  M_{comp} \mbox{ est préférable à } M_{12} \right\rbrace.
+\end{align}$$
+
+
+---
+template: test_complet
+
+## Test de l'égalité des pentes 
+
+### Statistique de test 
+--
+
+$$F = \frac{\frac{RSS_{12}-RSS}{I-1}}
+{\frac{RSS}{n-2I}} \underset{H_0}{\sim} \mathcal{F}(I-1, n-2I)$$
+
+--
+2 situations :
+* si les pentes sont différentes, on a mis en évidence un effet de l'espèce et un effet de la masse ne serait ce qu'au travers de leur interaction.
+
+* si les pentes sont identiques, le modèle $M_{12}$ devient alors le modèle le plus complet considéré et on teste si la pente est différente de 0 et on teste si les ordonnées à l'origine sont identiques.
+
+Quels modèles peut on comparer ?
+
+
+---
+template: test_complet
+
+## Test de l'égalité des pentes sur l'exemple manchots
+
+
+```{r penguins_lm2, echo = TRUE, eval = TRUE}
+M12 <- lm(flipper_length_mm ~ species + body_mass_g, data =penguins)
+anova(M12, Mcomp)
+```
+
+
+---
+template: test_complet
+
+
+Que teste-t-on avec cette commande ?
+
+```{r penguins_lm3, echo = TRUE, eval = TRUE}
+library(car)
+Anova(Mcomp)
+```
+
+---
+name: ajuste
+
+# Comparer les espèces à poids équivalents
+
+La répondre à la question "Les longueurs des ailes des manchots des différentes espèces sont-elles comparables"
+
+Pour rendre la comparaison juste, il faut choisir un poids de référence. 
+
+--
+
+Moyenne ajustée 
+
+$$\hat{\mu}_i = \mu + \alpha_i + (\beta+\gamma_i) \bar{x}$$
+
+--
+```{r ajuste}
+library(emmeans)
+mean_length <- emmeans(object = Mcomp, specs = ~ species)
+pairs(mean_length, adjust = "bonf")
+plot(mean_length)
+```
+
+
+
+
