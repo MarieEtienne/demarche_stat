@@ -1,8 +1,19 @@
 ---
-title: "Untitled"
-author: "MP Etienne"
-date: '2022-11-29 (updated: `r Sys.Date()`)'
-output: html_document
+title: "Analyse de la covariance"
+author: Marie-Pierre Etienne
+date: '2021/11/19 (updated: `r Sys.Date()`)'
+institute: marie-pierre.etienne@agrocampus-ouest.fr
+csl: ../courses_tools/resources/apa-no-doi-no-issue.csl
+output:
+   xaringan::moon_reader:
+    css: ['metropolis',  'mpe_pres.css']
+    lib_dir: libs
+    nature:
+      ratio: 16:10
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      beforeInit: '../courses_tools/resources/collapseoutput.js'
 ---
 
 ```{r setup, include=FALSE}
