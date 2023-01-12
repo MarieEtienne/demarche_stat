@@ -1,6 +1,5 @@
 ---
 title: "Analyse de la covariance"
-date: '2022-11-29 (updated: `r Sys.Date()`)'
 author: Marie-Pierre Etienne
 date: '2021/11/19 (updated: `r Sys.Date()`)'
 institute: marie-pierre.etienne@agrocampus-ouest.fr
