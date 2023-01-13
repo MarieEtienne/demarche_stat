@@ -136,6 +136,9 @@ template: modcomp
 
 
 
+&lt;img src="regression_files/figure-html/reg_versiongraphique_prep-1.png" width="60%" height="30%" style="display: block; margin: auto;" /&gt;
+
+--
 
 Sauf que le modèle complet est bien plus complet ....
 
@@ -265,13 +268,19 @@ template: test_variable
 
 
 ```r
+Mcomp &lt;- lm(SO2 ~ temp + manuf + pop +wind + precip + days, data = usdata)
 summary(Mcomp)$coefficients
 ```
 
 ```
-               Estimate  Std. Error  t value     Pr(&gt;|t|)
-(Intercept) 17.86831630 4.713843676 3.790604 0.0005093514
-pop          0.02001359 0.005643813 3.546111 0.0010349968
+                Estimate  Std. Error   t value     Pr(&gt;|t|)
+(Intercept) 111.72848064 47.31810073  2.361221 0.0240867374
+temp         -1.26794109  0.62117952 -2.041183 0.0490557189
+manuf         0.06491817  0.01574825  4.122245 0.0002277862
+pop          -0.03927674  0.01513274 -2.595482 0.0138461970
+wind         -3.18136579  1.81501910 -1.752800 0.0886503978
+precip        0.51235896  0.36275507  1.412410 0.1669175999
+days         -0.05205019  0.16201386 -0.321270 0.7499724652
 ```
 ]
 --
@@ -288,10 +297,10 @@ anova(Mcomp_l, Mcomp)
 Analysis of Variance Table
 
 Model 1: SO2 ~ temp + manuf + wind + precip + days
-Model 2: SO2 ~ pop
-  Res.Df     RSS Df Sum of Sq      F    Pr(&gt;F)    
-1     35  8726.3                                  
-2     39 16664.7 -4   -7938.3 7.9599 0.0001131 ***
+Model 2: SO2 ~ temp + manuf + pop + wind + precip + days
+  Res.Df    RSS Df Sum of Sq      F  Pr(&gt;F)  
+1     35 8726.3                              
+2     34 7283.3  1    1443.1 6.7365 0.01385 *
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
@@ -303,9 +312,14 @@ template: test_variable
 
 
 ```
-               Estimate  Std. Error  t value     Pr(&gt;|t|)
-(Intercept) 17.86831630 4.713843676 3.790604 0.0005093514
-pop          0.02001359 0.005643813 3.546111 0.0010349968
+                Estimate  Std. Error   t value     Pr(&gt;|t|)
+(Intercept) 111.72848064 47.31810073  2.361221 0.0240867374
+temp         -1.26794109  0.62117952 -2.041183 0.0490557189
+manuf         0.06491817  0.01574825  4.122245 0.0002277862
+pop          -0.03927674  0.01513274 -2.595482 0.0138461970
+wind         -3.18136579  1.81501910 -1.752800 0.0886503978
+precip        0.51235896  0.36275507  1.412410 0.1669175999
+days         -0.05205019  0.16201386 -0.321270 0.7499724652
 ```
 
 --

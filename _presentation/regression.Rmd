@@ -141,8 +141,42 @@ template: modcomp
 ## Sous forme de comparaison de modèle
 
 
-```{r compare_model_graph2, ref.label='compare_model_graph', eval = TRUE, echo = FALSE, results='markup'}
+
+```{r reg_versiongraphique_prep, eval = TRUE, echo = FALSE}
+set.seed(222)
+n <- 20
+x <- round(rnorm(n, mean= 10, sd = 2),2)
+beta0 <- 1
+beta1 <- 0.5
+sigma <- 1
+fake_dta <- tibble(x= x, y = rnorm(n, mean = beta0 + beta1*x, sd =sigma))  
+
+x0 <-  x[9]
+y0 <- fake_dta$y[9]
+norm_dta <- tibble::tibble(y = rnorm(1000, mean=beta0 + beta1*x0, sd= sigma), x= x0 + dnorm(x = y- beta0 - beta1*x0, mean= 0,  sd=0.5))
+
+norm_dta0 <- tibble::tibble(y = rnorm(1000, mean=mean(fake_dta$y), sd= sigma), x= x0 + dnorm(x = y - mean(fake_dta$y), mean= 0,  sd=0.5))
+
+
+pM0<- ggplot(data=fake_dta) + 
+  ylab('y') + xlim(range(fake_dta$x)) +ylim(range(fake_dta$y)) +
+  ggtitle('Modèle nul') +
+  geom_abline(slope = 0, intercept = mean(fake_dta$y)) + #BREAK
+  geom_point(x=x0, y = mean(fake_dta$y), col = 'red', size=2) + #BREAK
+  geom_point(data=norm_dta0, aes(y=y, x=x), col = 'red', alpha=0.02) + #BREAK
+  geom_point(aes(x=x, y=y)) 
+pMcomp <- ggplot(data=fake_dta) + 
+  ylab('y') + xlim(range(fake_dta$x)) +ylim(range(fake_dta$y)) +
+  ggtitle('Modèle Mcomp') +
+  geom_abline(slope = beta1, intercept = beta0) + #BREAK
+  geom_point(x=x0, y=beta0+beta1*x0, col = 'red', size=2) + #BREAK
+  geom_point(data=norm_dta, aes(y=y, x=x), col = 'red', alpha=0.02) + #BREAK
+  geom_point(aes(x=x, y=y)) 
+ggpubr::ggarrange(pMcomp, pM0, nrow = 1, common.legend = TRUE)
+
 ```
+
+--
 
 Sauf que le modèle complet est bien plus complet ....
 
@@ -243,6 +277,7 @@ library(car)
 ```
 
 ```{r pol_mult, eval = TRUE, echo = TRUE}
+Mcomp <- lm(SO2 ~ temp + manuf + pop +wind + precip + days, data = usdata)
 summary(Mcomp)$coefficients
 ```
 ]
@@ -336,7 +371,7 @@ tibble(Model = paste0('M', (1:imax)-1), R2= unlist(lapply(surajust_list, functio
       })
     }
     library(animation)
-     ok <- saveGIF(gif(), interval = 1, movie.name="Ajustement.gif")
+     ok <- saveGIF(gif(), interval = 2, movie.name="Ajustement.gif")
 ```
  
   <IMG SRC="Ajustement.gif">
