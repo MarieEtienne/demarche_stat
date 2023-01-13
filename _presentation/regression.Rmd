@@ -269,7 +269,7 @@ $$M_{-l}: \class{alea}{Y_k} = \class{rouge}{\beta_0} + \class{rouge}{\beta_1} x_
 count: false
 template: test_variable
 
-## Equivalence des tests sur l'exemple de la pollution : efft de la population
+## Equivalence des tests sur l'exemple de la pollution : effet de la population
 .pull-left[
 
 ```{r car, echo=FALSE, eval=TRUE}
@@ -444,11 +444,6 @@ Il est fréquent d'utiliser un modèle de régression pour prédire.
 --
 
 $$\hat{Y}_k = \class{fixe}{\hat{\beta}_0} +\class{fixe}{\hat{\beta}_1} x_{k,1}+ \ldots + \class{fixe}{\hat{\beta}_p} x_{k,p}$$
-
-
-
----
-# le problème des varaibles explicatives corrélées 
 
 
 
