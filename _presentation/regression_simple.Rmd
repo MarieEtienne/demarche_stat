@@ -227,7 +227,7 @@ avec
 
 
 ```{r anova_versiongraphique_save, eval = TRUE}
-p<- ggplot(data=fake_dta) + 
+pM0<- ggplot(data=fake_dta) + 
   ylab('y') + xlim(range(fake_dta$x)) +ylim(range(fake_dta$y)) +
   ggtitle('Modèle nul') +
   geom_abline(slope = 0, intercept = mean(fake_dta$y)) + #BREAK
