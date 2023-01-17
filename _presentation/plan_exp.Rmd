@@ -47,56 +47,10 @@ BibOptions(check.entries = FALSE,
 xaringanExtra::use_fit_screen()
 ```
 
-
+name: intro
 # Introduction : Importance du design expérimental 
 
 --
-## Retour sur un exemple : le gras du cochon !
-
-.pull-left[
-```{r gras, echo = FALSE, eval = TRUE}
-dta <-  read.table("https://dcauseur.netlify.app/teaching/data/pig.txt",header=TRUE,stringsAsFactors=TRUE) %>% 
-  as_tibble() %>% 
-  dplyr::select(BFAT, GENET) %>% 
-  filter(GENET %in% c("P25", "P0")) %>% 
-  mutate(GENET = droplevels(GENET))
-dta %>% summary()
-```
-]
-
-
---
-
-.pull-right[
-
-* Ces données sont modélisées par $$Y_{ik} = \mu_i + E_{ik}$$ 
-
-* Intérêt pour $\delta = \mu_1-\mu_2$ 
-
-  - Estimation de $\delta$ par $\hat{\delta}$
-  - Loi de l'estimateur $D$ de $\delta$ : $\mathcal{N}\left (\delta, \sigma^2 \left(\frac{1}{n_2}+\frac{1}{n_1}\right)\right)$
-
-* Dans l'exemple $n_1=15$, $n_2=23$, donc  $\frac{1}{n_1}+\frac{1}{n_2}= 0.110$
-]
-
---
-.pull-right[
-
-* Si $n_1=19$  et $n_2=19$,  $\frac{1}{n_1}+\frac{1}{n_2}= 0.105$
-]
-
---
-
-$$IC_{1-\alpha}(\delta)= \left[ \hat{\delta} - q_{1-\alpha/2} \hat{\sigma} \class{vert}{\sqrt{\frac{1}{n_1} +\frac{1}{n_2}}} ; 
-\hat{\delta} + q_{1-\alpha/2} \hat{\sigma} \class{vert}{\sqrt{\frac{1}{n_1} +\frac{1}{n_2}}} \right]$$
-
---
-
-.rouge[ Gain en précision avec un design experimental bien choisi]
-
----
-template: intro
-
 ## Retour sur la fréquence cardiaque et l'activité sportive
 
 .pull-left[
@@ -115,20 +69,20 @@ freqdata %>% group_by(Activite, Sexe) %>% summarise(nobs = n())
 .pull-right[
 
 * Ces données sont modélisées par $$Y_{ik} = \mu + \alpha_i + \beta_j + \gamma_{ij}+ E_{ik},$$  
-cas particulier de $$Y=X\theta +E.$$
 
-* Loi d l'estimateur $T$ de $\theta$:  $\mathcal{N}\left(\theta, \sigma^2 (X^{\intercal} X)^{-1}\right)$
+
 
 ]
 
 --
 
-* $n_{ij}=4$, pour tout $i,j$. Plan d'expérience **équilibré** :séparation complète de la variabilité associée à l'effet du Sexe et de l'Activité.
+* $n_{ij}=4$, pour tout $i,j$. Plan d'expérience **équilibré** : séparation complète de la variabilité associée à l'effet du Sexe et de l'Activité.
 
 
 ```{r var_eq, eval =TRUE, echo = FALSE,  out.width = "40%"}
 knitr::include_graphics('./RSS3_eq.png')
 ```
+
 
 ---
 
@@ -154,7 +108,7 @@ freqdata %>% group_by(Activite, Sexe) %>% summarise(nobs = n()) %>% ungroup() %>
 knitr::include_graphics('./Rss_counfound.png')
 ```
 
-et $X^{\intercal} X$ n'est pas inversible (ereur dans les sorties R *aliased coefficient*)
+La confusion est complète et on ne peut pas estimer les paramètres  (erreur dans les sorties R *aliased coefficient*)
 
 ]
 --
@@ -167,14 +121,10 @@ et $X^{\intercal} X$ n'est pas inversible (ereur dans les sorties R *aliased coe
 knitr::include_graphics('./RSS3.png')
 ```
 
-]
-
-
---
 
 .rouge[Le design expérimental est essentiel et doit être réfléchi en amont]
 
-
+]
 ---
 template: intro
 
@@ -335,28 +285,20 @@ Modèle d'analyse de la variance à 2 facteurs avec interaction
 $$Y_{ij} = \mu + \alpha_i +\beta_j + \gamma_{ij} + E_{ij},$$
 #### Matrice de design, matrice des effets
 
-C'est la matrice $X$ dans le modèle qui est utilisé : $$Y = X\theta + E$$
 
 .pull-left[
 
-avec  les contraintes classiques de R : $\alpha_1=\beta_1=\gamma_{11}=\gamma_{12}=\gamma_{21}=0.$ ]
+On résume l'expérience à la matrice 
 
-.pull-right[
 
-$$X = \overset{\color{gray}{\begin{matrix}\mu & \alpha_{2} & \beta_2 & \gamma_{22}\end{matrix}}}{\begin{pmatrix}
-1 & 0 & 0 & 0\\
-1 & 0 & 1 & 0\\
-1 & 1 & 0 & 0\\
-1 & 1 & 1 & 1\\
- \end{pmatrix}},\quad \theta =\begin{pmatrix}\mu \\ \alpha_2 \\ \beta_2 \\ \gamma_{22} \end{pmatrix}$$
-
-] 
-
---
-
-Mais peu pratique dans le cadre des plans d'expérience.
-
-.rouge[En acceptant de changer de système de contraintes, on pourra travailler plus facilement avec les plans !]
+.font80[
+$$X = \overset{\color{gray}{\begin{matrix}\ I\hspace{.3cm}& \ A \hspace{.3cm}& \ B\hspace{.3cm}& \ AB \hspace{.3cm}\end{matrix}}}{\begin{pmatrix}
+\ 1 & \ 1 & 1 & 1\\
+\ 1 & \ 1 & -1 & -1\\
+\ 1 & -1 & 1 & -1\\
+\ 1 & -1 & -1 & 1\\
+ \end{pmatrix}}$$
+]
 
 
 ---
