@@ -17,7 +17,6 @@ output:
       beforeInit: '../courses_tools/resources/collapseoutput.js'
 ---
 
-name: intro
 
 <!-- F1D763 -->
 <!-- F7A913 -->
