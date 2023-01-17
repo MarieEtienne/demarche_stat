@@ -289,7 +289,7 @@ $$Y_{ij} = \mu + \alpha_i +\beta_j + \gamma_{ij} + E_{ij},$$
 On résume l'expérience à la matrice 
 
 
-$$X = \overset{\color{gray}{\begin{matrix}I&   \hspace{.3cm}A\hspace{.3cm}& B\hspace{.3cm} & AB \end{matrix}}}{\begin{pmatrix} 
+$$X = \overset{\color{gray}{\begin{matrix}I\hspace{.4cm}&   A\hspace{.4cm}& B\hspace{.4cm} & AB \end{matrix}}}{\begin{pmatrix} 
 \class{rouge}{+1} &\class{jaune}{+1} & \class{bleu}{+1}  & \class{vert}{+1}\\
 \class{rouge}{+1} &\class{jaune}{+1} & \class{bleu}{-1}  & \class{vert}{-1}\\
 \class{rouge}{+1} &\class{jaune}{-1} & \class{bleu}{+1}  & \class{vert}{-1}\\
@@ -316,7 +316,7 @@ Combien de combinaisons possibles ?
 #### Matrice des effets du modèle d'anova à 3 facteurs
 
 
-$$X = \overset{\color{gray}{\begin{matrix}I\hspace{.3cm}&   A\hspace{.3cm}& B\hspace{.3cm} & C\hspace{.3cm}& AB \hspace{.3cm} & AC \hspace{.3cm} & BC \hspace{.3cm}   \end{matrix}}}{\begin{pmatrix}
+$$X = \overset{\color{gray}{\begin{matrix}I\hspace{.4cm}&   A\hspace{.4cm}& B\hspace{.4cm} & C\hspace{.4cm}& AB \hspace{.4cm} & AC \hspace{.4cm} & BC \hspace{.4cm}   \end{matrix}}}{\begin{pmatrix}
 \class{rouge}{1} & \class{jaune}{1}& \class{bleu}{1} & \class{orange}{1} & \class{vert}{1}& \class{jauneb}{1}& \class{bleuf}{1} & 1\\
 \class{rouge}{1} & \class{jaune}{1}& \class{bleu}{1} & \class{orange}{-1} & \class{vert}{1}& \class{jauneb}{-1}& \class{bleuf}{-1} & -1\\
 \class{rouge}{1} & \class{jaune}{1}& \class{bleu}{-1} & \class{orange}{1} & \class{vert}{-1}& \class{jauneb}{1}& \class{bleuf}{-1} & -1\\
@@ -431,7 +431,7 @@ template: plan_fractionnaire
 
 .font80[
 
-$$X = \overset{\color{gray}{\begin{matrix} I\hspace{.3cm}& A \hspace{.3cm} & B \hspace{.3cm} & AB \end{matrix}}}{\begin{pmatrix}
+$$X = \overset{\color{gray}{\begin{matrix} I\hspace{.4cm}& A \hspace{.4cm} & B \hspace{.4cm} & AB \end{matrix}}}{\begin{pmatrix}
 \class{rouge}{1} & \class{jaune}{1} & \class{bleu}{1} & \class{vert}{1}\\
 \class{rouge}{1} & \class{jaune}{1} & \class{bleu}{-1} & \class{vert}{-1}\\
 \class{rouge}{1} & \class{jaune}{-1} & \class{bleu}{1} & \class{vert}{-1}\\
@@ -448,7 +448,7 @@ $$X = \overset{\color{gray}{\begin{matrix} I\hspace{.3cm}& A \hspace{.3cm} & B \
 
 .font80[
 
-$$X = \overset{\color{gray}{\begin{matrix} I\hspace{.3cm}& A \hspace{.3cm} & B \hspace{.3cm} & \begin{matrix} \class{barre}{AB} \\ \class{vert} C \end{matrix} \end{matrix}}}{\begin{pmatrix}
+$$X = \overset{\color{gray}{\begin{matrix} I\hspace{.4cm}& A \hspace{.4cm} & B \hspace{.4cm} & \begin{matrix} \class{barre}{AB} \\ \class{vert} C \end{matrix} \end{matrix}}}{\begin{pmatrix}
 \class{rouge}{1} & \class{jaune}{1} & \class{bleu}{1} & \class{vert}{1}\\
 \class{rouge}{1} & \class{jaune}{1} & \class{bleu}{-1} & \class{vert}{-1}\\
 \class{rouge}{1} & \class{jaune}{-1} & \class{bleu}{1} & \class{vert}{-1}\\
