@@ -288,93 +288,24 @@ Modèle d'analyse de la variance à 2 facteurs avec interaction
 #### Matrice de design, matrice des effets
 
 
-.pull-left[
 
 On résume l'expérience à la matrice 
 
 
-.font80[
+
 `$$X = \overset{\color{gray}{\begin{matrix}\ I\hspace{.3cm}&amp; \ A \hspace{.3cm}&amp; \ B\hspace{.3cm}&amp; \ AB \hspace{.3cm}\end{matrix}}}{\begin{pmatrix}
 \ 1 &amp; \ 1 &amp; 1 &amp; 1\\
 \ 1 &amp; \ 1 &amp; -1 &amp; -1\\
 \ 1 &amp; -1 &amp; 1 &amp; -1\\
 \ 1 &amp; -1 &amp; -1 &amp; 1\\
  \end{pmatrix}}$$`
-]
 
 
----
-
-template: plan_complet
-
-
-## Un petit retour sur l'analyse de la variance à 2 facteurs et au-delà
-
-
-`$$Y_{ij} = \mu + \alpha_i +\beta_j + \gamma_{ij} + E_{ij},$$` 
-   système de contraintes pour s'assurer que le modèle ne contient pas de paramètres inutiles
-
-.pull-left[
-.orange[Les contraintes classiques]
-
-.font80[
-et `\(\alpha_1=\beta_1=\gamma_{11}=\gamma_{12}=\gamma_{21}=0.\)` 
-
-`$$X = \overset{\color{gray}{\begin{matrix}\mu &amp; \alpha_{2} &amp; \beta_2 &amp; \gamma_{22}\end{matrix}}}{\begin{pmatrix}
-1 &amp; 0 &amp; 0 &amp; 0\\
-1 &amp; 0 &amp; 1 &amp; 0\\
-1 &amp; 1 &amp; 0 &amp; 0\\
-1 &amp; 1 &amp; 1 &amp; 1\\
- \end{pmatrix}},\quad \theta =\begin{pmatrix}\mu \\ \alpha_2 \\ \beta_2 \\ \gamma_{22} \end{pmatrix}$$`
-]
-]
-
---
-
-
-.pull-right[
-.orange[Système alternatif commode pour  plans d'expérience]
-
-.font80[ `\(\alpha_1 = -\alpha_2; \beta_1 = -\beta_2, \gamma_{11}=\gamma_{22}=-\gamma_{12}=-\gamma_{21};\)`
-
-`$$X = \overset{\color{gray}{\begin{matrix}\ \mu \hspace{.3cm}&amp; \ \alpha_{1} \hspace{.3cm}&amp; \ \beta_1 \hspace{.3cm}&amp; \ \gamma_{11}\hspace{.3cm}\end{matrix}}}{\begin{pmatrix}
-\ 1 &amp; \ 1 &amp; 1 &amp; 1\\
-\ 1 &amp; \ 1 &amp; -1 &amp; -1\\
-\ 1 &amp; -1 &amp; 1 &amp; -1\\
-\ 1 &amp; -1 &amp; -1 &amp; 1\\
- \end{pmatrix}},\quad \theta =\begin{pmatrix}\mu \\ \alpha_1 \\ \beta_1 \\ \gamma_{11} \end{pmatrix}$$`
-]
-
-] 
-
-.rouge[Les deux systèmes conduisent aux mêmes prédictions, aux mêmes tests sur les effets. L'interprétation des paramètres change.]
-
-
----
-
-template: plan_complet
-
-
-## Pourquoi c'est plus simple ?
-
---
-
-### Cas de 2 facteurs : plan `\(2^2\)`
-
-On note `\(\class{jaune}{A}\)` le facteur 1 et `\(\class{bleu}{B}\)` le facteur 2. Les modalités sont notées `\(1\)` et `\(-1\)`.
-
-
-
-
-.pull-left[
-#### Matrice des essais
-.font80[
-
-`$$\overset{\color{gray}{\begin{matrix} A\hspace{.3cm}&amp; B\hspace{.3cm} &amp; AB \end{matrix}}}{\begin{pmatrix} 
-\class{jaune}{+1} &amp; \class{bleu}{+1}  &amp; \class{vert}{+1}\\
-\class{jaune}{+1} &amp; \class{bleu}{-1}  &amp; \class{vert}{-1}\\
-\class{jaune}{-1} &amp; \class{bleu}{+1}  &amp; \class{vert}{-1}\\
-\class{jaune}{-1} &amp; \class{bleu}{-1}  &amp; \class{vert}{+1}\\
+`$$X = \overset{\color{gray}{\begin{matrix}I&amp;   \hspace{.3cm}A\hspace{.3cm}&amp; B\hspace{.3cm} &amp; AB \end{matrix}}}{\begin{pmatrix} 
+\class{rouge}{+1} &amp;\class{jaune}{+1} &amp; \class{bleu}{+1}  &amp; \class{vert}{+1}\\
+\class{rouge}{+1} &amp;\class{jaune}{+1} &amp; \class{bleu}{-1}  &amp; \class{vert}{-1}\\
+\class{rouge}{+1} &amp;\class{jaune}{-1} &amp; \class{bleu}{+1}  &amp; \class{vert}{-1}\\
+\class{rouge}{+1} &amp;\class{jaune}{-1} &amp; \class{bleu}{-1}  &amp; \class{vert}{+1}\\
 \end{pmatrix}}$$`
 ]
 
