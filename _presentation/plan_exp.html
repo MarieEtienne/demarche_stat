@@ -274,7 +274,7 @@ template: plan_complet
 
 ## Cas de 2 facteurs : plan `\(2^2\)`
 
-On note `\(A\)` le facteur 1 et `\(B\)` le facteur 2. Les modalités sont notées `\(1\)` et `\(-1\)`. 
+On note `\(\class{jaune}{A}\)` le facteur 1,  `\(\class{bleu}{B}\)` le facteur 2. Les modalités sont notées `\(1\)` et `\(-1\)`.
 
 On a `\(2^2\)` expériences différentes possibles: on peut estimer `\(2^2\)` paramètres.
 --
@@ -291,42 +291,14 @@ Modèle d'analyse de la variance à 2 facteurs avec interaction
 On résume l'expérience à la matrice 
 
 
-
-`$$X = \overset{\color{gray}{\begin{matrix}\ I\hspace{.3cm}&amp; \ A \hspace{.3cm}&amp; \ B\hspace{.3cm}&amp; \ AB \hspace{.3cm}\end{matrix}}}{\begin{pmatrix}
-\ 1 &amp; \ 1 &amp; 1 &amp; 1\\
-\ 1 &amp; \ 1 &amp; -1 &amp; -1\\
-\ 1 &amp; -1 &amp; 1 &amp; -1\\
-\ 1 &amp; -1 &amp; -1 &amp; 1\\
- \end{pmatrix}}$$`
-
-
 `$$X = \overset{\color{gray}{\begin{matrix}I&amp;   \hspace{.3cm}A\hspace{.3cm}&amp; B\hspace{.3cm} &amp; AB \end{matrix}}}{\begin{pmatrix} 
 \class{rouge}{+1} &amp;\class{jaune}{+1} &amp; \class{bleu}{+1}  &amp; \class{vert}{+1}\\
 \class{rouge}{+1} &amp;\class{jaune}{+1} &amp; \class{bleu}{-1}  &amp; \class{vert}{-1}\\
 \class{rouge}{+1} &amp;\class{jaune}{-1} &amp; \class{bleu}{+1}  &amp; \class{vert}{-1}\\
 \class{rouge}{+1} &amp;\class{jaune}{-1} &amp; \class{bleu}{-1}  &amp; \class{vert}{+1}\\
 \end{pmatrix}}$$`
-]
-
-] 
---
-
-.pull-right[
-
-#### Matrice des effets du modèle d'anova à 2 facteurs
 
 
-.font80[ 
-
-`$$X = \overset{\color{gray}{\begin{matrix} \mu\hspace{.3cm}&amp; \alpha_{1} \hspace{.3cm} &amp; \beta_1 \hspace{.3cm} &amp; \gamma_{11} \end{matrix}}}{\begin{pmatrix}
-\class{rouge}{1} &amp; \class{jaune}{1} &amp; \class{bleu}{1} &amp; \class{vert}{1}\\
-\class{rouge}{1} &amp; \class{jaune}{1} &amp; \class{bleu}{-1} &amp; \class{vert}{-1}\\
-\class{rouge}{1} &amp; \class{jaune}{-1} &amp; \class{bleu}{1} &amp; \class{vert}{-1}\\
-\class{rouge}{1} &amp; \class{jaune}{-1} &amp; \class{bleu}{-1} &amp; \class{vert}{1}\\
- \end{pmatrix}}$$`
-]
-
-] 
 
 
 ---
@@ -343,32 +315,8 @@ Combien de combinaisons possibles ?
 --
 
 
+#### Matrice des effets du modèle d'anova à 3 facteurs
 
-.pull-left[
-#### Matrice des essais
-.font80[
-
-`$$\overset{\color{gray}{\begin{matrix} A\hspace{.5cm}&amp; B\hspace{.5cm} &amp; C\hspace{.5cm} &amp; AB\hspace{.1cm} &amp; AC\hspace{.1cm} &amp; BC\hspace{.1cm} &amp; ABC \end{matrix}}}{\begin{pmatrix} 
- \class{jaune}{+1}&amp; \class{bleu}{+1} &amp; \class{orange}{+1} &amp; \class{vert}{+1}&amp; \class{jauneb}{+1}&amp; \class{bleuf}{+1} &amp; +1\\
-\class{jaune}{+1}&amp; \class{bleu}{+1} &amp; \class{orange}{-1} &amp; \class{vert}{+1}&amp; \class{jauneb}{-1}&amp; \class{bleuf}{-1} &amp; -1\\
- \class{jaune}{+1}&amp; \class{bleu}{-1} &amp; \class{orange}{+1} &amp; \class{vert}{-1}&amp; \class{jauneb}{+1}&amp; \class{bleuf}{-1} &amp; -1\\
- \class{jaune}{+1}&amp; \class{bleu}{-1} &amp; \class{orange}{-1} &amp; \class{vert}{-1}&amp; \class{jauneb}{-1}&amp; \class{bleuf}{+1} &amp; +1\\
-\class{jaune}{-1}&amp; \class{bleu}{+1} &amp; \class{orange}{+1} &amp; \class{vert}{+1}&amp; \class{jauneb}{-1}&amp; \class{bleuf}{+1}&amp; -1\\
- \class{jaune}{-1}&amp; \class{bleu}{+1} &amp; \class{orange}{-1} &amp; \class{vert}{+1}&amp; \class{jauneb}{+1}&amp; \class{bleuf}{-1} &amp; +1\\
- \class{jaune}{-1}&amp; \class{bleu}{-1} &amp; \class{orange}{+1} &amp; \class{vert}{-1}&amp; \class{jauneb}{-1}&amp; \class{bleuf}{-1} &amp; +1\\
- \class{jaune}{-1}&amp; \class{bleu}{-1} &amp; \class{orange}{-1} &amp; \class{vert}{-1}&amp; \class{jauneb}{+1}&amp; \class{bleuf}{+1}&amp; -1\\
-\end{pmatrix}}$$`
-]
-
-] 
---
-
-.pull-right[
-
-#### Matrice des effets du modèle d'anova à 2 facteurs
-
-
-.font80[ 
 
 `$$X = {\begin{pmatrix}
 \class{rouge}{1} &amp; \class{jaune}{1}&amp; \class{bleu}{1} &amp; \class{orange}{1} &amp; \class{vert}{1}&amp; \class{jauneb}{1}&amp; \class{bleuf}{1} &amp; 1\\
@@ -380,9 +328,6 @@ Combien de combinaisons possibles ?
 \class{rouge}{1} &amp; \class{jaune}{-1}&amp; \class{bleu}{-1} &amp; \class{orange}{1} &amp; \class{vert}{-1}&amp; \class{jauneb}{-1}&amp; \class{bleuf}{-1} &amp; 1\\
 \class{rouge}{1} &amp; \class{jaune}{-1}&amp; \class{bleu}{-1} &amp; \class{orange}{-1} &amp; \class{vert}{-1}&amp; \class{jauneb}{1}&amp; \class{bleuf}{1}&amp; -1\\
  \end{pmatrix}}$$`
-]
-
-] 
 
 
 ---

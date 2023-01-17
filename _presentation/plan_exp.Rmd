@@ -272,7 +272,7 @@ template: plan_complet
 
 ## Cas de 2 facteurs : plan $2^2$
 
-On note $A$ le facteur 1 et $B$ le facteur 2. Les modalités sont notées $1$ et $-1$. 
+On note $\class{jaune}{A}$ le facteur 1,  $\class{bleu}{B}$ le facteur 2. Les modalités sont notées $1$ et $-1$.
 
 On a $2^2$ expériences différentes possibles: on peut estimer $2^2$ paramètres.
 --
@@ -289,42 +289,14 @@ $$Y_{ij} = \mu + \alpha_i +\beta_j + \gamma_{ij} + E_{ij},$$
 On résume l'expérience à la matrice 
 
 
-
-$$X = \overset{\color{gray}{\begin{matrix}\ I\hspace{.3cm}& \ A \hspace{.3cm}& \ B\hspace{.3cm}& \ AB \hspace{.3cm}\end{matrix}}}{\begin{pmatrix}
-\ 1 & \ 1 & 1 & 1\\
-\ 1 & \ 1 & -1 & -1\\
-\ 1 & -1 & 1 & -1\\
-\ 1 & -1 & -1 & 1\\
- \end{pmatrix}}$$
-
-
 $$X = \overset{\color{gray}{\begin{matrix}I&   \hspace{.3cm}A\hspace{.3cm}& B\hspace{.3cm} & AB \end{matrix}}}{\begin{pmatrix} 
 \class{rouge}{+1} &\class{jaune}{+1} & \class{bleu}{+1}  & \class{vert}{+1}\\
 \class{rouge}{+1} &\class{jaune}{+1} & \class{bleu}{-1}  & \class{vert}{-1}\\
 \class{rouge}{+1} &\class{jaune}{-1} & \class{bleu}{+1}  & \class{vert}{-1}\\
 \class{rouge}{+1} &\class{jaune}{-1} & \class{bleu}{-1}  & \class{vert}{+1}\\
 \end{pmatrix}}$$
-]
-
-] 
---
-
-.pull-right[
-
-#### Matrice des effets du modèle d'anova à 2 facteurs
 
 
-.font80[ 
-
-$$X = \overset{\color{gray}{\begin{matrix} \mu\hspace{.3cm}& \alpha_{1} \hspace{.3cm} & \beta_1 \hspace{.3cm} & \gamma_{11} \end{matrix}}}{\begin{pmatrix}
-\class{rouge}{1} & \class{jaune}{1} & \class{bleu}{1} & \class{vert}{1}\\
-\class{rouge}{1} & \class{jaune}{1} & \class{bleu}{-1} & \class{vert}{-1}\\
-\class{rouge}{1} & \class{jaune}{-1} & \class{bleu}{1} & \class{vert}{-1}\\
-\class{rouge}{1} & \class{jaune}{-1} & \class{bleu}{-1} & \class{vert}{1}\\
- \end{pmatrix}}$$
-]
-
-] 
 
 
 ---
@@ -341,32 +313,8 @@ Combien de combinaisons possibles ?
 --
 
 
+#### Matrice des effets du modèle d'anova à 3 facteurs
 
-.pull-left[
-#### Matrice des essais
-.font80[
-
-$$\overset{\color{gray}{\begin{matrix} A\hspace{.5cm}& B\hspace{.5cm} & C\hspace{.5cm} & AB\hspace{.1cm} & AC\hspace{.1cm} & BC\hspace{.1cm} & ABC \end{matrix}}}{\begin{pmatrix} 
- \class{jaune}{+1}& \class{bleu}{+1} & \class{orange}{+1} & \class{vert}{+1}& \class{jauneb}{+1}& \class{bleuf}{+1} & +1\\
-\class{jaune}{+1}& \class{bleu}{+1} & \class{orange}{-1} & \class{vert}{+1}& \class{jauneb}{-1}& \class{bleuf}{-1} & -1\\
- \class{jaune}{+1}& \class{bleu}{-1} & \class{orange}{+1} & \class{vert}{-1}& \class{jauneb}{+1}& \class{bleuf}{-1} & -1\\
- \class{jaune}{+1}& \class{bleu}{-1} & \class{orange}{-1} & \class{vert}{-1}& \class{jauneb}{-1}& \class{bleuf}{+1} & +1\\
-\class{jaune}{-1}& \class{bleu}{+1} & \class{orange}{+1} & \class{vert}{+1}& \class{jauneb}{-1}& \class{bleuf}{+1}& -1\\
- \class{jaune}{-1}& \class{bleu}{+1} & \class{orange}{-1} & \class{vert}{+1}& \class{jauneb}{+1}& \class{bleuf}{-1} & +1\\
- \class{jaune}{-1}& \class{bleu}{-1} & \class{orange}{+1} & \class{vert}{-1}& \class{jauneb}{-1}& \class{bleuf}{-1} & +1\\
- \class{jaune}{-1}& \class{bleu}{-1} & \class{orange}{-1} & \class{vert}{-1}& \class{jauneb}{+1}& \class{bleuf}{+1}& -1\\
-\end{pmatrix}}$$
-]
-
-] 
---
-
-.pull-right[
-
-#### Matrice des effets du modèle d'anova à 2 facteurs
-
-
-.font80[ 
 
 $$X = {\begin{pmatrix}
 \class{rouge}{1} & \class{jaune}{1}& \class{bleu}{1} & \class{orange}{1} & \class{vert}{1}& \class{jauneb}{1}& \class{bleuf}{1} & 1\\
@@ -378,9 +326,6 @@ $$X = {\begin{pmatrix}
 \class{rouge}{1} & \class{jaune}{-1}& \class{bleu}{-1} & \class{orange}{1} & \class{vert}{-1}& \class{jauneb}{-1}& \class{bleuf}{-1} & 1\\
 \class{rouge}{1} & \class{jaune}{-1}& \class{bleu}{-1} & \class{orange}{-1} & \class{vert}{-1}& \class{jauneb}{1}& \class{bleuf}{1}& -1\\
  \end{pmatrix}}$$
-]
-
-] 
 
 
 ---
