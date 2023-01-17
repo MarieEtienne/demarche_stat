@@ -316,7 +316,7 @@ Combien de combinaisons possibles ?
 #### Matrice des effets du modèle d'anova à 3 facteurs
 
 
-$$X = \overset{\color{gray}{\begin{matrix}I\hspace{.4cm}&   A\hspace{.4cm}& B\hspace{.4cm} & C\hspace{.4cm}& AB \hspace{.4cm} & AC \hspace{.4cm} & BC \hspace{.4cm}   \end{matrix}}}{\begin{pmatrix}
+$$X = \overset{\color{gray}{\begin{matrix}I\hspace{.5cm}&   A\hspace{.5cm}& B\hspace{.5cm} & C\hspace{.5cm}& AB \hspace{.5cm} & AC \hspace{.5cm} & BC \hspace{.5cm}   \end{matrix}}}{\begin{pmatrix}
 \class{rouge}{1} & \class{jaune}{1}& \class{bleu}{1} & \class{orange}{1} & \class{vert}{1}& \class{jauneb}{1}& \class{bleuf}{1} & 1\\
 \class{rouge}{1} & \class{jaune}{1}& \class{bleu}{1} & \class{orange}{-1} & \class{vert}{1}& \class{jauneb}{-1}& \class{bleuf}{-1} & -1\\
 \class{rouge}{1} & \class{jaune}{1}& \class{bleu}{-1} & \class{orange}{1} & \class{vert}{-1}& \class{jauneb}{1}& \class{bleuf}{-1} & -1\\
