@@ -46,8 +46,11 @@ BibOptions(check.entries = FALSE,
 xaringanExtra::use_fit_screen()
 ```
 
+
+---
+
 name: intro
-# Introduction : Importance du design expérimental 
+# Introduction : Importance du design expérimental
 
 --
 ## Retour sur la fréquence cardiaque et l'activité sportive
