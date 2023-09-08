@@ -278,7 +278,7 @@ $$Cor(x_i, x_j) = \frac{1}{n} \sum_{k=1}^n \frac{(x_{k,i} - x_{\bullet,i})}{s_{x
 Les variables $(x_{k,i} - x_{\bullet, i})/s_{x_i}$ sont dites centrées réduites. (cf exemple R)
 
 
---
+---
 
 # Ce qu'il faut absolument pour la suite
 
